@@ -16,19 +16,19 @@
   <p>Vrije Universiteit Amsterdam, The Netherlands</p>
 
   <p>
-    <img src="https://img.shields.io/badge/Paper-Coming_soon-B31B1B?style=flat-square" alt="Paper coming soon">
-    <img src="https://img.shields.io/badge/Project_Page-Coming_soon-198F7A?style=flat-square" alt="Project page coming soon">
-    <a href="#installation"><img src="https://img.shields.io/badge/Code-Available-3B82B8?style=flat-square" alt="Code available"></a>
-    <img src="https://img.shields.io/badge/Models-Coming_soon-7A5AF8?style=flat-square" alt="Models coming soon">
+    <img src="assets/btn/paper.svg" height="38" alt="Paper">&nbsp;
+    <img src="assets/btn/arxiv.svg" height="38" alt="arXiv">&nbsp;
+    <img src="assets/btn/project-page.svg" height="38" alt="Project Page">&nbsp;
+    <img src="assets/btn/hugging-face.svg" height="38" alt="Hugging Face">&nbsp;
   </p>
   <img src="assets/rule.svg" width="640" alt="">
   <p>
-    <a href="#overview"><img src="assets/nav/overview.svg" height="34" alt="Overview"></a>
-    <a href="#installation"><img src="assets/nav/installation.svg" height="34" alt="Installation"></a>
-    <a href="#prepare-data-and-checkpoints"><img src="assets/nav/data.svg" height="34" alt="Data"></a>
-    <a href="#run-experiments"><img src="assets/nav/experiments.svg" height="34" alt="Experiments"></a>
-    <a href="ARCHITECTURE.md"><img src="assets/nav/code-map.svg" height="34" alt="Code map"></a>
-    <a href="#citation"><img src="assets/nav/citation.svg" height="34" alt="Citation"></a>
+    <a href="#overview"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/nav/overview-dark.svg"><img src="assets/nav/overview-light.svg" height="36" alt="Overview"></picture></a>
+    <a href="#installation"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/nav/installation-dark.svg"><img src="assets/nav/installation-light.svg" height="36" alt="Installation"></picture></a>
+    <a href="#prepare-data-and-checkpoints"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/nav/data-dark.svg"><img src="assets/nav/data-light.svg" height="36" alt="Data"></picture></a>
+    <a href="#run-experiments"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/nav/experiments-dark.svg"><img src="assets/nav/experiments-light.svg" height="36" alt="Experiments"></picture></a>
+    <a href="ARCHITECTURE.md"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/nav/code-map-dark.svg"><img src="assets/nav/code-map-light.svg" height="36" alt="Code map"></picture></a>
+    <a href="#citation"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/nav/citation-dark.svg"><img src="assets/nav/citation-light.svg" height="36" alt="Citation"></picture></a>
   </p>
   <img src="assets/rule.svg" width="640" alt="">
 </div>

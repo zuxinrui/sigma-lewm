@@ -35,3 +35,4 @@ artifacts/
 !assets/*.svg
 !assets/*.png
 !assets/nav/*.svg
+!assets/btn/*.svg
