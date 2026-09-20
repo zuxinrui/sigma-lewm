@@ -32,3 +32,5 @@ logs/
 outputs/
 runs/
 artifacts/
+!assets/*.svg
+!assets/*.png

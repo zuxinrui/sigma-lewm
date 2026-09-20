@@ -1,10 +1,72 @@
-# sigma-lewm (S-LeWM)
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/sigma-lewm-dark.svg">
+    <img src="assets/sigma-lewm-light.svg" width="460" alt="Σ-LeWM">
+  </picture>
 
-Training and evaluation code for latent world models with contrastive backward
-and inverse objectives added to a forward (LeWM-style) predictor.
+  <h1>Σ-LeWM: Learning World Models via S-Information for Robot Control</h1>
 
-This repository contains code and configurations only. Datasets, checkpoints,
-logs and measurements are not included; every command below starts a new run.
+  <p><strong>Train a latent world model to predict the next state, explain the current one, and recover the action between them.</strong></p>
+
+  <p>
+    <a href="https://zuxinrui.github.io/">Xinrui Zu</a>
+    &nbsp;&middot;&nbsp; <a href="https://scholar.google.com/citations?user=UHWkDfkAAAAJ&hl=en">Michael Przystupa</a>
+    &nbsp;&middot;&nbsp; <a href="https://yangzhao-666.github.io/">Zhao Yang</a>
+    &nbsp;&middot;&nbsp; <a href="https://sjyucnel.github.io/">Shujian Yu</a>
+    &nbsp;&middot;&nbsp; <a href="https://kevin-luck.com/">Kevin Sebastian Luck</a>
+  </p>
+  <p>Vrije Universiteit Amsterdam, The Netherlands</p>
+
+  <p>
+    <img src="https://img.shields.io/badge/Paper-Coming_soon-B31B1B?style=flat-square" alt="Paper coming soon">
+    <img src="https://img.shields.io/badge/Project_Page-Coming_soon-198F7A?style=flat-square" alt="Project page coming soon">
+    <a href="#installation"><img src="https://img.shields.io/badge/Code-Available-3B82B8?style=flat-square" alt="Code available"></a>
+    <img src="https://img.shields.io/badge/Models-Coming_soon-7A5AF8?style=flat-square" alt="Models coming soon">
+    <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.10-598BE7?style=flat-square&logo=python&logoColor=white" alt="Python 3.10"></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-598BE7?style=flat-square" alt="MIT license"></a>
+  </p>
+  <p>
+    <a href="#overview">Overview</a> &nbsp;&middot;&nbsp;
+    <a href="#installation">Installation</a> &nbsp;&middot;&nbsp;
+    <a href="#prepare-data-and-checkpoints">Data</a> &nbsp;&middot;&nbsp;
+    <a href="#run-experiments">Experiments</a> &nbsp;&middot;&nbsp;
+    <a href="ARCHITECTURE.md">Code map</a> &nbsp;&middot;&nbsp;
+    <a href="#citation">Citation</a>
+  </p>
+</div>
+
+## Overview
+
+Σ-LeWM is a decoder-free latent world model. It is trained not only to predict the
+*next* latent state, but also to explain the *current* state from where it lands and
+to recover the *action* that connects them. Together the three objectives maximise
+the S-information $\Sigma$ of the transition $(Z_t, A_t, Z_{t+1})$.
+
+LeWorldModel (LeWM) learns a latent transition $f(z_t, a_t) \to z_{t+1}$ without a
+decoder. Σ-LeWM adds two auxiliary predictors, used only during training, so that
+every variable of the transition is predictable from the other two.
+
+| Direction | Loss | Information term | Role |
+| --- | --- | --- | --- |
+| Forward | MSE + SIGReg | $I_F = I(Z_{t+1}; Z_t, A_t)$ | Predict the next latent from the current latent and the action. The standard LeWM objective, and the only predictor used at test time. |
+| Backward | DCL | $I_B = I(Z_t; Z_{t+1}, A_t)$ | Explain the current latent from where the action lands. |
+| Inverse | DCL | $I_I = I(A_t; Z_t, Z_{t+1})$ | Recover the action from two consecutive latents, so the embedding keeps what the action changed. |
+
+$$I_F + I_B + I_I = \mathrm{TC}(Z_t, A_t, Z_{t+1}) + \mathrm{DTC}(Z_t, A_t, Z_{t+1}) = \Sigma(Z_t, A_t, Z_{t+1})$$
+
+The sum of the three directional terms is the total correlation plus the dual total
+correlation: the S-information, written $\Sigma$. Hence the name.
+
+<p align="center">
+  <img src="assets/method.png" width="720" alt="One shared encoder with forward, backward and inverse predictors">
+</p>
+
+One shared encoder, three predictors. Forward dynamics is trained with the LeWM loss;
+backward and inverse dynamics with the decoupled contrastive loss (DCL). At test time
+only forward dynamics is used, so planning is identical to LeWM: CEM in latent space.
+
+This repository contains code and configurations only. Datasets, checkpoints, logs
+and measurements are not included; every command below starts a new run.
 
 ## Read the method
 
@@ -18,7 +80,7 @@ Core code lives in the `slewm` package, separate from experiment orchestration s
 See the [code map](ARCHITECTURE.md) for task constraints, baselines, and distributed
 training.
 
-## Install
+## Installation
 
 Python 3.10 on Linux with a CUDA GPU.
 
@@ -85,3 +147,13 @@ written for a specific workstation layout and may need path arguments adjusted.
 
 LeWM's license is retained in `LICENSE`. Third-party datasets and simulator
 assets carry their own licenses.
+
+## Citation
+
+```bibtex
+@article{sigma-lewm2027,
+  title  = {{$\Sigma$}-LeWM: Learning World Models via S-Information for Robot Control},
+  author = {Zu, Xinrui and Przystupa, Michael and Yang, Zhao and Yu, Shujian and Luck, Kevin Sebastian},
+  year   = {2027}
+}
+```

@@ -1,1 +1,1 @@
-"""S-LeWM research implementation."""
+"""Σ-LeWM research implementation."""

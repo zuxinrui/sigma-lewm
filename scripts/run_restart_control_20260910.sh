@@ -1,5 +1,5 @@
 #!/bin/bash
-# Compute-matched control for IDM ranking (App. H): the same S-LeWM checkpoints, stock CEM restarted
+# Compute-matched control for IDM ranking (App. H): the same Σ-LeWM checkpoints, stock CEM restarted
 # N_RESTARTS times with cost-based selection (+planner=restart), on the identical episodes
 # (seeds 0-1 x 50, h=5, goal+25, budget 50) as Table 9. IDM ranking costs 5.3-5.8x stock wall-clock
 # per iteration, so six restarts is a conservative (>= 5.8x) match.

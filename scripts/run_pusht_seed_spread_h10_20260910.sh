@@ -1,6 +1,6 @@
 #!/bin/bash
 # Seed spread on the Sec. 4.2 h=10/CEM8 cell (July protocol: h=10 full commit, goal+25, budget 100, eval seeds
-# 1617884563 1641937927 522729137 x 50), three S-LeWM training seeds.
+# 1617884563 1641937927 522729137 x 50), three Σ-LeWM training seeds.
 set -uo pipefail
 cd "$(dirname "$0")/.."; source .venv/bin/activate
 export STABLEWM_HOME="${STABLEWM_HOME:-$HOME/.stable-wm}" MUJOCO_GL=egl SDL_VIDEODRIVER=dummy TOKENIZERS_PARALLELISM=false

@@ -126,7 +126,7 @@ def render(features, embeddings, provenance, frozen_pca=None, *, task='pusht', g
 
     palette = apply_style()
     logging.getLogger('fontTools').setLevel(logging.ERROR)
-    names = {'lewm': 'LeWM', 'ours': 'S-LeWM'}
+    names = {'lewm': 'LeWM', 'ours': 'Σ-LeWM'}
     coordinates, variance, limits = {}, {}, {}
     for key, z in embeddings.items():
         if frozen_pca is None:
@@ -166,7 +166,7 @@ def render(features, embeddings, provenance, frozen_pca=None, *, task='pusht', g
             ('gear','motion'):'Gear | A velocity colour is not evidence of action sensitivity',
         }
         fig.suptitle(headlines.get((task,slug),title), x=.045, y=.99, ha='left', fontsize=9,weight='bold')
-        fig.text(.045,.915,'Read each column: top LeWM, bottom S-LeWM. Same points; colour changes with the named physical quantity.',
+        fig.text(.045,.915,'Read each column: top LeWM, bottom Σ-LeWM. Same points; colour changes with the named physical quantity.',
                  fontsize=6.8,color=palette['muted'])
         data_axes, colour_tick_labels = [], []
         for j, (field, label, unit, cmap_name, kind) in enumerate(variables):
@@ -269,7 +269,7 @@ def render(features, embeddings, provenance, frozen_pca=None, *, task='pusht', g
         axbar.tick_params(labelsize=6)
         axbar.set_title('Projection coverage (%)', fontsize=7)
         axbar.grid(axis='y', visible=False)
-        fig.text(.805, .27, 'Variance kept by PC1 + PC2\nGrey LeWM | Blue S-LeWM\nNot accuracy or success', fontsize=6, color=palette['muted'])
+        fig.text(.805, .27, 'Variance kept by PC1 + PC2\nGrey LeWM | Blue Σ-LeWM\nNot accuracy or success', fontsize=6, color=palette['muted'])
         fig.text(.062, .025, f"Same {len(order):,} states; fixed PCA per model.",
                  fontsize=6, color=palette['muted'])
         stem = f'figA_{task}_{slug}'

@@ -141,10 +141,10 @@ def draw(task, prepared, mode):
             for s in ax.spines.values():s.set_color(p['grid'])
             if row==0:ax.set_title(fill(SHORT_LABELS[task][j],15),fontsize=8,pad=4)
             if j==0 and mode!='pca3d':
-                label=('LeWM' if k=='lewm' else 'S-LeWM')
+                label=('LeWM' if k=='lewm' else 'Σ-LeWM')
                 if paired:label=('PCA' if row<2 else 'Readout')+' / '+label
                 ax.set_ylabel(label,fontsize=8,color=p[k],labelpad=3)
-            if j==0 and mode=='pca3d':ax.text2D(-.12,.5,'LeWM' if k=='lewm' else 'S-LeWM',transform=ax.transAxes,rotation=90,fontsize=8,color=p[k])
+            if j==0 and mode=='pca3d':ax.text2D(-.12,.5,'LeWM' if k=='lewm' else 'Σ-LeWM',transform=ax.transAxes,rotation=90,fontsize=8,color=p[k])
         cax=fig.add_subplot(gs[4 if paired else 2,j]);cb=fig.colorbar(cm.ScalarMappable(norm=norm,cmap=cmap),cax=cax,orientation='horizontal')
         cb.set_ticks([lo,hi]);cb.set_ticklabels(['no','yes'] if kind=='binary' else [f'{lo:.1f}',f'{hi:.1f}'])
         cb.ax.tick_params(labelsize=6,length=1,pad=1);cb.outline.set_visible(False)
@@ -172,7 +172,7 @@ def draw(task, prepared, mode):
            'Read left to right: colour should track the predicted value. Each column is a separate supervised axis.'
            if mode=='readout' else 'Look for colour organization, not cloud shape. The right-hand bars test the full embedding, not this projection.')
     fig.text(.045,.098,guide,fontsize=7.5)
-    fig.text(.045,.038,f"All {len(split['test'])} paired test points; no point selection. Colour = true physical value. Bars: grey LeWM, blue S-LeWM.",fontsize=7,color=p['muted'])
+    fig.text(.045,.038,f"All {len(split['test'])} paired test points; no point selection. Colour = true physical value. Bars: grey LeWM, blue Σ-LeWM.",fontsize=7,color=p['muted'])
     stem=f'figA_{task}_focused_{mode}'
     for ext in ['pdf','png','svg']:fig.savefig(atlas.FIGS/f'{stem}.{ext}',dpi=240)
     plt.close(fig)

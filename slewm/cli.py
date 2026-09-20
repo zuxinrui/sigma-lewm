@@ -1,4 +1,4 @@
-"""Explicit, read-only-by-default entrypoint for the sigma-lewm experiments."""
+"""Explicit, read-only-by-default entrypoint for the Σ-LeWM experiments."""
 import argparse
 import ast
 import json
