@@ -25,7 +25,7 @@ for entry in (REPO_ROOT, REPO_ROOT / "scripts"):
         sys.path.insert(0, str(entry))
 
 import lewm_policy_server as frozen_server  # noqa: E402
-from trim.planning.t7a_projected_random import RandomCostProjectedCEMSolver  # noqa: E402
+from slewm.planning.t7a_projected_random import RandomCostProjectedCEMSolver  # noqa: E402
 
 CONTROL_MODE = "projected_random"
 

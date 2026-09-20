@@ -3,7 +3,7 @@
 split_mode: external_episode_disjoint
 
 dataset_factory:
-  _target_: trim.data.aligned_hdf5.AlignedControlHDF5Dataset
+  _target_: slewm.data.aligned_hdf5.AlignedControlHDF5Dataset
   _partial_: true
 
 dataset:

@@ -1,6 +1,6 @@
 import unittest
 
-from trim.protocols.demo_goal_formal_specs import (
+from slewm.protocols.demo_goal_formal_specs import (
     DALEWM_IDM_AUXILIARY_SHAPES,
     DEMO_GOAL_ACTION_AUXILIARY_SHAPES,
     DEMO_GOAL_EXPLORATORY_SIGNATURES,

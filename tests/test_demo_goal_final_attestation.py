@@ -4,9 +4,9 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from trim.protocols import demo_goal_final_attestation as final_protocol
-from trim.protocols.demo_goal_formal_artifacts import canonical_sha256
-from trim.protocols.demo_goal_formal_specs import DEMO_GOAL_STUDY_IDS
+from slewm.protocols import demo_goal_final_attestation as final_protocol
+from slewm.protocols.demo_goal_formal_artifacts import canonical_sha256
+from slewm.protocols.demo_goal_formal_specs import DEMO_GOAL_STUDY_IDS
 
 
 COMMIT = "a" * 40

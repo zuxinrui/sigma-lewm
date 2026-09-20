@@ -3,7 +3,7 @@ from types import SimpleNamespace
 
 import torch
 
-from trim.training.telemetry import PaperTrainingTelemetry
+from slewm.training.telemetry import PaperTrainingTelemetry
 
 
 def test_telemetry_records_gradient_lr_steps_and_examples(tmp_path):

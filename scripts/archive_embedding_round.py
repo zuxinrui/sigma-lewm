@@ -35,7 +35,7 @@ SOURCES = [
     'scripts/build_focused_physical_atlas.py',
     'scripts/rank_physical_probes.py',
     'scripts/check_physical_probe_stability.py',
-    'trim/training/utilities.py',
+    'slewm/training/utilities.py',
 ]
 
 def digest(path):

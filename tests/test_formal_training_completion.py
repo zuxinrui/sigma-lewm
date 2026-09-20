@@ -9,8 +9,8 @@ from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from trim.protocols import formal_training_completion as completion_protocol
-from trim.protocols.formal_training_completion import (
+from slewm.protocols import formal_training_completion as completion_protocol
+from slewm.protocols.formal_training_completion import (
     EPISODE_SPLIT_SCHEMA_VERSION,
     FORMAL_COMPLETION_ARTIFACTS,
     FORMAL_COMPLETION_SCHEMA_VERSION,

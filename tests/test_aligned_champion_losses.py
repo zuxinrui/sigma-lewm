@@ -1,6 +1,6 @@
 import torch
 
-from trim.objectives.triadic import aligned_champion_horizon_loss
+from slewm.objectives.triadic import aligned_champion_horizon_loss
 
 
 class _ToyChampion(torch.nn.Module):

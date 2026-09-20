@@ -1,5 +1,5 @@
 #!/bin/bash
-# Training-seed spread for TrIM on Push-T: the three training seeds (s1, s2, s3072) evaluated with the
+# Training-seed spread for S-LeWM on Push-T: the three training seeds (s1, s2, s3072) evaluated with the
 # stock CEM under the Table 1 protocol (h=5, CEM30, goal+25, budget 50, eval seeds 0-4 x 50) and the
 # Fig. 1(d) cell (h=10 full commit, CEM8, goal+50, budget 100, eval seeds 0-2 x 50).
 set -uo pipefail

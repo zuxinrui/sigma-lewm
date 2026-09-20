@@ -19,13 +19,13 @@ from omegaconf import OmegaConf
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from trim.evaluation.manifest import (  # noqa: E402
+from slewm.evaluation.manifest import (  # noqa: E402
     _formal_method_name,
     _load_inference_core,
     _method_signature,
     _validate_frozen_training_config,
 )
-from trim.protocols.formal_training_completion import (  # noqa: E402
+from slewm.protocols.formal_training_completion import (  # noqa: E402
     FORMAL_TASK_DATASETS,
     FORMAL_COMPLETION_ARTIFACTS,
     FORMAL_COMPLETION_SCHEMA_VERSION,
@@ -40,7 +40,7 @@ from trim.protocols.formal_training_completion import (  # noqa: E402
     verify_stage_authorization,
     write_self_hashed_json,
 )
-from trim.training.utilities import git_tracked_tree_sha256, runtime_environment_fingerprint  # noqa: E402
+from slewm.training.utilities import git_tracked_tree_sha256, runtime_environment_fingerprint  # noqa: E402
 
 
 MILESTONES = (3, 6, 8, 10)

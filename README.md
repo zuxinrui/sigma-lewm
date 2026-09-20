@@ -1,4 +1,4 @@
-# sigma-lewm
+# sigma-lewm (S-LeWM)
 
 Training and evaluation code for latent world models with contrastive backward
 and inverse objectives added to a forward (LeWM-style) predictor.
@@ -8,15 +8,15 @@ logs and measurements are not included; every command below starts a new run.
 
 ## Read the method
 
-Core code lives in `trim/`, separate from experiment orchestration scripts.
+Core code lives in the `slewm` package, separate from experiment orchestration scripts.
 
-- Model and rollout: [`trim/models/world_model.py`](trim/models/world_model.py).
-- Forward loss: [`trim/objectives/forward.py`](trim/objectives/forward.py).
-- Backward and inverse: [`trim/objectives/contrastive.py`](trim/objectives/contrastive.py).
-- Combined objective: [`trim/objectives/triadic.py`](trim/objectives/triadic.py).
+- Model and rollout: [`slewm/models/world_model.py`](slewm/models/world_model.py).
+- Forward loss: [`slewm/objectives/forward.py`](slewm/objectives/forward.py).
+- Backward and inverse: [`slewm/objectives/contrastive.py`](slewm/objectives/contrastive.py).
+- Combined objective: [`slewm/objectives/triadic.py`](slewm/objectives/triadic.py).
 
-See the [code map](ARCHITECTURE.md) for task constraints, baselines, distributed
-training and compatibility aliases.
+See the [code map](ARCHITECTURE.md) for task constraints, baselines, and distributed
+training.
 
 ## Install
 
@@ -36,8 +36,8 @@ assets, which are not distributed here.
 
 ```bash
 export STABLEWM_HOME=/path/to/stablewm
-export TRIM_DATA_ROOT=/path/to/gear-franka-data
-export TRIM_CHECKPOINT_ROOT=/path/to/gear-franka-checkpoints
+export SLEWM_DATA_ROOT=/path/to/gear-franka-data
+export SLEWM_CHECKPOINT_ROOT=/path/to/gear-franka-checkpoints
 export ISAAC_PYTHON=/path/to/isaac-environment/bin/python
 ```
 

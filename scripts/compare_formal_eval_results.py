@@ -16,14 +16,14 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from trim.protocols.formal_method_specs import FORMAL_METHOD_SIGNATURES
-from trim.protocols.demo_goal_formal_specs import (
+from slewm.protocols.formal_method_specs import FORMAL_METHOD_SIGNATURES
+from slewm.protocols.demo_goal_formal_specs import (
     DEMO_GOAL_CONFIRMATION_GATES,
     DEMO_GOAL_DISCOVERY_GATES,
     DEMO_GOAL_METHOD_SIGNATURES,
     DEMO_GOAL_STUDY_IDS,
 )
-from trim.evaluation.protocol import (
+from slewm.evaluation.protocol import (
     FORMAL_EVAL_MANIFEST_SCHEMA_VERSION,
     FORMAL_EVAL_RESULT_SCHEMA_VERSION,
     FORMAL_TASK_PROTOCOL_NAMES,
@@ -31,7 +31,7 @@ from trim.evaluation.protocol import (
     _validate_formal_bank_structure,
     _validate_task_protocols,
 )
-from trim.training.utilities import (
+from slewm.training.utilities import (
     git_tracked_tree_sha256,
     runtime_environment_compatibility_fingerprint,
 )
@@ -310,7 +310,7 @@ def _verify_result_against_manifest(payload):
     # the evaluator stack until a formal result actually needs verification.
     # `_training_contract` reopens config, split manifest, completion receipt,
     # smoke/stage chain and the immutable attempt registry.
-    from trim.evaluation.manifest import _checkpoint_sha256, _training_contract
+    from slewm.evaluation.manifest import _checkpoint_sha256, _training_contract
 
     observed_checkpoint_sha256 = _checkpoint_sha256(checkpoint)
     if payload.get("checkpoint_sha256") != observed_checkpoint_sha256:

@@ -9,12 +9,12 @@ import h5py
 import numpy as np
 import torch
 
-from trim.protocols.demo_goal_formal_artifacts import (
+from slewm.protocols.demo_goal_formal_artifacts import (
     canonical_sha256,
     file_sha256,
     write_demo_goal_method_lock,
 )
-from trim.protocols.tworoom_replay_attestation import (
+from slewm.protocols.tworoom_replay_attestation import (
     ReplayAttestationError,
     _sha_episode_ids,
     attest_tworoom_dataset_env_replay,
@@ -230,12 +230,12 @@ class TwoRoomReplayAttestationTests(unittest.TestCase):
             raise AssertionError(args)
 
         with mock.patch(
-            "trim.protocols.tworoom_replay_attestation._make_tworoom_env",
+            "slewm.protocols.tworoom_replay_attestation._make_tworoom_env",
             side_effect=env_factory,
         ), mock.patch(
-            "trim.protocols.tworoom_replay_attestation._git", side_effect=fake_git
+            "slewm.protocols.tworoom_replay_attestation._git", side_effect=fake_git
         ), mock.patch(
-            "trim.protocols.tworoom_replay_attestation.git_tracked_tree_sha256",
+            "slewm.protocols.tworoom_replay_attestation.git_tracked_tree_sha256",
             return_value=TREE,
         ):
             payload = attest_tworoom_dataset_env_replay(
@@ -281,10 +281,10 @@ class TwoRoomReplayAttestationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             payload, output = self._run(directory)
             with mock.patch(
-                "trim.protocols.tworoom_replay_attestation._make_tworoom_env",
+                "slewm.protocols.tworoom_replay_attestation._make_tworoom_env",
                 side_effect=_FakeTwoRoom,
             ), mock.patch(
-                "trim.protocols.tworoom_replay_attestation.FORMAL_QUOTA_PER_CATEGORY", 1
+                "slewm.protocols.tworoom_replay_attestation.FORMAL_QUOTA_PER_CATEGORY", 1
             ):
                 verified = verify_tworoom_replay_attestation(
                     output,

@@ -1,5 +1,5 @@
 {
-  "schema": "sigma-lewm-experiment-registry-v2",
+  "schema": "slewm-experiment-registry-v2",
   "experiments": [
     {
       "id": "standard",
@@ -236,7 +236,7 @@
       "title": "Stock vs IDM ranking CEM/horizon, seeds0/1",
       "entrypoints": [
         "scripts/run_rc_db_dcl_axes.sh",
-        "trim/planning/solver_safe_dcl_portfolio.py"
+        "slewm/planning/solver_safe_dcl_portfolio.py"
       ]
     },
     {
@@ -244,7 +244,7 @@
       "title": "IDM ranking extra two seeds",
       "entrypoints": [
         "eval_ext.py",
-        "trim/planning/solver_safe_dcl_portfolio.py"
+        "slewm/planning/solver_safe_dcl_portfolio.py"
       ]
     },
     {
@@ -252,14 +252,14 @@
       "title": "Compute-matched six-restart CEM",
       "entrypoints": [
         "scripts/run_restart_control_20260910.sh",
-        "trim/planning/multirestart_cem.py"
+        "slewm/planning/multirestart_cem.py"
       ]
     },
     {
       "id": "gcidm",
       "title": "Frozen-latent GC-IDM training, PushT frontier and Cube paired",
       "entrypoints": [
-        "trim/planning/gcidm.py",
+        "slewm/planning/gcidm.py",
         "scripts/train_gcidm_ct_cube_20260817.sh",
         "scripts/run_gcidm_ct_cube_confirm_20260817.sh"
       ]

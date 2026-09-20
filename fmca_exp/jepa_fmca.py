@@ -63,7 +63,7 @@ for _p in (_HERE, os.path.dirname(_HERE)):          # fmca_exp/ then ~/le-wm
 import torch
 import torch.nn.functional as F
 
-from trim.models.world_model import JEPA          # upstream, unmodified
+from slewm.models.world_model import JEPA          # upstream, unmodified
 from fmca import ProjHead      # sibling kernel (teammate S0)
 
 

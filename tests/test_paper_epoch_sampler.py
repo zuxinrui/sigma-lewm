@@ -1,4 +1,4 @@
-from trim.training.sampler import EpochSeededRandomSampler
+from slewm.training.sampler import EpochSeededRandomSampler
 import pytest
 import torch
 

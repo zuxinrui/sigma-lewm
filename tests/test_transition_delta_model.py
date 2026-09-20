@@ -3,9 +3,9 @@ from __future__ import annotations
 import torch
 from torch import nn
 
-from trim.objectives.paired_delta import residual_transition_pair_delta_loss
-from trim.models.residual import ResidualTransitionJEPA
-from trim.objectives.forward import aligned_horizon_loss, free_running_predictions
+from slewm.objectives.paired_delta import residual_transition_pair_delta_loss
+from slewm.models.residual import ResidualTransitionJEPA
+from slewm.objectives.forward import aligned_horizon_loss, free_running_predictions
 
 
 class AdditivePredictor(nn.Module):

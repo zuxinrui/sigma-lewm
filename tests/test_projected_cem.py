@@ -18,7 +18,7 @@ import torch.nn as nn
 from gymnasium.spaces import Box
 from stable_worldmodel.solver.cem import CEMSolver
 
-from trim.planning.projected_cem import (
+from slewm.planning.projected_cem import (
     ProjectedCEMSolver,
     ProjectedActionScaler,
     TrainingZScoreScaler,

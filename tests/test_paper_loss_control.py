@@ -1,6 +1,6 @@
 import inspect
 
-from trim.training.stopping import LossCompositeController, LossCompositeEarlyStopping
+from slewm.training.stopping import LossCompositeController, LossCompositeEarlyStopping
 
 
 def _components(value):

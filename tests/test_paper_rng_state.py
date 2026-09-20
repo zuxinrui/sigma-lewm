@@ -3,7 +3,7 @@ import random
 import numpy as np
 import torch
 
-from trim.training.rng import PaperRNGState
+from slewm.training.rng import PaperRNGState
 
 
 def test_rng_state_round_trip_restores_all_cpu_streams():

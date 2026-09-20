@@ -12,10 +12,10 @@ def resolve_path(uri):
     roots={
         'repo':ROOT,
         'stable':Path(os.environ.get('STABLEWM_HOME',str(ROOT/'artifacts/stablewm'))),
-        'data':Path(os.environ.get('TRIM_DATA_ROOT',str(ROOT/'artifacts/data'))),
-        'checkpoints':Path(os.environ.get('TRIM_CHECKPOINT_ROOT',str(ROOT/'artifacts/checkpoints'))),
-        'legacy':Path(os.environ.get('TRIM_LEGACY_ARTIFACTS',str(ROOT/'artifacts/legacy'))),
-        'runs':Path(os.environ.get('TRIM_RUN_ROOT',str(ROOT/'runs'))),
+        'data':Path(os.environ.get('SLEWM_DATA_ROOT',str(ROOT/'artifacts/data'))),
+        'checkpoints':Path(os.environ.get('SLEWM_CHECKPOINT_ROOT',str(ROOT/'artifacts/checkpoints'))),
+        'legacy':Path(os.environ.get('SLEWM_LEGACY_ARTIFACTS',str(ROOT/'artifacts/legacy'))),
+        'runs':Path(os.environ.get('SLEWM_RUN_ROOT',str(ROOT/'runs'))),
     }
     if scheme not in roots:raise ValueError(f'Unknown artifact namespace: {scheme}')
     relative=Path(tail)

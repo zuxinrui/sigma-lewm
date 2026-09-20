@@ -5,12 +5,12 @@ import numpy as np
 import torch
 from gymnasium import spaces
 
-from trim.planning.behavior_plan_bank import (
+from slewm.planning.behavior_plan_bank import (
     FrankaTerminalPlanBank,
     ProjectedPlanBankSolver,
     load_franka_terminal_plan_bank,
 )
-from trim.planning.projected_cem import StandardizedActionProjection
+from slewm.planning.projected_cem import StandardizedActionProjection
 
 
 class _IdentityScaler:

@@ -1,6 +1,6 @@
 import torch
 
-from trim.baselines.inverse import (
+from slewm.baselines.inverse import (
     action_nce_loss,
     external_inverse_horizon_loss,
 )

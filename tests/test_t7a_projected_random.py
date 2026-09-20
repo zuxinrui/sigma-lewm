@@ -10,8 +10,8 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from trim.planning.projected_cem import ProjectedCEMSolver, build_task_action_projection  # noqa: E402
-from trim.planning.t7a_projected_random import RandomCostProjectedCEMSolver  # noqa: E402
+from slewm.planning.projected_cem import ProjectedCEMSolver, build_task_action_projection  # noqa: E402
+from slewm.planning.t7a_projected_random import RandomCostProjectedCEMSolver  # noqa: E402
 from tests.test_projected_cem import _RecordingCost, _configure, _scaler  # noqa: E402
 
 

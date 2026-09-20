@@ -126,7 +126,7 @@ def render(features, embeddings, provenance, frozen_pca=None, *, task='pusht', g
 
     palette = apply_style()
     logging.getLogger('fontTools').setLevel(logging.ERROR)
-    names = {'lewm': 'LeWM', 'ours': 'TrIM'}
+    names = {'lewm': 'LeWM', 'ours': 'S-LeWM'}
     coordinates, variance, limits = {}, {}, {}
     for key, z in embeddings.items():
         if frozen_pca is None:
@@ -166,7 +166,7 @@ def render(features, embeddings, provenance, frozen_pca=None, *, task='pusht', g
             ('gear','motion'):'Gear | A velocity colour is not evidence of action sensitivity',
         }
         fig.suptitle(headlines.get((task,slug),title), x=.045, y=.99, ha='left', fontsize=9,weight='bold')
-        fig.text(.045,.915,'Read each column: top LeWM, bottom TrIM. Same points; colour changes with the named physical quantity.',
+        fig.text(.045,.915,'Read each column: top LeWM, bottom S-LeWM. Same points; colour changes with the named physical quantity.',
                  fontsize=6.8,color=palette['muted'])
         data_axes, colour_tick_labels = [], []
         for j, (field, label, unit, cmap_name, kind) in enumerate(variables):
@@ -269,7 +269,7 @@ def render(features, embeddings, provenance, frozen_pca=None, *, task='pusht', g
         axbar.tick_params(labelsize=6)
         axbar.set_title('Projection coverage (%)', fontsize=7)
         axbar.grid(axis='y', visible=False)
-        fig.text(.805, .27, 'Variance kept by PC1 + PC2\nGrey LeWM | Blue TrIM\nNot accuracy or success', fontsize=6, color=palette['muted'])
+        fig.text(.805, .27, 'Variance kept by PC1 + PC2\nGrey LeWM | Blue S-LeWM\nNot accuracy or success', fontsize=6, color=palette['muted'])
         fig.text(.062, .025, f"Same {len(order):,} states; fixed PCA per model.",
                  fontsize=6, color=palette['muted'])
         stem = f'figA_{task}_{slug}'
@@ -308,7 +308,7 @@ def main():
     import torch
     import stable_worldmodel as swm
     sys.path.insert(0, str(ROOT))
-    from trim.training.utilities import get_img_preprocessor
+    from slewm.training.utilities import get_img_preprocessor
 
     torch.set_num_threads(args.threads)
     torch.manual_seed(SEED)
@@ -347,7 +347,7 @@ def main():
                         'config_sha256': sha256(checkpoint.parent/'config.json'),
                         'checkpoint': str(checkpoint), 'row_sha256': manifest['row_sha256'],
                         'state_sha256': manifest['state_sha256'], 'dataset_mtime_ns': manifest['dataset_mtime_ns'],
-                        'preprocess_source_sha256': sha256(ROOT/'trim/training/utilities.py')}
+                        'preprocess_source_sha256': sha256(ROOT/'slewm/training/utilities.py')}
             manifest['models'][key] = identity
             cache, stamp = OUT/f'emb_{key}.npy', OUT/f'emb_{key}.json'
             if cache.exists() and stamp.exists() and json.loads(stamp.read_text()) == identity:

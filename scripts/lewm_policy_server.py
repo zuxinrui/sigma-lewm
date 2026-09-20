@@ -64,7 +64,7 @@ from gymnasium import spaces
 from torchvision import tv_tensors
 from torchvision.transforms import v2 as transforms
 
-from trim.planning.projected_cem import (
+from slewm.planning.projected_cem import (
     ACTION_BOUND_MODES,
     TASK_ACTION_DIMS,
     TASK_ACTION_SCHEMAS,
@@ -76,7 +76,7 @@ from trim.planning.projected_cem import (
     validate_action_scaler_contract,
     validate_model_action_contract,
 )
-from trim.planning.behavior_plan_bank import (
+from slewm.planning.behavior_plan_bank import (
     PLAN_BANK_CONTINUATIONS,
     PLAN_BANK_SELECTION_MODES,
     ProjectedPlanBankSolver,

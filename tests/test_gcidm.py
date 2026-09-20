@@ -4,7 +4,7 @@ encoder-shaping gradient (our no-sg deviation), horizon sensitivity."""
 import sys, os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import torch, collections
-from trim.planning.gcidm import GCIDMHead, FlowGCIDMHead, sample_crossstep
+from slewm.planning.gcidm import GCIDMHead, FlowGCIDMHead, sample_crossstep
 
 torch.manual_seed(0)
 print("=== cross-step sampler: h~U[1,h_max], t~U[0,T-1-h] (per paper) ===")

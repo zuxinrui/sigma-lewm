@@ -114,12 +114,12 @@ def gear_data(f, rows):
 def encode(f, rows, checkpoint, output):
     import torch
     import stable_worldmodel as swm
-    from trim.training.utilities import get_img_preprocessor
+    from slewm.training.utilities import get_img_preprocessor
     ident={'checkpoint':str(checkpoint),'sha256':atlas.sha256(checkpoint),
            'config_sha256':atlas.sha256(checkpoint.parent/'config.json'),
            'rows_sha256':hashlib.sha256(rows.tobytes()).hexdigest(),
            'dataset':f.filename,'dataset_mtime_ns':Path(f.filename).stat().st_mtime_ns,
-           'preprocess_sha256':atlas.sha256(ROOT/'trim/training/utilities.py')}
+           'preprocess_sha256':atlas.sha256(ROOT/'slewm/training/utilities.py')}
     stamp=output.with_suffix('.json')
     if output.exists() and stamp.exists() and json.loads(stamp.read_text())==ident:
         return np.load(output),ident

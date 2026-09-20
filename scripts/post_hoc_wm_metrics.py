@@ -26,9 +26,9 @@ import torch
 from stable_pretraining.backbone.utils import vit_hf
 
 from fmca_exp.fmca_common import rankme, whitening_barrier
-from trim.models.world_model import JEPA
-from trim.models.components import ARPredictor, Embedder, MLP, SIGReg
-from trim.training.utilities import get_img_preprocessor
+from slewm.models.world_model import JEPA
+from slewm.models.components import ARPredictor, Embedder, MLP, SIGReg
+from slewm.training.utilities import get_img_preprocessor
 
 
 STABLEWM = Path.home() / ".stable-wm"

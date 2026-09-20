@@ -3,11 +3,11 @@
 split_mode: external_episode_disjoint
 
 dataset_factory:
-  _target_: trim.data.aligned_hdf5.AlignedControlHDF5Dataset
+  _target_: slewm.data.aligned_hdf5.AlignedControlHDF5Dataset
   _partial_: true
 
 dataset:
-  name: ${oc.env:TRIM_DATA_ROOT}/franka_stack_aligned_train_v2.h5
+  name: ${oc.env:SLEWM_DATA_ROOT}/franka_stack_aligned_train_v2.h5
   transitions: 5
   frameskip: 5
   # Adjacent raw-tick starts overlap 25/26 observations. Retain the exact
@@ -19,7 +19,7 @@ dataset:
   required_action_alignment: "obs[t]=s_t, action[t]=a_t"
 
 validation_dataset:
-  name: ${oc.env:TRIM_DATA_ROOT}/franka_stack_aligned_val_v2.h5
+  name: ${oc.env:SLEWM_DATA_ROOT}/franka_stack_aligned_val_v2.h5
   transitions: 5
   frameskip: 5
   clip_stride: 5

@@ -20,11 +20,11 @@ from torch import nn, Tensor
 
 # ConditionalBlock (AdaLN-zero DiT block) + MLP live at repo root in module.py.
 try:
-    from trim.models.components import ConditionalBlock, MLP
+    from slewm.models.components import ConditionalBlock, MLP
 except ModuleNotFoundError:  # allow import when repo root isn't on sys.path
     import os, sys
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from trim.models.components import ConditionalBlock, MLP
+    from slewm.models.components import ConditionalBlock, MLP
 
 if TYPE_CHECKING:  # avoid importing the fm_idm package at runtime (siblings may be absent)
     from fm_idm.config import HCFMConfig
@@ -41,7 +41,7 @@ class _SetConditionalBlock(ConditionalBlock):
     """
 
     def forward(self, x: Tensor, c: Tensor) -> Tensor:
-        from trim.models.components import modulate
+        from slewm.models.components import modulate
         shift_msa, scale_msa, gate_msa, shift_mlp, scale_mlp, gate_mlp = (
             self.adaLN_modulation(c).chunk(6, dim=-1)
         )

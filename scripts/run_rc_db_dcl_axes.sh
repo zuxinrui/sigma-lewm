@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# RC-DB-DCL on the current TrIM champion checkpoints: h5/CEM30 main grid, CEM axis, horizon axis.
+# RC-DB-DCL on the current S-LeWM champion checkpoints: h5/CEM30 main grid, CEM axis, horizon axis.
 # Checkpoints = the paper's t3_ours_*_plan sources (verified tensor-identical, 2026-09-09).
 # Frozen RC-DB-DCL flag set copied verbatim from scripts/run_rc_db_dcl_confirm_20260720.sh.
 # Resumable: a cell is skipped if its log already contains success_rate.

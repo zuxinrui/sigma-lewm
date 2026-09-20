@@ -12,7 +12,7 @@ import torch
 import torch.nn as nn
 from gymnasium.spaces import Box
 
-from trim.planning.multirestart_cem import MultiRestartCEMSolver
+from slewm.planning.multirestart_cem import MultiRestartCEMSolver
 from stable_worldmodel.solver.cem import CEMSolver
 
 

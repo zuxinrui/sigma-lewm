@@ -6,7 +6,7 @@ output_model_name: paper_franka_acmtm_seed3072
 subdir: paper_new_tasks_v2/franka/acmtm_seed3072
 
 model:
-  _target_: trim.baselines.inverse.ExternalInverseJEPA
+  _target_: slewm.baselines.inverse.ExternalInverseJEPA
   inverse_action_dim: 1  # replaced from the aligned dataset contract
   inverse_latent_dim: ${embed_dim}
   inverse_hidden_dim: 512

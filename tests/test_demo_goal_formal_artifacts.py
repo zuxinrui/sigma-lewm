@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from trim.protocols.demo_goal_formal_artifacts import (
+from slewm.protocols.demo_goal_formal_artifacts import (
     DEMO_GOAL_METHOD_LOCK_HASH_KEY,
     build_demo_goal_method_lock_payload,
     canonical_sha256,
@@ -12,13 +12,13 @@ from trim.protocols.demo_goal_formal_artifacts import (
     write_demo_goal_method_lock,
     file_sha256,
 )
-from trim.protocols.demo_goal_formal_specs import (
+from slewm.protocols.demo_goal_formal_specs import (
     DEMO_GOAL_BANK_SEED_NAMESPACES,
     DEMO_GOAL_FORMAL_TRAINING_JOB_SCHEDULE,
     DEMO_GOAL_METHOD_SIGNATURES,
     DEMO_GOAL_STUDY_IDS,
 )
-from trim.evaluation.protocol import (
+from slewm.evaluation.protocol import (
     FORMAL_BANK_SEED_NAMESPACES,
     FORMAL_EVAL_MANIFEST_SCHEMA_VERSION,
     _canonical_sha256,

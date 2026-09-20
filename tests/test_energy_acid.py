@@ -8,7 +8,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 import torch
 
-from trim.planning.energy_acid import adaptive_acid_cost, contrastive_energy_from_keys
+from slewm.planning.energy_acid import adaptive_acid_cost, contrastive_energy_from_keys
 
 
 def test_matching_key_has_lower_raw_energy():

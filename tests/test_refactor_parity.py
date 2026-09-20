@@ -6,10 +6,10 @@ from pathlib import Path
 import torch
 from torch import nn
 
-from trim.objectives import contrastive, forward, triadic
-from trim.objectives.distributed_contrastive import _contrastive_mi
-from trim.objectives.inverse import inverse_action_loss
-from trim.models.world_model import JEPA
+from slewm.objectives import contrastive, forward, triadic
+from slewm.objectives.distributed_contrastive import _contrastive_mi
+from slewm.objectives.inverse import inverse_action_loss
+from slewm.models.world_model import JEPA
 
 
 class TinyWorld(nn.Module):
@@ -94,25 +94,9 @@ def test_inverse_adapter_matches_aligned_values_and_gradients():
         torch.testing.assert_close(a, b)
 
 
-def test_old_jepa_pickle_path_and_state_dict_round_trip(monkeypatch):
-    import jepa
-    assert jepa.JEPA is JEPA
-    model = JEPA(nn.Linear(2, 2), nn.Linear(2, 2), nn.Linear(2, 2))
-    buffer = io.BytesIO()
-    with monkeypatch.context() as context:
-        context.setattr(JEPA, '__module__', 'jepa')
-        torch.save(model, buffer)
-    buffer.seek(0)
-    restored = torch.load(buffer, weights_only=False)
-    assert isinstance(restored, JEPA)
-    assert restored.state_dict().keys() == model.state_dict().keys()
-    for key, value in model.state_dict().items():
-        torch.testing.assert_close(value, restored.state_dict()[key], rtol=0, atol=0)
-
-
 def test_task_constraints_import_without_forward_import_order():
     import subprocess
     import sys
     subprocess.run([sys.executable, '-c',
-                    'import trim.objectives.task_constraints; import trim.objectives.forward'],
+                    'import slewm.objectives.task_constraints; import slewm.objectives.forward'],
                    check=True)

@@ -1,1 +1,0 @@
-"""TrIM research implementation."""

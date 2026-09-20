@@ -4,7 +4,7 @@ z_{t+1} it would be just another co-trained verifier (our law #9) and buy nothin
 import os, sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import torch
-from trim.planning.flowpolicy import FlowPolicyHead, flowpolicy_loss
+from slewm.planning.flowpolicy import FlowPolicyHead, flowpolicy_loss
 
 torch.manual_seed(0)
 

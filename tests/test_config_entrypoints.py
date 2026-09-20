@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 ])
 def test_cli_uses_real_entrypoint_paths(arguments, monkeypatch, capsys):
     import json
-    from trim.cli import main
+    from slewm.cli import main
     monkeypatch.setattr('sys.argv', ['reproduce.py'] + arguments)
     main()
     command = json.loads(capsys.readouterr().out)['command']
@@ -50,4 +50,4 @@ def test_aligned_recipe_dependency_closure(task, arm):
 
     check(config)
     assert cfg.data.dataset.transitions == 5
-    assert cfg.model._target_.startswith('trim.')
+    assert cfg.model._target_.startswith('slewm.')
