@@ -109,8 +109,8 @@ the four standard tasks are hosted on
 hf download zuxinrui/sigma-lewm --local-dir $STABLEWM_HOME/checkpoints/sigma-lewm
 slewm eval --task pusht --checkpoint sigma-lewm/pusht/weights.pt --horizon 5 --cem 30 --execute
 ```
- Dataset
-filenames and splits are set in `config/`. External repository versions are
+
+Dataset filenames and splits are set in `config/`. External repository versions are
 pinned in `docs/external_repos.lock.json`.
 
 ## Run experiments
