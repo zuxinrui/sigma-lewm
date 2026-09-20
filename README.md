@@ -18,8 +18,8 @@
   <p>
     <img src="assets/btn/paper.svg" height="38" alt="Paper">&nbsp;
     <img src="assets/btn/arxiv.svg" height="38" alt="arXiv">&nbsp;
-    <img src="assets/btn/project-page.svg" height="38" alt="Project Page">&nbsp;
-    <img src="assets/btn/hugging-face.svg" height="38" alt="Hugging Face">&nbsp;
+    <a href="https://zuxinrui.github.io/sigma-lewm/"><img src="assets/btn/project-page.svg" height="38" alt="Project Page"></a>&nbsp;
+    <a href="https://huggingface.co/zuxinrui/sigma-lewm"><img src="assets/btn/hugging-face.svg" height="38" alt="Hugging Face"></a>&nbsp;
   </p>
   <img src="assets/rule.svg" width="640" alt="">
   <p>
@@ -101,9 +101,17 @@ export SLEWM_CHECKPOINT_ROOT=/path/to/gear-franka-checkpoints
 export ISAAC_PYTHON=/path/to/isaac-environment/bin/python
 ```
 
-Place benchmark datasets and checkpoints under `STABLEWM_HOME`. Dataset
+Place benchmark datasets and checkpoints under `STABLEWM_HOME`. Checkpoints for
+the four standard tasks are hosted on
+[Hugging Face](https://huggingface.co/zuxinrui/sigma-lewm):
+
+```bash
+hf download zuxinrui/sigma-lewm --local-dir $STABLEWM_HOME/checkpoints/sigma-lewm
+slewm eval --task pusht --checkpoint sigma-lewm/pusht/weights.pt --horizon 5 --cem 30 --execute
+```
+ Dataset
 filenames and splits are set in `config/`. External repository versions are
-pinned in `external/repos.lock.json`.
+pinned in `docs/external_repos.lock.json`.
 
 ## Run experiments
 
