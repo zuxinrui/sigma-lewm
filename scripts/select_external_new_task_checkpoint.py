@@ -2,7 +2,7 @@
 """Commit the validation-loss-selected checkpoint for AC-MTM or SMWM."""
 
 from __future__ import annotations
-from repro_paths import resolve_path as _resolve_artifact
+from slewm.paths import resolve_path as _resolve_artifact
 
 import argparse
 import json

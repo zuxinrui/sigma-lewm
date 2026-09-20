@@ -1,11 +1,11 @@
-"""eval.py + flow-IDM-as-amortized-actor (fm_idm.flow_actor.LeWMFlowActor).
+"""eval.py + flow-IDM-as-amortized-actor (slewm.flow_idm.flow_actor.LeWMFlowActor).
 
 Wraps a frozen LeWM so CEM seeds from the IDM's amortized plan. The point: sweep
 solver.n_steps to trace the accuracy-vs-compute frontier and check whether IDM-seeded CEM
 matches stock CEM at far fewer iterations (= beat CEM on compute).
 
 Overrides:
-    +flow.idm=<ckpt>            trained HC-FM-IDM / GC-ACID flow IDM (default fm_idm/hcfmidm.pt)
+    +flow.idm=<ckpt>            trained HC-FM-IDM / GC-ACID flow IDM (default slewm.flow_idm/hcfmidm.pt)
     +flow.h_mode={remaining,fixed,clamp}   how remaining-horizon h is set (default remaining)
     +flow.h_fixed=<int>         goal-distance in macro-steps (goal_offset/action_block=5)
     +flow.ode_steps=<int>       ODE steps for generation (default 1 = GC-IDM fast path)
@@ -29,9 +29,9 @@ from sklearn import preprocessing
 from torchvision.transforms import v2 as transforms
 import stable_worldmodel as swm
 
-from fm_idm.config import HCFMConfig
-from fm_idm.model import HCFMIDM
-from fm_idm.flow_actor import LeWMFlowActor
+from slewm.flow_idm.config import HCFMConfig
+from slewm.flow_idm.model import HCFMIDM
+from slewm.flow_idm.flow_actor import LeWMFlowActor
 
 
 def _load_idm(ckpt, device):
@@ -39,10 +39,10 @@ def _load_idm(ckpt, device):
     cfg = HCFMConfig(**{k: v for k, v in d["cfg"].items() if k in HCFMConfig.__dataclass_fields__})
     name = d.get("model_name", "hcfm")
     if name == "gcidm":
-        from fm_idm.gcidm_model import GCIDM
+        from slewm.flow_idm.gcidm_model import GCIDM
         m = GCIDM(cfg).to(device)
     elif name == "acid":
-        from fm_idm.acid_model import ACIDIDM
+        from slewm.flow_idm.acid_model import ACIDIDM
         m = ACIDIDM(cfg).to(device)
     else:
         m = HCFMIDM(cfg).to(device)
@@ -96,7 +96,7 @@ def run(cfg: DictConfig):
     model = model.to("cuda").eval()
     model.requires_grad_(False)
     model.interpolate_pos_encoding = True
-    idm = _load_idm(cfg.flow.get("idm", "fm_idm/hcfmidm.pt"), "cuda")
+    idm = _load_idm(cfg.flow.get("idm", "slewm.flow_idm/hcfmidm.pt"), "cuda")
     _cw = cfg.flow.get("cost_weight", None)
     model = LeWMFlowActor(model, idm, h_max=int(getattr(idm.cfg, "h_max", 12)),
                           ode_steps=int(cfg.flow.get("ode_steps", 1)),
@@ -104,7 +104,7 @@ def run(cfg: DictConfig):
                           h_fixed=int(cfg.flow.get("h_fixed", 5)),
                           cost_weight=(None if _cw in (None, "none") else str(_cw)),
                           arrival=int(cfg.flow.get("arrival", 5)), device="cuda").to("cuda").eval()
-    print(f"[eval_flowactor] idm={cfg.flow.get('idm','fm_idm/hcfmidm.pt')} "
+    print(f"[eval_flowactor] idm={cfg.flow.get('idm','slewm.flow_idm/hcfmidm.pt')} "
           f"h_mode={cfg.flow.get('h_mode','remaining')} ode_steps={cfg.flow.get('ode_steps',1)} "
           f"solver.n_steps={cfg.solver.n_steps}")
 

@@ -27,7 +27,7 @@
     <a href="#installation"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/nav/installation-dark.svg"><img src="assets/nav/installation-light.svg" height="36" alt="Installation"></picture></a>
     <a href="#prepare-data-and-checkpoints"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/nav/data-dark.svg"><img src="assets/nav/data-light.svg" height="36" alt="Data"></picture></a>
     <a href="#run-experiments"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/nav/experiments-dark.svg"><img src="assets/nav/experiments-light.svg" height="36" alt="Experiments"></picture></a>
-    <a href="ARCHITECTURE.md"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/nav/code-map-dark.svg"><img src="assets/nav/code-map-light.svg" height="36" alt="Code map"></picture></a>
+    <a href="docs/ARCHITECTURE.md"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/nav/code-map-dark.svg"><img src="assets/nav/code-map-light.svg" height="36" alt="Code map"></picture></a>
     <a href="#citation"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/nav/citation-dark.svg"><img src="assets/nav/citation-light.svg" height="36" alt="Citation"></picture></a>
   </p>
   <img src="assets/rule.svg" width="640" alt="">
@@ -75,7 +75,7 @@ Core code lives in the `slewm` package, separate from experiment orchestration s
 - Backward and inverse: [`slewm/objectives/contrastive.py`](slewm/objectives/contrastive.py).
 - Combined objective: [`slewm/objectives/triadic.py`](slewm/objectives/triadic.py).
 
-See the [code map](ARCHITECTURE.md) for task constraints, baselines, and distributed
+See the [code map](docs/ARCHITECTURE.md) for task constraints, baselines, and distributed
 training.
 
 ## Installation
@@ -85,8 +85,8 @@ Python 3.10 on Linux with a CUDA GPU.
 ```bash
 python3.10 -m venv .venv
 source .venv/bin/activate
-python -m pip install -r requirements-observed.txt
-export PYTHONPATH="$PWD"
+python -m pip install -r requirements.txt
+python -m pip install -e .
 ```
 
 Isaac Lab tasks (Gear, Franka) need a separate simulator installation and task
@@ -111,30 +111,30 @@ Commands print the invocation first. Add `--execute` to launch it.
 
 ```bash
 # Original LeWM objective
-python reproduce.py train --task pusht --arm lewm --epochs 10
+slewm train --task pusht --arm lewm --epochs 10
 
 # Full backward + inverse objective; the A0-A8 recipes assume two GPUs
-python reproduce.py train --task pusht --arm A7 --epochs 15
+slewm train --task pusht --arm A7 --epochs 15
 
 # Gear/Franka: l0, c0, acmtm or smwm
-python reproduce.py train --task gear --arm c0 --epochs 30
+slewm train --task gear --arm c0 --epochs 30
 
 # Stock CEM checkpoint evaluation
-python reproduce.py eval --task pusht --checkpoint /path/to/weights.pt --horizon 5 --cem 30
+slewm eval --task pusht --checkpoint /path/to/weights.pt --horizon 5 --cem 30
 
 # Synthetic exact-MI experiment (CPU, no data needed)
-python reproduce.py toy --name exact --execute
+slewm toy --name exact --execute
 ```
 
-`python reproduce.py list` prints every experiment family; the
-[experiment index](EXPERIMENTS.md) links each one to its entry points. For
+`slewm list` prints every experiment family; the
+[experiment index](docs/EXPERIMENTS.md) links each one to its entry points. For
 Gear/Franka, `--epochs` sets a fixed budget and disables early stopping.
 
 ## Check the repository
 
 ```bash
-python -m pytest -q tests release_tests
-python reproduce.py audit
+python -m pytest -q
+slewm audit
 ```
 
 The tests run on CPU without datasets. The audit checks that every registered

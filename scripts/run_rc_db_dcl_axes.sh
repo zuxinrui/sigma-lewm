@@ -29,7 +29,7 @@ cell() {
   if grep -q "success_rate" "$log" 2>/dev/null; then echo "[SKIP] $log"; return; fi
   local extra=(+idm_pool_size=2048 +idm_bank_seed=9001); [[ $planner == safe_dcl_portfolio ]] && extra+=("${RC_FLAGS[@]}")
   echo "[START] $(date +%FT%T) $task $planner s$seed cem$cem h$h off$off b$bud"
-  CUDA_VISIBLE_DEVICES=$GPU python eval_ext.py --config-name="$task" policy="${CK[$task]}" +planner="$planner" \
+  CUDA_VISIBLE_DEVICES=$GPU python -m slewm.evaluation.planning --config-name="$task" policy="${CK[$task]}" +planner="$planner" \
     plan_config.horizon=$h plan_config.receding_horizon=$h eval.goal_offset_steps=$off eval.eval_budget=$bud \
     eval.num_eval=$NUM_EVAL solver.n_steps=$cem solver.num_samples=300 seed=$seed "${extra[@]}" >"$log" 2>&1
   echo "[END] rc=$? $(grep -oE "'success_rate': [0-9.]+" "$log" | tail -1) $(date +%FT%T)"

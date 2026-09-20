@@ -18,7 +18,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from fm_idm.flow import generate
+from slewm.flow_idm.flow import generate
 
 
 class LeWMFlowActor(nn.Module):

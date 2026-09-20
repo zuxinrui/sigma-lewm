@@ -51,11 +51,11 @@ from omegaconf import OmegaConf, open_dict
 
 from slewm.training.utilities import get_column_normalizer, get_img_preprocessor, SaveCkptCallback
 
-# Reuse the vetted FMCA primitives shipped in fmca_exp/ (log-det slogdet loss,
+# Reuse the vetted FMCA primitives shipped in slewm/fmca/ (log-det slogdet loss,
 # whitening barrier, small MLP projection head, RankMe diagnostic).
 
-from fmca_exp.fmca import ProjHead, fmca_loss                       # slogdet Variant B loss + head
-from fmca_exp.fmca_common import rankme, whitening_barrier          # anti-collapse barrier + diag
+from slewm.fmca.fmca import ProjHead, fmca_loss                       # slogdet Variant B loss + head
+from slewm.fmca.fmca_common import rankme, whitening_barrier          # anti-collapse barrier + diag
 
 
 def _fmca_variant_b(f_feat, g_feat, eps, s_clamp):

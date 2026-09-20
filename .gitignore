@@ -13,7 +13,6 @@ __pycache__/
 *.wandb
 wandb/
 local_paths.json
-tools/complete_inventory.py
 build/
 *.aux
 *.bbl
@@ -23,11 +22,10 @@ build/
 *.pdf
 *.svg
 *.png
-repro/audit.json
-toy/runs*/
-toy/*.csv
-toy/*.json
-toy/*.md
+scripts/toy/runs*/
+scripts/toy/*.csv
+scripts/toy/*.json
+scripts/toy/*.md
 logs/
 outputs/
 runs/
@@ -36,3 +34,4 @@ artifacts/
 !assets/*.png
 !assets/nav/*.svg
 !assets/btn/*.svg
+*.egg-info/

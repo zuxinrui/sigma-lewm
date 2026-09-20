@@ -20,13 +20,13 @@ OUT_DIR="${OUT_DIR:-logs/hf_gcidm_cube_confirm_20260819}"
 mkdir -p "$OUT_DIR"
 
 HF_CKPT=quentinll/lewm-cube
-GCIDM_CKPT=fm_idm/gcidm_cube.pt
+GCIDM_CKPT=slewm/flow_idm/gcidm_cube.pt
 
 run_stock_lane() {
     for eval_seed in $CONFIRM_SEEDS; do
         local log_path="$OUT_DIR/cube_hf_stock_s${eval_seed}_n${NUM_EVAL}_cem${CEM_STEPS}.log"
         echo "[START stock] $(date --iso-8601=seconds) seed=$eval_seed"
-        CUDA_VISIBLE_DEVICES="$STOCK_GPU" python eval.py \
+        CUDA_VISIBLE_DEVICES="$STOCK_GPU" python -m slewm.evaluation.benchmark \
             --config-name=cube policy="$HF_CKPT" \
             plan_config.horizon=5 plan_config.receding_horizon=5 \
             eval.eval_budget=50 eval.num_eval="$NUM_EVAL" \
@@ -41,7 +41,7 @@ run_gcidm_lane() {
     for eval_seed in $CONFIRM_SEEDS; do
         local log_path="$OUT_DIR/cube_hf_gcidm_s${eval_seed}_n${NUM_EVAL}_cem${CEM_STEPS}.log"
         echo "[START gcidm] $(date --iso-8601=seconds) seed=$eval_seed"
-        CUDA_VISIBLE_DEVICES="$GCIDM_GPU" python eval_flowactor.py \
+        CUDA_VISIBLE_DEVICES="$GCIDM_GPU" python -m slewm.evaluation.flow \
             --config-name=cube policy="$HF_CKPT" \
             +flow.idm="$GCIDM_CKPT" +flow.cost_weight=none \
             +flow.h_fixed=5 +flow.h_mode=remaining \

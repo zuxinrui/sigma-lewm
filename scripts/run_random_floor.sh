@@ -9,7 +9,7 @@ cell() {  # task h seed
   local t=$1 h=$2 s=$3 off=$((5*$2)) bud=$((10*$2))
   local log="$OUT/${t}_random_h${h}_s${s}.log"
   grep -q "success_rate" "$log" 2>/dev/null && return 0
-  CUDA_VISIBLE_DEVICES="" python eval.py --config-name="$t" policy=random seed="$s" eval.num_eval=50 \
+  CUDA_VISIBLE_DEVICES="" python -m slewm.evaluation.benchmark --config-name="$t" policy=random seed="$s" eval.num_eval=50 \
     eval.goal_offset_steps="$off" eval.eval_budget="$bud" > "$log" 2>&1
 }
 export -f cell; export OUT

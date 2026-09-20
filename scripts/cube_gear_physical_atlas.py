@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Paired Cube/Gear physical atlas, frozen paper checkpoints; CPU only."""
-from repro_paths import resolve_path as _resolve_artifact
+from slewm.paths import resolve_path as _resolve_artifact
 from pathlib import Path
 import os
 os.environ['CUDA_VISIBLE_DEVICES'] = ''

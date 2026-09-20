@@ -1,6 +1,6 @@
 """HC-FM-IDM configuration. See docs/2026-07-14_hc_fm_idm_design.md §8."""
 from __future__ import annotations
-from repro_paths import resolve_path as _resolve_artifact
+from slewm.paths import resolve_path as _resolve_artifact
 
 from dataclasses import dataclass
 
@@ -41,6 +41,6 @@ class HCFMConfig:
     device: str = "cuda:0"
     seed: int = 0
     npz: str = "knob_exp/latents.npz"
-    out: str = "fm_idm/hcfmidm.pt"
+    out: str = "slewm.flow_idm/hcfmidm.pt"
     # h5 whose raw `action` column defines the eval StandardScaler (cube: the ogbench cube h5)
     scaler_h5: str = _resolve_artifact('stable:datasets/pusht_expert_train.h5')

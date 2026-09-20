@@ -13,7 +13,7 @@ cell() {  # tag seed cem h
   local log="$OUT/pusht_${tag}_cem_s${seed}_cem${cem}_h${h}_off${off}_b${bud}_n50.log"
   if grep -q "success_rate" "$log" 2>/dev/null; then echo "[SKIP] $log"; return; fi
   echo "[START] $(date +%FT%T) $tag s$seed cem$cem h$h"
-  CUDA_VISIBLE_DEVICES=$GPU python eval_ext.py --config-name=pusht policy="$ck" +planner=cem \
+  CUDA_VISIBLE_DEVICES=$GPU python -m slewm.evaluation.planning --config-name=pusht policy="$ck" +planner=cem \
     plan_config.horizon=$h plan_config.receding_horizon=$h eval.goal_offset_steps=$off eval.eval_budget=$bud \
     eval.num_eval=50 solver.n_steps=$cem solver.num_samples=300 seed=$seed +idm_pool_size=2048 +idm_bank_seed=9001 >"$log" 2>&1
   echo "[END] rc=$? $(grep -oE "'success_rate': [0-9.]+" "$log" | tail -1)"

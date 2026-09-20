@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Reproducible, paired PushT PCA atlas; no training or simulator rollout."""
 from __future__ import annotations
-from repro_paths import resolve_path as _resolve_artifact
+from slewm.paths import resolve_path as _resolve_artifact
 
 import argparse
 import csv

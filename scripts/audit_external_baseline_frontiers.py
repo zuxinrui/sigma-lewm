@@ -7,7 +7,7 @@ and any episode-selection drift relative to the preregistered HF baseline.
 """
 
 from __future__ import annotations
-from repro_paths import resolve_path as _resolve_artifact
+from slewm.paths import resolve_path as _resolve_artifact
 
 import argparse
 import hashlib

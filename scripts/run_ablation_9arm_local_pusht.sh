@@ -167,6 +167,6 @@ fi
   echo "MSE_IDM=$MSE_IDM DCL_IDM=$DCL_IDM MSE_BWD=$MSE_BWD DCL_BWD=$DCL_BWD"
   echo "global_batch=$GLOBAL_BATCH per_device_batch=$PER_DEVICE_BATCH epochs=$EPOCHS seed=$SEED"
   echo "distributed_global_losses=true sync_random_n=true sync_batchnorm=true"
-  "$REPO/.venv/bin/python" "$REPO/train_multistep.py" "${OVERRIDES[@]}"
+  "${PY:-python}" -m slewm.training.multistep "${OVERRIDES[@]}"
   echo "[$(date --iso-8601=seconds)] DONE $RUN_ID GPUs=0,1"
 } 2>&1 | tee "$LOG_DIR/${RUN_ID}.log"

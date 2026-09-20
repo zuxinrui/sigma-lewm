@@ -19,7 +19,7 @@ CUDA_VISIBLE_DEVICES="$GPU_ID" python knob_exp/make_latents.py \
     --h5 "$CUBE_H5" --out "$LATENT_CACHE" --episodes 2500 --bs 512 \
     --device cuda:0 --policy "$CUBE_CKPT"
 
-CUDA_VISIBLE_DEVICES="$GPU_ID" python -m fm_idm.train \
+CUDA_VISIBLE_DEVICES="$GPU_ID" python -m slewm.flow_idm.train \
     --model gcidm --steps 150000 --lr 1e-4 --bs 512 \
     --out "$GCIDM_OUT" --npz "$LATENT_CACHE" --scaler_h5 "$CUBE_H5" \
     --device cuda:0 --h_max 12 --d_action 25 --depth 6 --heads 4 \

@@ -41,7 +41,7 @@ Usage (after starting the server):
 """
 
 from __future__ import annotations
-from repro_paths import resolve_path as _resolve_artifact
+from slewm.paths import resolve_path as _resolve_artifact
 
 import argparse
 import sys

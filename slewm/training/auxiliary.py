@@ -2,7 +2,7 @@
 import math
 import torch
 import torch.distributed as dist
-from fmca_exp.fmca import fmca_loss
+from slewm.fmca.fmca import fmca_loss
 from slewm.training.distributed import _all_gather_no_grad
 from slewm.training.distributed import _all_gather_with_grad
 from slewm.objectives.distributed_contrastive import _contrastive_mi

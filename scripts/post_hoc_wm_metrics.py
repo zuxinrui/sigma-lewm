@@ -6,7 +6,7 @@ validation split. It does not run environment eval.
 """
 
 from __future__ import annotations
-from repro_paths import resolve_path as _resolve_artifact
+from slewm.paths import resolve_path as _resolve_artifact
 
 import argparse
 import csv
@@ -17,7 +17,6 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
-sys.path.insert(0, str(REPO / "fmca_exp"))
 
 import numpy as np
 import stable_pretraining as spt
@@ -25,7 +24,7 @@ import stable_worldmodel as swm
 import torch
 from stable_pretraining.backbone.utils import vit_hf
 
-from fmca_exp.fmca_common import rankme, whitening_barrier
+from slewm.fmca.fmca_common import rankme, whitening_barrier
 from slewm.models.world_model import JEPA
 from slewm.models.components import ARPredictor, Embedder, MLP, SIGReg
 from slewm.training.utilities import get_img_preprocessor

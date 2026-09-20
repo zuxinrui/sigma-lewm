@@ -6,7 +6,7 @@ PASS cannot be represented by an unaudited boolean or an unbound file path.
 """
 
 from __future__ import annotations
-from repro_paths import resolve_path as _resolve_artifact
+from slewm.paths import resolve_path as _resolve_artifact
 
 import hashlib
 import json

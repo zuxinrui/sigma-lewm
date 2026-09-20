@@ -518,7 +518,7 @@ def run(cfg: DictConfig):
             gcidm_path = str(cfg.get("dcl_gcidm_path", "")).strip()
             if gcidm_path:
                 from slewm.evaluation.flow import _load_idm
-                from fm_idm.flow_actor import LeWMFlowActor
+                from slewm.flow_idm.flow_actor import LeWMFlowActor
 
                 gcidm = _load_idm(gcidm_path, "cuda")
                 gcidm_actor = LeWMFlowActor(

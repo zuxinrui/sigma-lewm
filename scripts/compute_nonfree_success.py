@@ -1,7 +1,7 @@
 """非 free（剔除开局即成功）成功率：Push-T 与 Cube，逐 episode 复算。
 Push-T free 判据 = env.eval_state 原式：||goal[:4]-s[:4]||<20 且 角差<pi/9，goal=start+offset 的 state。
 Cube  free 判据 = ||cube(t+off)-cube(t)|| <= 4cm。"""
-from repro_paths import resolve_path as _resolve_artifact
+from slewm.paths import resolve_path as _resolve_artifact
 import re, glob, os, h5py, numpy as np, collections, json
 
 R_IDX = re.compile(r"valid starting points found for evaluation\.(.*?)CEM solve time", re.S)

@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import torch
 
-from fmca_exp.fmca import ProjHead
+from slewm.fmca.fmca import ProjHead
 from slewm.models.world_model import JEPA
 from slewm.models.residual import ResidualTransitionJEPA
 

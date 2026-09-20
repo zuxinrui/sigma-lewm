@@ -24,7 +24,7 @@ GCIDM_CKPT=logs/gcidm_ct_cube_s0.pt
 for eval_seed in $CONFIRM_SEEDS; do
     log_path="$OUT_DIR/cube_gcidm_s${eval_seed}_n${NUM_EVAL}_cem${CEM_STEPS}.log"
     echo "[START] $(date --iso-8601=seconds) seed=$eval_seed"
-    CUDA_VISIBLE_DEVICES="$GPU_ID" python eval_flowactor.py \
+    CUDA_VISIBLE_DEVICES="$GPU_ID" python -m slewm.evaluation.flow \
         --config-name=cube policy="$CUBE_CKPT" \
         +flow.idm="$GCIDM_CKPT" +flow.cost_weight=none \
         +flow.h_fixed=5 +flow.h_mode=remaining \

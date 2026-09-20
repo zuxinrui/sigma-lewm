@@ -20,7 +20,7 @@ cell() {  # task seed cem
   if grep -q "success_rate" "$log" 2>/dev/null; then echo "[SKIP] $log"; return; fi
   echo "[START] $(date +%FT%T) $task s$seed cem$cem"
   local t0=$(date +%s)
-  CUDA_VISIBLE_DEVICES=$GPU python eval_ext.py --config-name="$task" policy="${CK[$task]}" +planner=restart \
+  CUDA_VISIBLE_DEVICES=$GPU python -m slewm.evaluation.planning --config-name="$task" policy="${CK[$task]}" +planner=restart \
     plan_config.horizon=5 plan_config.receding_horizon=5 eval.goal_offset_steps=25 eval.eval_budget=50 \
     eval.num_eval=50 solver.n_steps=$cem solver.num_samples=300 seed=$seed +idm_pool_size=2048 +idm_bank_seed=9001 \
     +n_restarts=$N_RESTARTS +restart_selection=cost +restart_trace=true >"$log" 2>&1

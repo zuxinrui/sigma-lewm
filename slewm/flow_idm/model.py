@@ -18,16 +18,10 @@ from typing import TYPE_CHECKING
 import torch
 from torch import nn, Tensor
 
-# ConditionalBlock (AdaLN-zero DiT block) + MLP live at repo root in module.py.
-try:
-    from slewm.models.components import ConditionalBlock, MLP
-except ModuleNotFoundError:  # allow import when repo root isn't on sys.path
-    import os, sys
-    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from slewm.models.components import ConditionalBlock, MLP
+from slewm.models.components import ConditionalBlock, MLP
 
-if TYPE_CHECKING:  # avoid importing the fm_idm package at runtime (siblings may be absent)
-    from fm_idm.config import HCFMConfig
+if TYPE_CHECKING:  # avoid importing the slewm.flow_idm package at runtime (siblings may be absent)
+    from slewm.flow_idm.config import HCFMConfig
 
 
 class _SetConditionalBlock(ConditionalBlock):

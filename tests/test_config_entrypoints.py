@@ -1,5 +1,6 @@
 """Compose all release task recipes and resolve their Python targets."""
 import importlib
+import importlib.util
 from pathlib import Path
 
 from hydra import compose, initialize_config_dir
@@ -18,10 +19,11 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_cli_uses_real_entrypoint_paths(arguments, monkeypatch, capsys):
     import json
     from slewm.cli import main
-    monkeypatch.setattr('sys.argv', ['reproduce.py'] + arguments)
+    monkeypatch.setattr('sys.argv', ['slewm'] + arguments)
     main()
     command = json.loads(capsys.readouterr().out)['command']
-    assert (ROOT / command[1]).is_file()
+    assert command[1] == '-m'
+    assert importlib.util.find_spec(command[2]) is not None
     if arguments[0] == 'eval':
         assert 'eval.goal_offset_steps=25' in command
     if 'gear' in arguments:

@@ -2,7 +2,7 @@
 from slewm.objectives.inverse import inverse_action_loss
 import math
 import torch
-from fmca_exp.fmca_common import rankme, whitening_barrier
+from slewm.fmca.fmca_common import rankme, whitening_barrier
 from slewm.training.auxiliary import _ar_rollout_train
 from slewm.objectives.distributed_contrastive import _contrastive_mi
 from slewm.training.auxiliary import _demo_goal_action_mse

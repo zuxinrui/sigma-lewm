@@ -2,7 +2,7 @@
 """Run one frozen H5 pool against one paper checkpoint, then hash-commit it."""
 
 from __future__ import annotations
-from repro_paths import resolve_path as _resolve_artifact, resolve_recorded as _recorded
+from slewm.paths import resolve_path as _resolve_artifact, resolve_recorded as _recorded
 
 import argparse
 from collections import defaultdict

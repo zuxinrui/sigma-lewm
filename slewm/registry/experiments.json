@@ -5,59 +5,59 @@
       "id": "standard",
       "title": "Four-task h5 CEM30 main table",
       "entrypoints": [
-        "eval_ext.py"
+        "slewm/evaluation/planning.py"
       ]
     },
     {
       "id": "dinowm_pusht",
       "title": "DINO-WM measured CEM1",
       "entrypoints": [
-        "eval.py"
+        "slewm/evaluation/benchmark.py"
       ]
     },
     {
       "id": "cem_axis",
       "title": "CEM2/4/8/30, four tasks",
       "entrypoints": [
-        "eval_ext.py"
+        "slewm/evaluation/planning.py"
       ]
     },
     {
       "id": "horizon_axis",
       "title": "h3/5/10/15, goal offset 5h",
       "entrypoints": [
-        "eval_ext.py"
+        "slewm/evaluation/planning.py"
       ]
     },
     {
       "id": "factorial_pusht",
       "title": "A0-A8 PushT h10 offset25, CEM8/30",
       "entrypoints": [
-        "train_multistep.py",
+        "slewm/training/multistep.py",
         "scripts/run_ablation_9arm_local_pusht.sh",
-        "eval_ext.py"
+        "slewm/evaluation/planning.py"
       ]
     },
     {
       "id": "factorial_cube",
       "title": "Cube near/far common-epoch factorial",
       "entrypoints": [
-        "train_multistep.py",
-        "eval_ext.py"
+        "slewm/training/multistep.py",
+        "slewm/evaluation/planning.py"
       ]
     },
     {
       "id": "dose",
       "title": "Half/base/double B/I/SIGReg weights, collapse telemetry",
       "entrypoints": [
-        "train_multistep.py"
+        "slewm/training/multistep.py"
       ]
     },
     {
       "id": "linear_backward_crossstep",
       "title": "Linear backward and cross-step inverse regression",
       "entrypoints": [
-        "train_multistep.py"
+        "slewm/training/multistep.py"
       ]
     },
     {
@@ -65,21 +65,21 @@
       "title": "PushT three training seeds, h5/h10",
       "entrypoints": [
         "scripts/run_pusht_seed_spread_20260910.sh",
-        "train_multistep.py"
+        "slewm/training/multistep.py"
       ]
     },
     {
       "id": "training_budget",
       "title": "A100 timings and parameter counts",
       "entrypoints": [
-        "train_multistep.py"
+        "slewm/training/multistep.py"
       ]
     },
     {
       "id": "paired_effects",
       "title": "Eight preregistered contrasts, flow variant, Holm",
       "entrypoints": [
-        "train_multistep.py"
+        "slewm/training/multistep.py"
       ]
     },
     {
@@ -100,7 +100,7 @@
       "id": "gear_training",
       "title": "gear L0/C0/AC-MTM/SMWM training and loss selection",
       "entrypoints": [
-        "train.py",
+        "slewm/training/aligned.py",
         "scripts/select_external_new_task_checkpoint.py",
         "config/train/paper_gear_l0.yaml",
         "config/train/paper_gear_c0.yaml",
@@ -128,7 +128,7 @@
       "id": "franka_training",
       "title": "franka L0/C0/AC-MTM/SMWM training and loss selection",
       "entrypoints": [
-        "train.py",
+        "slewm/training/aligned.py",
         "scripts/select_external_new_task_checkpoint.py",
         "config/train/paper_franka_l0.yaml",
         "config/train/paper_franka_c0.yaml",
@@ -163,45 +163,45 @@
       "id": "excluded_constraint_arms",
       "title": "L1/C1 trained but explicitly excluded",
       "entrypoints": [
-        "train.py"
+        "slewm/training/aligned.py"
       ]
     },
     {
       "id": "toy_pushing_d8",
       "title": "Synthetic pushing 6 objectives, D8, 3 seeds",
       "entrypoints": [
-        "toy/t2_toy_world.py",
-        "toy/t2_analyze.py"
+        "scripts/toy/t2_toy_world.py",
+        "scripts/toy/t2_analyze.py"
       ]
     },
     {
       "id": "toy_pushing_d4",
       "title": "Capacity bottleneck D4, 2 seeds",
       "entrypoints": [
-        "toy/t2_toy_world.py",
-        "toy/t2_analyze.py"
+        "scripts/toy/t2_toy_world.py",
+        "scripts/toy/t2_analyze.py"
       ]
     },
     {
       "id": "toy_static_d4",
       "title": "Static phase and removal of wall, D4",
       "entrypoints": [
-        "toy/t3_alignment.py"
+        "scripts/toy/t3_alignment.py"
       ]
     },
     {
       "id": "toy_static_d3",
       "title": "Static phase tight capacity, D3",
       "entrypoints": [
-        "toy/t3_alignment.py"
+        "scripts/toy/t3_alignment.py"
       ]
     },
     {
       "id": "toy_analytic",
       "title": "Finite-state counterexamples and MI constructions",
       "entrypoints": [
-        "toy/t1_exact_mi.py",
-        "toy/t4_mi_space.py"
+        "scripts/toy/t1_exact_mi.py",
+        "scripts/toy/t4_mi_space.py"
       ]
     },
     {
@@ -243,7 +243,7 @@
       "id": "idm_ranking_replication",
       "title": "IDM ranking extra two seeds",
       "entrypoints": [
-        "eval_ext.py",
+        "slewm/evaluation/planning.py",
         "slewm/planning/solver_safe_dcl_portfolio.py"
       ]
     },

@@ -1,7 +1,7 @@
 """Study-scoped provenance chain for formal Demo-Goal training runs."""
 
 from __future__ import annotations
-from repro_paths import resolve_path as _resolve_artifact
+from slewm.paths import resolve_path as _resolve_artifact
 
 import json
 from pathlib import Path

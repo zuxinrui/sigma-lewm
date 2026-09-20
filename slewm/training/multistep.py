@@ -27,7 +27,7 @@ from slewm.training.utilities import (
     git_tracked_tree_sha256,
     runtime_environment_fingerprint,
 )
-from fmca_exp.fmca import ProjHead
+from slewm.fmca.fmca import ProjHead
 from slewm.training.auxiliary import FlowIDM
 from slewm.training.audit_callbacks import IBRRoutingAuditCallback
 from slewm.training.audit_callbacks import InLoopEvalCallback
@@ -898,3 +898,7 @@ def run(cfg):
     manager()
     print(f"MULTISTEP_TRAIN_DONE seed={cfg.seed} subdir={run_id} n_preds={n_preds} df={df_on}", flush=True)
     return
+
+
+if __name__ == "__main__":
+    run()

@@ -5,17 +5,17 @@ objective, not a separate illustrative implementation.
 
 | Idea | Implementation |
 | --- | --- |
-| Encode observations, predict latents, roll out and score goals | [world_model.py](slewm/models/world_model.py) |
-| Action-conditioned transformer | [components.py](slewm/models/components.py) |
-| Forward: teacher-forced and autoregressive prediction | [forward.py](slewm/objectives/forward.py) |
-| Backward: discriminate the predecessor from successor + action | `symmetric_dcl_loss` in [contrastive.py](slewm/objectives/contrastive.py) |
-| Inverse: discriminate the action from adjacent states | `dcl_idm_loss` in [contrastive.py](slewm/objectives/contrastive.py) |
-| Global-batch inverse and backward losses | [inverse.py](slewm/objectives/inverse.py), [distributed_contrastive.py](slewm/objectives/distributed_contrastive.py) |
-| Compose forward + backward + inverse | [triadic.py](slewm/objectives/triadic.py) |
-| Prevent latent collapse | [regularization.py](slewm/objectives/regularization.py) |
-| Residual transition and detached base | [residual.py](slewm/models/residual.py) |
-| Optional action/persistence task constraints | [task_constraints.py](slewm/objectives/task_constraints.py) |
-| AC-MTM / SMWM objectives | [inverse.py](slewm/baselines/inverse.py) |
+| Encode observations, predict latents, roll out and score goals | [world_model.py](../slewm/models/world_model.py) |
+| Action-conditioned transformer | [components.py](../slewm/models/components.py) |
+| Forward: teacher-forced and autoregressive prediction | [forward.py](../slewm/objectives/forward.py) |
+| Backward: discriminate the predecessor from successor + action | `symmetric_dcl_loss` in [contrastive.py](../slewm/objectives/contrastive.py) |
+| Inverse: discriminate the action from adjacent states | `dcl_idm_loss` in [contrastive.py](../slewm/objectives/contrastive.py) |
+| Global-batch inverse and backward losses | [inverse.py](../slewm/objectives/inverse.py), [distributed_contrastive.py](../slewm/objectives/distributed_contrastive.py) |
+| Compose forward + backward + inverse | [triadic.py](../slewm/objectives/triadic.py) |
+| Prevent latent collapse | [regularization.py](../slewm/objectives/regularization.py) |
+| Residual transition and detached base | [residual.py](../slewm/models/residual.py) |
+| Optional action/persistence task constraints | [task_constraints.py](../slewm/objectives/task_constraints.py) |
+| AC-MTM / SMWM objectives | [inverse.py](../slewm/baselines/inverse.py) |
 
 ## Data flow
 
@@ -44,8 +44,8 @@ layout and slices the terminal slot explicitly.
 - `slewm/training/audit_callbacks.py`, `slewm/protocols/`: execution/protocol checks,
   deliberately separated from the method.
 - `slewm/evaluation/`, `slewm/planning/`: environment evaluation and planner variants.
-- `config/`, `repro/`: training recipes and the experiment index.
-- `scripts/`, `toy/`: study orchestration and synthetic experiments, not the starting
+- `config/`, `slewm/registry/`: training recipes and the experiment index.
+- `scripts/`, `scripts/toy/`: study orchestration and synthetic experiments, not the starting
   point for understanding the model.
 
 The benchmark ablation adapter still supports historical variants. It is not
@@ -54,8 +54,10 @@ distributed semantics are not interchangeable.
 
 ## Entry points
 
-Root `train*.py` / `eval*.py` scripts delegate to the `slewm` package. New code
-should import `slewm.*` directly.
+Training and evaluation run as modules, for example `python -m slewm.training.multistep`
+or `python -m slewm.evaluation.planning`; `slewm` (or `python -m slewm`) wraps the common
+recipes. `slewm/fmca/` holds the FMCA kernels and `slewm/flow_idm/` the flow-matching
+inverse-dynamics models used by the amortised-actor evaluations.
 
 Model parameter names and objective formulas are preserved. Some historical
 configuration names (`inverse_dcl_weight`, `head_f`, `head_g`) refer to the

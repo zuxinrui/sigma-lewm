@@ -7,8 +7,8 @@ MLP regressor  pi(z_t, z_{t+h}, h) -> a_t , exactly per the paper:
   * plain MSE regression head (no flow / diffusion)
 
 Exposes `.act(z_t, z_g, h, ...)` returning (B, n_samples, A) so it drops straight into
-fm_idm.flow_actor.LeWMFlowActor as an amortized actor (single forward = GC-IDM's fast inference).
-Trained with MSE (fm_idm.train --model gcidm --loss mse).
+slewm.flow_idm.flow_actor.LeWMFlowActor as an amortized actor (single forward = GC-IDM's fast inference).
+Trained with MSE (slewm.flow_idm.train --model gcidm --loss mse).
 """
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ import torch
 from torch import nn, Tensor
 
 if TYPE_CHECKING:
-    from fm_idm.config import HCFMConfig
+    from slewm.flow_idm.config import HCFMConfig
 
 
 def _sinusoidal(x: Tensor, dim: int, max_period: float = 10000.0) -> Tensor:

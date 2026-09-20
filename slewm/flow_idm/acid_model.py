@@ -9,8 +9,8 @@ built as a pi0-style PREFIX-SUFFIX transformer.
       The suffix attends to the prefix + itself (causal-after-prefix); the suffix
       output is linearly read out to the velocity in action space (zero-init head).
 
-This shares the fm_idm forward signature `forward(a_s, s, z_t, z_g, h)` so
-fm_idm/flow.py (fm_loss/generate/fm_residual) and fm_idm/train.py reuse UNCHANGED.
+This shares the slewm.flow_idm forward signature `forward(a_s, s, z_t, z_g, h)` so
+slewm.flow_idm/flow.py (fm_loss/generate/fm_residual) and slewm.flow_idm/train.py reuse UNCHANGED.
 The ACID model IGNORES `h` and treats `z_g` as `z_{t+1}` (adjacent-pair IDM;
 train with h_max=1 so LatentPairSampler emits adjacent pairs with z_g = z_{t+1}).
 LayerNorm only; pure PyTorch; no BatchNorm. Defaults for ACID: depth=4, heads=3, W=192.
@@ -24,14 +24,14 @@ import torch
 import torch.nn.functional as F
 from torch import nn, Tensor
 
-if TYPE_CHECKING:  # avoid importing the fm_idm package at runtime (siblings may be absent)
-    from fm_idm.config import HCFMConfig
+if TYPE_CHECKING:  # avoid importing the slewm.flow_idm package at runtime (siblings may be absent)
+    from slewm.flow_idm.config import HCFMConfig
 
 
 def sinusoidal_embedding(t: Tensor, dim: int, max_period: float = 10000.0) -> Tensor:
     """Sinusoidal positional embedding for continuous flow-time (DiT/SiT convention).
 
-    t : (B,) float. -> (B, dim). Matches fm_idm/model.py's helper.
+    t : (B,) float. -> (B, dim). Matches slewm.flow_idm/model.py's helper.
     """
     half = dim // 2
     freqs = torch.exp(

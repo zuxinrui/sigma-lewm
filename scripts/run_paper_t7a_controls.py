@@ -9,7 +9,7 @@ Outputs go to outputs/paper_new_tasks_v1/<task>/<arm>/t7a_controls/<tag>/<primar
 """
 
 from __future__ import annotations
-from repro_paths import resolve_path as _resolve_artifact, resolve_recorded as _recorded
+from slewm.paths import resolve_path as _resolve_artifact, resolve_recorded as _recorded
 
 import argparse
 from collections import defaultdict
