@@ -6,8 +6,6 @@
 
   <h1>Σ-LeWM: Learning World Models via S-Information for Robot Control</h1>
 
-  <p><strong>Train a latent world model to predict the next state, explain the current one, and recover the action between them.</strong></p>
-
   <p>
     <a href="https://zuxinrui.github.io/">Xinrui Zu</a>
     &nbsp;&middot;&nbsp; <a href="https://scholar.google.com/citations?user=UHWkDfkAAAAJ&hl=en">Michael Przystupa</a>
@@ -22,17 +20,17 @@
     <img src="https://img.shields.io/badge/Project_Page-Coming_soon-198F7A?style=flat-square" alt="Project page coming soon">
     <a href="#installation"><img src="https://img.shields.io/badge/Code-Available-3B82B8?style=flat-square" alt="Code available"></a>
     <img src="https://img.shields.io/badge/Models-Coming_soon-7A5AF8?style=flat-square" alt="Models coming soon">
-    <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.10-598BE7?style=flat-square&logo=python&logoColor=white" alt="Python 3.10"></a>
-    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-598BE7?style=flat-square" alt="MIT license"></a>
   </p>
+  <img src="assets/rule.svg" width="640" alt="">
   <p>
-    <a href="#overview">Overview</a> &nbsp;&middot;&nbsp;
-    <a href="#installation">Installation</a> &nbsp;&middot;&nbsp;
-    <a href="#prepare-data-and-checkpoints">Data</a> &nbsp;&middot;&nbsp;
-    <a href="#run-experiments">Experiments</a> &nbsp;&middot;&nbsp;
-    <a href="ARCHITECTURE.md">Code map</a> &nbsp;&middot;&nbsp;
-    <a href="#citation">Citation</a>
+    <a href="#overview"><img src="assets/nav/overview.svg" height="34" alt="Overview"></a>
+    <a href="#installation"><img src="assets/nav/installation.svg" height="34" alt="Installation"></a>
+    <a href="#prepare-data-and-checkpoints"><img src="assets/nav/data.svg" height="34" alt="Data"></a>
+    <a href="#run-experiments"><img src="assets/nav/experiments.svg" height="34" alt="Experiments"></a>
+    <a href="ARCHITECTURE.md"><img src="assets/nav/code-map.svg" height="34" alt="Code map"></a>
+    <a href="#citation"><img src="assets/nav/citation.svg" height="34" alt="Citation"></a>
   </p>
+  <img src="assets/rule.svg" width="640" alt="">
 </div>
 
 ## Overview
