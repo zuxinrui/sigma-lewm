@@ -1,0 +1,269 @@
+{
+  "schema": "sigma-lewm-experiment-registry-v2",
+  "experiments": [
+    {
+      "id": "standard",
+      "title": "Four-task h5 CEM30 main table",
+      "entrypoints": [
+        "eval_ext.py"
+      ]
+    },
+    {
+      "id": "dinowm_pusht",
+      "title": "DINO-WM measured CEM1",
+      "entrypoints": [
+        "eval.py"
+      ]
+    },
+    {
+      "id": "cem_axis",
+      "title": "CEM2/4/8/30, four tasks",
+      "entrypoints": [
+        "eval_ext.py"
+      ]
+    },
+    {
+      "id": "horizon_axis",
+      "title": "h3/5/10/15, goal offset 5h",
+      "entrypoints": [
+        "eval_ext.py"
+      ]
+    },
+    {
+      "id": "factorial_pusht",
+      "title": "A0-A8 PushT h10 offset25, CEM8/30",
+      "entrypoints": [
+        "train_multistep.py",
+        "scripts/run_ablation_9arm_local_pusht.sh",
+        "eval_ext.py"
+      ]
+    },
+    {
+      "id": "factorial_cube",
+      "title": "Cube near/far common-epoch factorial",
+      "entrypoints": [
+        "train_multistep.py",
+        "eval_ext.py"
+      ]
+    },
+    {
+      "id": "dose",
+      "title": "Half/base/double B/I/SIGReg weights, collapse telemetry",
+      "entrypoints": [
+        "train_multistep.py"
+      ]
+    },
+    {
+      "id": "linear_backward_crossstep",
+      "title": "Linear backward and cross-step inverse regression",
+      "entrypoints": [
+        "train_multistep.py"
+      ]
+    },
+    {
+      "id": "training_seed_spread",
+      "title": "PushT three training seeds, h5/h10",
+      "entrypoints": [
+        "scripts/run_pusht_seed_spread_20260910.sh",
+        "train_multistep.py"
+      ]
+    },
+    {
+      "id": "training_budget",
+      "title": "A100 timings and parameter counts",
+      "entrypoints": [
+        "train_multistep.py"
+      ]
+    },
+    {
+      "id": "paired_effects",
+      "title": "Eight preregistered contrasts, flow variant, Holm",
+      "entrypoints": [
+        "train_multistep.py"
+      ]
+    },
+    {
+      "id": "random_floor",
+      "title": "Random-policy floors at four horizons",
+      "entrypoints": [
+        "scripts/run_random_floor.sh"
+      ]
+    },
+    {
+      "id": "nonfree",
+      "title": "Cube free/nonfree stratification and parking analysis",
+      "entrypoints": [
+        "scripts/compute_nonfree_success.py"
+      ]
+    },
+    {
+      "id": "gear_training",
+      "title": "gear L0/C0/AC-MTM/SMWM training and loss selection",
+      "entrypoints": [
+        "train.py",
+        "scripts/select_external_new_task_checkpoint.py",
+        "config/train/paper_gear_l0.yaml",
+        "config/train/paper_gear_c0.yaml",
+        "config/train/paper_gear_acmtm.yaml",
+        "config/train/paper_gear_smwm.yaml"
+      ]
+    },
+    {
+      "id": "gear_h5",
+      "title": "gear sealed test30 x 2 planner seeds",
+      "entrypoints": [
+        "scripts/run_paper_h5_checkpoint.py",
+        "scripts/run_external_h5_checkpoint.py"
+      ]
+    },
+    {
+      "id": "gear_controls",
+      "title": "gear proposal-only, zero, random and goal-agnostic controls",
+      "entrypoints": [
+        "scripts/run_paper_t7a_controls.py",
+        "scripts/run_paper_t7a_random_baseline.py"
+      ]
+    },
+    {
+      "id": "franka_training",
+      "title": "franka L0/C0/AC-MTM/SMWM training and loss selection",
+      "entrypoints": [
+        "train.py",
+        "scripts/select_external_new_task_checkpoint.py",
+        "config/train/paper_franka_l0.yaml",
+        "config/train/paper_franka_c0.yaml",
+        "config/train/paper_franka_acmtm.yaml",
+        "config/train/paper_franka_smwm.yaml"
+      ]
+    },
+    {
+      "id": "franka_h5",
+      "title": "franka sealed test30 x 2 planner seeds",
+      "entrypoints": [
+        "scripts/run_paper_h5_checkpoint.py",
+        "scripts/run_external_h5_checkpoint.py"
+      ]
+    },
+    {
+      "id": "franka_controls",
+      "title": "franka proposal-only, zero, random and goal-agnostic controls",
+      "entrypoints": [
+        "scripts/run_paper_t7a_controls.py",
+        "scripts/run_paper_t7a_random_baseline.py"
+      ]
+    },
+    {
+      "id": "gear_final_epoch",
+      "title": "Gear final-epoch selection reversal",
+      "entrypoints": [
+        "scripts/run_paper_h5_checkpoint.py"
+      ]
+    },
+    {
+      "id": "excluded_constraint_arms",
+      "title": "L1/C1 trained but explicitly excluded",
+      "entrypoints": [
+        "train.py"
+      ]
+    },
+    {
+      "id": "toy_pushing_d8",
+      "title": "Synthetic pushing 6 objectives, D8, 3 seeds",
+      "entrypoints": [
+        "toy/t2_toy_world.py",
+        "toy/t2_analyze.py"
+      ]
+    },
+    {
+      "id": "toy_pushing_d4",
+      "title": "Capacity bottleneck D4, 2 seeds",
+      "entrypoints": [
+        "toy/t2_toy_world.py",
+        "toy/t2_analyze.py"
+      ]
+    },
+    {
+      "id": "toy_static_d4",
+      "title": "Static phase and removal of wall, D4",
+      "entrypoints": [
+        "toy/t3_alignment.py"
+      ]
+    },
+    {
+      "id": "toy_static_d3",
+      "title": "Static phase tight capacity, D3",
+      "entrypoints": [
+        "toy/t3_alignment.py"
+      ]
+    },
+    {
+      "id": "toy_analytic",
+      "title": "Finite-state counterexamples and MI constructions",
+      "entrypoints": [
+        "toy/t1_exact_mi.py",
+        "toy/t4_mi_space.py"
+      ]
+    },
+    {
+      "id": "pusht_atlas",
+      "title": "pusht six-variable positions/goals/motion/focused atlas",
+      "entrypoints": [
+        "scripts/pusht_physical_atlas.py",
+        "scripts/rank_physical_probes.py",
+        "scripts/build_focused_physical_atlas.py"
+      ]
+    },
+    {
+      "id": "cube_atlas",
+      "title": "cube six-variable positions/goals/motion/focused atlas",
+      "entrypoints": [
+        "scripts/cube_gear_physical_atlas.py",
+        "scripts/rank_physical_probes.py",
+        "scripts/build_focused_physical_atlas.py"
+      ]
+    },
+    {
+      "id": "gear_atlas",
+      "title": "gear six-variable positions/goals/motion/focused atlas",
+      "entrypoints": [
+        "scripts/cube_gear_physical_atlas.py",
+        "scripts/rank_physical_probes.py",
+        "scripts/build_focused_physical_atlas.py"
+      ]
+    },
+    {
+      "id": "idm_ranking",
+      "title": "Stock vs IDM ranking CEM/horizon, seeds0/1",
+      "entrypoints": [
+        "scripts/run_rc_db_dcl_axes.sh",
+        "trim/planning/solver_safe_dcl_portfolio.py"
+      ]
+    },
+    {
+      "id": "idm_ranking_replication",
+      "title": "IDM ranking extra two seeds",
+      "entrypoints": [
+        "eval_ext.py",
+        "trim/planning/solver_safe_dcl_portfolio.py"
+      ]
+    },
+    {
+      "id": "restarts",
+      "title": "Compute-matched six-restart CEM",
+      "entrypoints": [
+        "scripts/run_restart_control_20260910.sh",
+        "trim/planning/multirestart_cem.py"
+      ]
+    },
+    {
+      "id": "gcidm",
+      "title": "Frozen-latent GC-IDM training, PushT frontier and Cube paired",
+      "entrypoints": [
+        "trim/planning/gcidm.py",
+        "scripts/train_gcidm_ct_cube_20260817.sh",
+        "scripts/run_gcidm_ct_cube_confirm_20260817.sh"
+      ]
+    }
+  ],
+  "note": "Index of experiment families and the code that runs them. No measurements are stored in this repository."
+}

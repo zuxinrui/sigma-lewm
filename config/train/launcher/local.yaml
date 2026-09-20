@@ -1,0 +1,15 @@
+# @package _global_
+# Local launcher configuration (no SLURM)
+
+defaults:
+  - override /hydra/launcher: basic
+
+wandb:
+  enabled: False
+  config:
+    entity: null            # null → your own default wandb entity (account)
+    project: lewm
+    name: ${subdir}         # run name = per-run subdir (readable in the wandb UI)
+    id: ${subdir}           # stable id → long-run resume re-attaches to the same run
+    resume: allow
+    log_model: False

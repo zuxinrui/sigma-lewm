@@ -1,0 +1,35 @@
+defaults:
+  - paper_gear_l0
+  - _self_
+
+output_model_name: paper_gear_acmtm_seed3072
+subdir: paper_new_tasks_v2/gear/acmtm_seed3072
+
+model:
+  _target_: trim.baselines.inverse.ExternalInverseJEPA
+  inverse_action_dim: 1  # replaced from the aligned dataset contract
+  inverse_latent_dim: ${embed_dim}
+  inverse_hidden_dim: 512
+  inverse_depth: 2
+  inverse_layer_norm: true
+  inverse_activation: gelu
+
+loss:
+  sigreg:
+    weight: 0.0
+  external_inverse:
+    enabled: true
+    method: ac-mtm
+    inverse_weight: 0.30
+    action_nce_temperature: 0.10
+
+trainer:
+  min_epochs: 30
+  max_epochs: 30
+
+early_stopping:
+  # Keep the controller observational so it records the loss-only best epoch;
+  # min=max preserves the user's fixed 30-epoch budget.
+  enabled: true
+  min_epochs: 30
+  max_epochs: 30

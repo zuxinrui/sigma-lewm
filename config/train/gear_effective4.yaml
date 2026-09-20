@@ -1,0 +1,60 @@
+defaults:
+  - _self_
+  - launcher: local
+  - data: gear
+  - model: lewm
+
+output_model_name: lewm_gear_effective4
+subdir: lewm_gear_effective4_aligned_h5_seed3072
+
+num_workers: 6
+seed: 3072
+component_seeded_init: true
+save_epoch_interval: 1
+save_resume_checkpoint: true
+resume_full_state: true
+audit_source_validation_metrics: true
+img_size: 224
+embed_dim: 192
+history_size: 3
+
+trainer:
+  max_epochs: 20
+  devices: 1
+  accelerator: gpu
+  precision: bf16
+  gradient_clip_val: 1.0
+
+loader:
+  # Six 224px frames plus five free-running transitions exceed a 24GB 3090 at
+  # batch 128.  Batch 64 is the measured safe local multi-step setting.
+  batch_size: 64
+  num_workers: ${num_workers}
+  persistent_workers: true
+  prefetch_factor: 3
+  pin_memory: true
+
+optimizer:
+  type: AdamW
+  lr: 5e-5
+  weight_decay: 1e-3
+
+# The aligned reader supplies six states and five exact macro transitions.
+num_preds: 5
+scheduler_interval: step
+
+loss:
+  prediction_mode: aligned_h5
+  teacher_forced_weight: 1.0
+  free_run_weight: 1.0
+  terminal_weight: 1.0
+  sigreg:
+    weight: 0.09
+    kwargs:
+      knots: 17
+      num_proj: 1024
+
+wandb:
+  enabled: false
+  config:
+    project: lewm-gear-effective4

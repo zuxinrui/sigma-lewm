@@ -1,0 +1,31 @@
+# Stable strict endpoints recovered from the first three-frame strict run.
+# This is a training endpoint contract; formal evaluation separately requires
+# the episode's first-ever strict frame and persistence beginning there.
+split_mode: external_episode_disjoint
+
+dataset_factory:
+  _target_: trim.data.aligned_hdf5.AlignedControlHDF5Dataset
+  _partial_: true
+
+dataset:
+  name: gear_01036_effective4_persistent_start_h5_train_v4.h5
+  transitions: 5
+  frameskip: 5
+  clip_stride: 1
+  # Base aligned clips: 11,118. With 392 goal windows repeated to 20 total
+  # copies, exact terminal H5 clips occupy 7,840 / 18,566 = 42.22%.
+  goal_window_repeat: 20
+  keys_to_load:
+    - pixels
+    - action
+  required_action_alignment: "obs[t]=s_t, action[t]=a_t"
+
+validation_dataset:
+  name: gear_01036_effective4_persistent_start_h5_validation_v4.h5
+  transitions: 5
+  frameskip: 5
+  clip_stride: 1
+  keys_to_load:
+    - pixels
+    - action
+  required_action_alignment: "obs[t]=s_t, action[t]=a_t"

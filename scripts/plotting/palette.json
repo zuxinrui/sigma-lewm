@@ -1,0 +1,20 @@
+{
+ "ours": "#598BE7",
+ "ours_light": "#A8C2F0",
+ "ours_fill": "#E7EFFC",
+ "lewm": "#5B6470",
+ "lewm_light": "#A8AEB8",
+ "lewm_fill": "#ECEEF1",
+ "dinowm": "#3E6F9E",
+ "pldm": "#A8AEB8",
+ "forward": "#3E6F9E",
+ "backward": "#6E5F8C",
+ "inverse": "#B4585A",
+ "action": "#B07A2E",
+ "grid": "#E6E8EB",
+ "ink": "#1F2933",
+ "muted": "#6B7280",
+ "zero_line": "#A8AEB8",
+ "baseline": "#858C96",
+ "baseline_band": "#C9CDD3"
+}

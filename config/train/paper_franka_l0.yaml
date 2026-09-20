@@ -1,0 +1,29 @@
+defaults:
+  - franka_stack_aligned
+  - paper_new_task_control
+  - _self_
+
+output_model_name: paper_franka_l0_seed3072
+subdir: paper_new_tasks_v1/franka/l0_seed3072
+
+loss:
+  # Released positive-only prediction semantics on the corrected aligned data.
+  teacher_forced_weight: 1.0
+  free_run_weight: 0.0
+  terminal_weight: 0.0
+  action_rank_weight: 0.0
+  action_rank_probe: true
+  action_rank_schema: franka_stack
+  action_rank_margin_fraction: 0.10
+  action_rank_margin_floor: 1.0e-4
+  action_rank_persistence_weight: 0.0
+  franka_terminal_listwise_weight: 0.0
+  franka_terminal_listwise_probe: true
+  franka_terminal_listwise_temperature: 0.1
+  franka_terminal_listwise_scale_floor: 1.0e-4
+
+data:
+  dataset:
+    # Sampling is held common across all four Franka arms.
+    goal_window_repeat: 5
+

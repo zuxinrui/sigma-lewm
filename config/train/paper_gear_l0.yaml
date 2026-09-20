@@ -1,0 +1,16 @@
+defaults:
+  - gear_persistent_start_h5_original_lewm_ep2
+  - paper_new_task_control
+  - _self_
+
+output_model_name: paper_gear_l0_seed3072
+subdir: paper_new_tasks_v1/gear/l0_seed3072
+
+loss:
+  action_rank_probe: true
+  action_rank_schema: gear_effective4
+  action_rank_margin_fraction: 0.25
+  action_rank_margin_floor: 1.0e-4
+  # Probe-only in L0 because action_rank_weight remains zero.
+  action_rank_persistence_weight: 2.0
+

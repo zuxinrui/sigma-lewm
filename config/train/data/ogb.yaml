@@ -1,0 +1,16 @@
+dataset:
+  name: cube_single_expert.h5   # 2026-07-15: local file under datasets/ (the old "ogbench/..." prefix
+                                # resolved to a nonexistent HF repo -> 401). Downloaded from the
+                                # HF dataset repo quentinll/lewm-cube (cube_single_expert.tar.zst, 46GB
+                                # -> 95GB h5); swm cannot auto-resolve it (expects top-level .h5/.lance).
+  num_steps: ${eval:'${num_preds} + ${history_size}'}
+  frameskip: 5
+  keys_to_load:
+    - pixels
+    - action
+    - observation
+  keys_to_cache:
+    - action
+    - observation
+  keys_to_merge:
+    proprio: proprio

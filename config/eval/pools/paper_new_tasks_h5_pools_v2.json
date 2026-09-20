@@ -1,0 +1,1218 @@
+{
+  "franka": {
+    "dev30": [
+      {
+        "case_id": "franka-97106371c2a81e81",
+        "demo": 202,
+        "goal_idx": 242,
+        "start": 217
+      },
+      {
+        "case_id": "franka-84c695028516947b",
+        "demo": 296,
+        "goal_idx": 245,
+        "start": 220
+      },
+      {
+        "case_id": "franka-45b4760392576c63",
+        "demo": 507,
+        "goal_idx": 221,
+        "start": 196
+      },
+      {
+        "case_id": "franka-d5176ccc26be12a1",
+        "demo": 62,
+        "goal_idx": 244,
+        "start": 219
+      },
+      {
+        "case_id": "franka-4c19a44658af0026",
+        "demo": 730,
+        "goal_idx": 244,
+        "start": 219
+      },
+      {
+        "case_id": "franka-73b21422c96480f9",
+        "demo": 386,
+        "goal_idx": 230,
+        "start": 205
+      },
+      {
+        "case_id": "franka-dc61b36db7a1718e",
+        "demo": 433,
+        "goal_idx": 221,
+        "start": 196
+      },
+      {
+        "case_id": "franka-7d1374d0fd3f85b7",
+        "demo": 872,
+        "goal_idx": 230,
+        "start": 205
+      },
+      {
+        "case_id": "franka-c086ef6f6b42d885",
+        "demo": 477,
+        "goal_idx": 259,
+        "start": 234
+      },
+      {
+        "case_id": "franka-b797ce044f2f2c0f",
+        "demo": 884,
+        "goal_idx": 221,
+        "start": 196
+      },
+      {
+        "case_id": "franka-ccd50467429be4f1",
+        "demo": 863,
+        "goal_idx": 245,
+        "start": 220
+      },
+      {
+        "case_id": "franka-9a4b924014ac6a40",
+        "demo": 540,
+        "goal_idx": 259,
+        "start": 234
+      },
+      {
+        "case_id": "franka-0a827538dbd35b3c",
+        "demo": 152,
+        "goal_idx": 259,
+        "start": 234
+      },
+      {
+        "case_id": "franka-70800b0eaab68288",
+        "demo": 608,
+        "goal_idx": 259,
+        "start": 234
+      },
+      {
+        "case_id": "franka-aee931184ad99d4a",
+        "demo": 456,
+        "goal_idx": 230,
+        "start": 205
+      },
+      {
+        "case_id": "franka-ae5122ac1d8799ae",
+        "demo": 915,
+        "goal_idx": 221,
+        "start": 196
+      },
+      {
+        "case_id": "franka-3ffcfd454c350cc0",
+        "demo": 145,
+        "goal_idx": 221,
+        "start": 196
+      },
+      {
+        "case_id": "franka-99337a5daab1a3c3",
+        "demo": 590,
+        "goal_idx": 221,
+        "start": 196
+      },
+      {
+        "case_id": "franka-2faa60fca68ab056",
+        "demo": 274,
+        "goal_idx": 221,
+        "start": 196
+      },
+      {
+        "case_id": "franka-b16d7386d9da23bb",
+        "demo": 772,
+        "goal_idx": 245,
+        "start": 220
+      },
+      {
+        "case_id": "franka-0da5bf7e621b1be6",
+        "demo": 409,
+        "goal_idx": 242,
+        "start": 217
+      },
+      {
+        "case_id": "franka-7ae30e9c505ff894",
+        "demo": 647,
+        "goal_idx": 230,
+        "start": 205
+      },
+      {
+        "case_id": "franka-8a783c4c61c22810",
+        "demo": 335,
+        "goal_idx": 242,
+        "start": 217
+      },
+      {
+        "case_id": "franka-5676cec637e3c61f",
+        "demo": 577,
+        "goal_idx": 259,
+        "start": 234
+      },
+      {
+        "case_id": "franka-0ed4fdc561f285a6",
+        "demo": 107,
+        "goal_idx": 230,
+        "start": 205
+      },
+      {
+        "case_id": "franka-ef230e1612552001",
+        "demo": 664,
+        "goal_idx": 244,
+        "start": 219
+      },
+      {
+        "case_id": "franka-20e510715a0d6c21",
+        "demo": 81,
+        "goal_idx": 245,
+        "start": 220
+      },
+      {
+        "case_id": "franka-cb376159444a2cce",
+        "demo": 760,
+        "goal_idx": 259,
+        "start": 234
+      },
+      {
+        "case_id": "franka-d3215a8878b7a77e",
+        "demo": 24,
+        "goal_idx": 242,
+        "start": 217
+      },
+      {
+        "case_id": "franka-f53a623b055a7fcf",
+        "demo": 837,
+        "goal_idx": 245,
+        "start": 220
+      }
+    ],
+    "eligible_count": 80,
+    "goal_contract": "first_strict_stack_with_goal_pose_and_open_gripper",
+    "reserve": [
+      {
+        "case_id": "franka-26b1d649470d2d7e",
+        "demo": 284,
+        "goal_idx": 230,
+        "start": 205
+      },
+      {
+        "case_id": "franka-b7d9c98b269a1f36",
+        "demo": 512,
+        "goal_idx": 197,
+        "start": 172
+      },
+      {
+        "case_id": "franka-aa9b8ee594ee879d",
+        "demo": 959,
+        "goal_idx": 245,
+        "start": 220
+      },
+      {
+        "case_id": "franka-2acd8ecad7012eaf",
+        "demo": 383,
+        "goal_idx": 245,
+        "start": 220
+      },
+      {
+        "case_id": "franka-00e36b3091f60221",
+        "demo": 364,
+        "goal_idx": 221,
+        "start": 196
+      },
+      {
+        "case_id": "franka-1ed2426b3ea2bdf0",
+        "demo": 27,
+        "goal_idx": 245,
+        "start": 220
+      },
+      {
+        "case_id": "franka-01fbad55e91c938d",
+        "demo": 129,
+        "goal_idx": 230,
+        "start": 205
+      },
+      {
+        "case_id": "franka-1821240a2ce00637",
+        "demo": 328,
+        "goal_idx": 259,
+        "start": 234
+      },
+      {
+        "case_id": "franka-b71472a4b76e5c3a",
+        "demo": 982,
+        "goal_idx": 221,
+        "start": 196
+      },
+      {
+        "case_id": "franka-3deceb607e51e10a",
+        "demo": 492,
+        "goal_idx": 230,
+        "start": 205
+      },
+      {
+        "case_id": "franka-3d77a8483fae84c2",
+        "demo": 311,
+        "goal_idx": 244,
+        "start": 219
+      },
+      {
+        "case_id": "franka-17cfa2383f0778fd",
+        "demo": 241,
+        "goal_idx": 259,
+        "start": 234
+      },
+      {
+        "case_id": "franka-501e556323a150a4",
+        "demo": 617,
+        "goal_idx": 245,
+        "start": 220
+      },
+      {
+        "case_id": "franka-1efe71fdcbfebdcc",
+        "demo": 233,
+        "goal_idx": 245,
+        "start": 220
+      },
+      {
+        "case_id": "franka-2bc7c8bc98b26454",
+        "demo": 389,
+        "goal_idx": 221,
+        "start": 196
+      },
+      {
+        "case_id": "franka-e49b54a806a69e30",
+        "demo": 148,
+        "goal_idx": 230,
+        "start": 205
+      },
+      {
+        "case_id": "franka-92936e9b0b71e633",
+        "demo": 922,
+        "goal_idx": 221,
+        "start": 196
+      },
+      {
+        "case_id": "franka-098ebbadfa243d5f",
+        "demo": 537,
+        "goal_idx": 230,
+        "start": 205
+      },
+      {
+        "case_id": "franka-d74ca127e15d0f73",
+        "demo": 9,
+        "goal_idx": 259,
+        "start": 234
+      },
+      {
+        "case_id": "franka-ae2675c1e58fbe5f",
+        "demo": 827,
+        "goal_idx": 221,
+        "start": 196
+      }
+    ],
+    "selected_case_sha256": "859304cafad523558563863cd63cf0dcfb3c3e357277fbc78bcff5f998695251",
+    "selection_seed": 2026090602,
+    "source": {
+      "eligible_count": 80,
+      "expert_gate": {
+        "bytes": 337023,
+        "path": "legacy:outputs/paper_new_tasks_v1/pools/franka_h5_expert_gate/eval_expert_teleport_s3_offset25.json",
+        "sha256": "3e547690556ea0a75c8c1c5b509b6815b953d2c69574fc626329b40f4045fd49"
+      },
+      "source_dataset": {
+        "bytes": 43886691674,
+        "path": "data:hf_physicalai/cosmos_dataset_1k.hdf5",
+        "sha256": "decb375a667cbb9376c59a6a74f80494cd81a36badf0e19aad7c94f5609a7e5e"
+      },
+      "tested_count": 100
+    },
+    "test30": [
+      {
+        "case_id": "franka-29bee5382bb0eee8",
+        "demo": 707,
+        "goal_idx": 244,
+        "start": 219
+      },
+      {
+        "case_id": "franka-11b444129f3918d8",
+        "demo": 932,
+        "goal_idx": 245,
+        "start": 220
+      },
+      {
+        "case_id": "franka-51555505931caa2a",
+        "demo": 993,
+        "goal_idx": 230,
+        "start": 205
+      },
+      {
+        "case_id": "franka-86270287080d2954",
+        "demo": 73,
+        "goal_idx": 221,
+        "start": 196
+      },
+      {
+        "case_id": "franka-a8a3ea8d62b6709f",
+        "demo": 198,
+        "goal_idx": 230,
+        "start": 205
+      },
+      {
+        "case_id": "franka-8d018a975ad0c018",
+        "demo": 897,
+        "goal_idx": 244,
+        "start": 219
+      },
+      {
+        "case_id": "franka-e6f08609c062113e",
+        "demo": 347,
+        "goal_idx": 221,
+        "start": 196
+      },
+      {
+        "case_id": "franka-1bc9be574f4aded9",
+        "demo": 307,
+        "goal_idx": 221,
+        "start": 196
+      },
+      {
+        "case_id": "franka-87263b7984152a34",
+        "demo": 534,
+        "goal_idx": 221,
+        "start": 196
+      },
+      {
+        "case_id": "franka-ae840c96477b5616",
+        "demo": 20,
+        "goal_idx": 259,
+        "start": 234
+      },
+      {
+        "case_id": "franka-5a1def392221ed97",
+        "demo": 384,
+        "goal_idx": 245,
+        "start": 220
+      },
+      {
+        "case_id": "franka-70947aba88fa7a7f",
+        "demo": 987,
+        "goal_idx": 259,
+        "start": 234
+      },
+      {
+        "case_id": "franka-58ade149e99e266f",
+        "demo": 5,
+        "goal_idx": 242,
+        "start": 217
+      },
+      {
+        "case_id": "franka-c554f1a0c816601b",
+        "demo": 464,
+        "goal_idx": 206,
+        "start": 181
+      },
+      {
+        "case_id": "franka-312501d2ce5a58c8",
+        "demo": 150,
+        "goal_idx": 245,
+        "start": 220
+      },
+      {
+        "case_id": "franka-4c28efc4a5eece52",
+        "demo": 268,
+        "goal_idx": 245,
+        "start": 220
+      },
+      {
+        "case_id": "franka-59a7613442ee8fa1",
+        "demo": 22,
+        "goal_idx": 230,
+        "start": 205
+      },
+      {
+        "case_id": "franka-32386e41b319b6ec",
+        "demo": 491,
+        "goal_idx": 230,
+        "start": 205
+      },
+      {
+        "case_id": "franka-09363d469b3c25ee",
+        "demo": 425,
+        "goal_idx": 245,
+        "start": 220
+      },
+      {
+        "case_id": "franka-01c2942c8edda937",
+        "demo": 739,
+        "goal_idx": 221,
+        "start": 196
+      },
+      {
+        "case_id": "franka-7bbba1ea66fd6366",
+        "demo": 752,
+        "goal_idx": 244,
+        "start": 219
+      },
+      {
+        "case_id": "franka-f80067c4022cd437",
+        "demo": 580,
+        "goal_idx": 259,
+        "start": 234
+      },
+      {
+        "case_id": "franka-b1d770a289b0fe46",
+        "demo": 870,
+        "goal_idx": 230,
+        "start": 205
+      },
+      {
+        "case_id": "franka-e3c0f1e12ebbb070",
+        "demo": 265,
+        "goal_idx": 221,
+        "start": 196
+      },
+      {
+        "case_id": "franka-77ed7573aa7742f1",
+        "demo": 428,
+        "goal_idx": 244,
+        "start": 219
+      },
+      {
+        "case_id": "franka-a7050ee12ece42b5",
+        "demo": 160,
+        "goal_idx": 230,
+        "start": 205
+      },
+      {
+        "case_id": "franka-b755e380d6899479",
+        "demo": 55,
+        "goal_idx": 206,
+        "start": 181
+      },
+      {
+        "case_id": "franka-1ffaa37d86677142",
+        "demo": 476,
+        "goal_idx": 245,
+        "start": 220
+      },
+      {
+        "case_id": "franka-2e084d7f11db77ac",
+        "demo": 783,
+        "goal_idx": 221,
+        "start": 196
+      },
+      {
+        "case_id": "franka-e9ea9f8fd41bc8c8",
+        "demo": 575,
+        "goal_idx": 259,
+        "start": 234
+      }
+    ]
+  },
+  "frozen_date": "2026-09-06",
+  "gear": {
+    "dev30": [
+      {
+        "case_id": "gear-f20ec828cd7156fc",
+        "goal_row": 83316,
+        "goal_step": 115,
+        "init_row": 83291,
+        "init_step": 90,
+        "source_episode": 551,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-5a900cbb19c7c03d",
+        "goal_row": 34157,
+        "goal_step": 32,
+        "init_row": 34132,
+        "init_step": 7,
+        "source_episode": 455,
+        "source_index": 0
+      },
+      {
+        "case_id": "gear-e97e7a6ca718a84c",
+        "goal_row": 17578,
+        "goal_step": 28,
+        "init_row": 17553,
+        "init_step": 3,
+        "source_episode": 234,
+        "source_index": 1
+      },
+      {
+        "case_id": "gear-6cfdea97c208040f",
+        "goal_row": 3423,
+        "goal_step": 48,
+        "init_row": 3398,
+        "init_step": 23,
+        "source_episode": 45,
+        "source_index": 0
+      },
+      {
+        "case_id": "gear-285b23e5936ece4a",
+        "goal_row": 1632,
+        "goal_step": 57,
+        "init_row": 1607,
+        "init_step": 32,
+        "source_episode": 21,
+        "source_index": 1
+      },
+      {
+        "case_id": "gear-d0265397b8d3aeeb",
+        "goal_row": 81900,
+        "goal_step": 58,
+        "init_row": 81875,
+        "init_step": 33,
+        "source_episode": 542,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-c1c2779eb7db31cb",
+        "goal_row": 51106,
+        "goal_step": 68,
+        "init_row": 51081,
+        "init_step": 43,
+        "source_episode": 338,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-6e792e5f63ba2bb7",
+        "goal_row": 89301,
+        "goal_step": 60,
+        "init_row": 89276,
+        "init_step": 35,
+        "source_episode": 591,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-eaef61866b900f5c",
+        "goal_row": 141460,
+        "goal_step": 124,
+        "init_row": 141435,
+        "init_step": 99,
+        "source_episode": 936,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-c446e0b35c7380c8",
+        "goal_row": 8800,
+        "goal_step": 42,
+        "init_row": 8775,
+        "init_step": 17,
+        "source_episode": 58,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-8e71172f120d58f9",
+        "goal_row": 122870,
+        "goal_step": 107,
+        "init_row": 122845,
+        "init_step": 82,
+        "source_episode": 813,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-7bb3056ac6464cec",
+        "goal_row": 5276,
+        "goal_step": 26,
+        "init_row": 5251,
+        "init_step": 1,
+        "source_episode": 70,
+        "source_index": 1
+      },
+      {
+        "case_id": "gear-420c785f6dfae26b",
+        "goal_row": 68353,
+        "goal_step": 28,
+        "init_row": 68328,
+        "init_step": 3,
+        "source_episode": 911,
+        "source_index": 1
+      },
+      {
+        "case_id": "gear-e5b2c43eeca0b596",
+        "goal_row": 7892,
+        "goal_step": 40,
+        "init_row": 7867,
+        "init_step": 15,
+        "source_episode": 52,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-acf03bc436186aa6",
+        "goal_row": 125081,
+        "goal_step": 53,
+        "init_row": 125056,
+        "init_step": 28,
+        "source_episode": 828,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-701f1c0140f71ce7",
+        "goal_row": 74286,
+        "goal_step": 36,
+        "init_row": 74261,
+        "init_step": 11,
+        "source_episode": 990,
+        "source_index": 1
+      },
+      {
+        "case_id": "gear-9afc1f3113fd99cb",
+        "goal_row": 71539,
+        "goal_step": 116,
+        "init_row": 71514,
+        "init_step": 91,
+        "source_episode": 473,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-fe7e4d93cbadf52c",
+        "goal_row": 4637,
+        "goal_step": 62,
+        "init_row": 4612,
+        "init_step": 37,
+        "source_episode": 61,
+        "source_index": 1
+      },
+      {
+        "case_id": "gear-4c69569ee4a09e5c",
+        "goal_row": 59242,
+        "goal_step": 67,
+        "init_row": 59217,
+        "init_step": 42,
+        "source_episode": 789,
+        "source_index": 1
+      },
+      {
+        "case_id": "gear-efd5635a77f8892b",
+        "goal_row": 22394,
+        "goal_step": 44,
+        "init_row": 22369,
+        "init_step": 19,
+        "source_episode": 298,
+        "source_index": 0
+      },
+      {
+        "case_id": "gear-c5b2b9ec3818f317",
+        "goal_row": 65914,
+        "goal_step": 78,
+        "init_row": 65889,
+        "init_step": 53,
+        "source_episode": 436,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-130b32405f47fe5e",
+        "goal_row": 45849,
+        "goal_step": 96,
+        "init_row": 45824,
+        "init_step": 71,
+        "source_episode": 303,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-322d684232ad4b0f",
+        "goal_row": 142197,
+        "goal_step": 106,
+        "init_row": 142172,
+        "init_step": 81,
+        "source_episode": 941,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-be0fdbb76dbaff3f",
+        "goal_row": 6110,
+        "goal_step": 35,
+        "init_row": 6085,
+        "init_step": 10,
+        "source_episode": 81,
+        "source_index": 0
+      },
+      {
+        "case_id": "gear-313fa237cac9cbf1",
+        "goal_row": 28777,
+        "goal_step": 87,
+        "init_row": 28752,
+        "init_step": 62,
+        "source_episode": 190,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-28c6741b6d63448b",
+        "goal_row": 15358,
+        "goal_step": 58,
+        "init_row": 15333,
+        "init_step": 33,
+        "source_episode": 204,
+        "source_index": 0
+      },
+      {
+        "case_id": "gear-b6989725dd5197e1",
+        "goal_row": 7305,
+        "goal_step": 30,
+        "init_row": 7280,
+        "init_step": 5,
+        "source_episode": 97,
+        "source_index": 1
+      },
+      {
+        "case_id": "gear-7c682f9614737b21",
+        "goal_row": 137968,
+        "goal_step": 105,
+        "init_row": 137943,
+        "init_step": 80,
+        "source_episode": 913,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-34b3bb9e4bd17c8b",
+        "goal_row": 26052,
+        "goal_step": 27,
+        "init_row": 26027,
+        "init_step": 2,
+        "source_episode": 347,
+        "source_index": 1
+      },
+      {
+        "case_id": "gear-2ba9555dd7a10b1f",
+        "goal_row": 108004,
+        "goal_step": 39,
+        "init_row": 107979,
+        "init_step": 14,
+        "source_episode": 715,
+        "source_index": 2
+      }
+    ],
+    "eligible_count": 64,
+    "goal_contract": "first_ever_strict_and_persists_from_that_frame",
+    "reserve": [
+      {
+        "case_id": "gear-36074e0275853049",
+        "goal_row": 76133,
+        "goal_step": 29,
+        "init_row": 76108,
+        "init_step": 4,
+        "source_episode": 504,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-e2ee9fc373120dcc",
+        "goal_row": 11959,
+        "goal_step": 30,
+        "init_row": 11934,
+        "init_step": 5,
+        "source_episode": 79,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-a19e5a4fb9936851",
+        "goal_row": 122541,
+        "goal_step": 80,
+        "init_row": 122516,
+        "init_step": 55,
+        "source_episode": 811,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-ecabf1c5ad8b2aa5",
+        "goal_row": 10193,
+        "goal_step": 68,
+        "init_row": 10168,
+        "init_step": 43,
+        "source_episode": 135,
+        "source_index": 0
+      }
+    ],
+    "selected_case_sha256": "c7a4035e0bb577f084469eeb941f902d7dff00a02384c41dd7ee6932ee039aaa",
+    "selection_seed": 2026090601,
+    "sources": [
+      {
+        "dataset": {
+          "bytes": 2548749290,
+          "path": "legacy:outputs/isaaclab_automate/gear_01036_eval_set_v2_seed4242/eval_trajectories.h5",
+          "sha256": "e136b8c67223e11dbdd687c19b97718190a97057bc729625e742551c49f95d9b"
+        },
+        "eligible_count": 6,
+        "expert_gate": {
+          "bytes": 42695,
+          "path": "legacy:outputs/gear_formal_v2_seed4242_h135/expert_gate/eval_expert_goalminus25_budget50_n15.json",
+          "sha256": "321f7b27c986858dbf265986ace1c2f0e19ce494f743348a6c37dbf3b9e229c1"
+        },
+        "master_offsets": [
+          5,
+          15,
+          25
+        ],
+        "master_pool_sha256": "b252e50fc900aac267d1dc8780b70dd8a955a6e3b87c9646f912b44f21ea6d7c",
+        "restoration_limits": {
+          "all_cases_passed": true,
+          "max_init_frame_mean_abs_error": 12.0,
+          "max_init_frame_pixels_over_8": 0.4,
+          "scope": "all_expert_eligible_cases_revalidated_without_control_steps"
+        },
+        "restoration_revalidation": {
+          "bytes": 17715,
+          "path": "legacy:outputs/paper_new_tasks_v1/pools/gear_restoration_revalidation_v3/source_0_all6.json",
+          "sha256": "7731411682c094ed6348cb212c74a3781008cd1e43a5b90151bf7429d3458f65"
+        },
+        "restoration_revalidation_marker": {
+          "bytes": 350,
+          "path": "legacy:outputs/paper_new_tasks_v1/pools/gear_restoration_revalidation_v3/source_0_all6.json.done",
+          "sha256": "786ed939612c3c8a3df1c3848147a3ac556308182a0488912f60682e4b06d19f"
+        },
+        "source_index": 0,
+        "tested_count": 15
+      },
+      {
+        "dataset": {
+          "bytes": 5100265224,
+          "path": "legacy:outputs/isaaclab_automate/gear_01036_eval_set_v2_seed5242_n1000/eval_trajectories.h5",
+          "sha256": "7621a6c46e7b1e6caab4f0e9c63cc2c78b3e8272c0c0576d27f54b4ff6df35f9"
+        },
+        "eligible_count": 17,
+        "expert_gate": {
+          "bytes": 75167,
+          "path": "legacy:outputs/gear_formal_v2_seed5242_n1000_h135/expert_gate/eval_expert_goalminus25_budget50_n27.json",
+          "sha256": "16e911b9411694e7016ba472bfe6e7227c7f0e53b60d9de5f37052c5fa346815"
+        },
+        "master_offsets": [
+          5,
+          15,
+          25
+        ],
+        "master_pool_sha256": "a0d5b3895bb5b1653d440063886dbf2a41da751596e98b6d5a49a63146077c6d",
+        "restoration_limits": {
+          "all_cases_passed": true,
+          "max_init_frame_mean_abs_error": 12.0,
+          "max_init_frame_pixels_over_8": 0.4,
+          "scope": "all_expert_eligible_cases_revalidated_without_control_steps"
+        },
+        "restoration_revalidation": {
+          "bytes": 44909,
+          "path": "legacy:outputs/paper_new_tasks_v1/pools/gear_restoration_revalidation_v3/source_1_all17.json",
+          "sha256": "fa7e4331d4764b2a2647936d8cb05f04ad7285ab2e9ad8788dfcf9fc2844b116"
+        },
+        "restoration_revalidation_marker": {
+          "bytes": 352,
+          "path": "legacy:outputs/paper_new_tasks_v1/pools/gear_restoration_revalidation_v3/source_1_all17.json.done",
+          "sha256": "cab4087827b42ff6981c6395103dccafe79889d57117d48a2ade0c9c0185befa"
+        },
+        "source_index": 1,
+        "tested_count": 27
+      },
+      {
+        "dataset": {
+          "bytes": 10312392642,
+          "path": "legacy:outputs/isaaclab_automate/gear_01036_eval_set_v2_seed8242_n1000_steps150/eval_trajectories.h5",
+          "sha256": "4ade26a5345fcda3d181c707e8452165b064b76064a0f4a9b48f82ac75e19a65"
+        },
+        "eligible_count": 41,
+        "expert_gate": {
+          "bytes": 129831,
+          "path": "legacy:outputs/paper_new_tasks_v1/pools/gear_seed8242_h5_expert_gate/eval_expert_goalminus25_budget50_n58.json",
+          "sha256": "2ca6bbe19dd51f231a928d5dd2a29923f8d020b49f508cd7c90fc65a5421b9e5"
+        },
+        "master_offsets": [
+          25
+        ],
+        "master_pool_sha256": "78c188465aed76c29f12550db0ebe199d055b20ad8accfd85b8b030dd571e0d2",
+        "restoration_limits": {
+          "all_cases_passed": true,
+          "max_init_frame_mean_abs_error": 12.0,
+          "max_init_frame_pixels_over_8": 0.4,
+          "scope": "all_expert_eligible_cases_revalidated_without_control_steps"
+        },
+        "restoration_revalidation": {
+          "bytes": 83722,
+          "path": "legacy:outputs/paper_new_tasks_v1/pools/gear_restoration_revalidation_v3/source_2_all41.json",
+          "sha256": "cf106eef61c10c01df66a26abc00b130d893569638e1eafd0ee82ea4d12d13b2"
+        },
+        "restoration_revalidation_marker": {
+          "bytes": 352,
+          "path": "legacy:outputs/paper_new_tasks_v1/pools/gear_restoration_revalidation_v3/source_2_all41.json.done",
+          "sha256": "88e39cb0e8d271e714f5ecbf653ae645dbd75c0ea38b98a9e1cf23d90d3fb279"
+        },
+        "source_index": 2,
+        "tested_count": 58
+      }
+    ],
+    "test30": [
+      {
+        "case_id": "gear-3d79b84d8c7adf3d",
+        "goal_row": 124809,
+        "goal_step": 83,
+        "init_row": 124784,
+        "init_step": 58,
+        "source_episode": 826,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-61a0d81751ecf322",
+        "goal_row": 124334,
+        "goal_step": 61,
+        "init_row": 124309,
+        "init_step": 36,
+        "source_episode": 823,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-3ccb5c176ceee552",
+        "goal_row": 48373,
+        "goal_step": 53,
+        "init_row": 48348,
+        "init_step": 28,
+        "source_episode": 320,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-94b8d1e738fa3c4d",
+        "goal_row": 63812,
+        "goal_step": 90,
+        "init_row": 63787,
+        "init_step": 65,
+        "source_episode": 422,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-af4680375b79d566",
+        "goal_row": 36425,
+        "goal_step": 34,
+        "init_row": 36400,
+        "init_step": 9,
+        "source_episode": 241,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-21860722ec68563b",
+        "goal_row": 42162,
+        "goal_step": 33,
+        "init_row": 42137,
+        "init_step": 8,
+        "source_episode": 279,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-0b99c8d31ef29160",
+        "goal_row": 62066,
+        "goal_step": 41,
+        "init_row": 62041,
+        "init_step": 16,
+        "source_episode": 827,
+        "source_index": 1
+      },
+      {
+        "case_id": "gear-a7e285484072e7eb",
+        "goal_row": 90983,
+        "goal_step": 81,
+        "init_row": 90958,
+        "init_step": 56,
+        "source_episode": 602,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-9c110bd7b946a24a",
+        "goal_row": 63705,
+        "goal_step": 134,
+        "init_row": 63680,
+        "init_step": 109,
+        "source_episode": 421,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-34787b1f60c98a64",
+        "goal_row": 14874,
+        "goal_step": 76,
+        "init_row": 14849,
+        "init_step": 51,
+        "source_episode": 98,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-1d5898441e633f9d",
+        "goal_row": 8366,
+        "goal_step": 41,
+        "init_row": 8341,
+        "init_step": 16,
+        "source_episode": 111,
+        "source_index": 1
+      },
+      {
+        "case_id": "gear-986cd9265fe5a0ba",
+        "goal_row": 73104,
+        "goal_step": 54,
+        "init_row": 73079,
+        "init_step": 29,
+        "source_episode": 974,
+        "source_index": 1
+      },
+      {
+        "case_id": "gear-6de7757a6da565cf",
+        "goal_row": 37647,
+        "goal_step": 48,
+        "init_row": 37622,
+        "init_step": 23,
+        "source_episode": 249,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-283a70d2fddf346a",
+        "goal_row": 59547,
+        "goal_step": 53,
+        "init_row": 59522,
+        "init_step": 28,
+        "source_episode": 394,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-46d12a3f22d7519c",
+        "goal_row": 16346,
+        "goal_step": 38,
+        "init_row": 16321,
+        "init_step": 13,
+        "source_episode": 108,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-96432ce698c199c7",
+        "goal_row": 8619,
+        "goal_step": 69,
+        "init_row": 8594,
+        "init_step": 44,
+        "source_episode": 114,
+        "source_index": 1
+      },
+      {
+        "case_id": "gear-62c650237e1d7318",
+        "goal_row": 21920,
+        "goal_step": 25,
+        "init_row": 21895,
+        "init_step": 0,
+        "source_episode": 145,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-a899f76ba671352f",
+        "goal_row": 142439,
+        "goal_step": 46,
+        "init_row": 142414,
+        "init_step": 21,
+        "source_episode": 943,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-6bb856a6c7429f85",
+        "goal_row": 89040,
+        "goal_step": 101,
+        "init_row": 89015,
+        "init_step": 76,
+        "source_episode": 589,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-79cc1cb5d6601150",
+        "goal_row": 10190,
+        "goal_step": 65,
+        "init_row": 10165,
+        "init_step": 40,
+        "source_episode": 135,
+        "source_index": 1
+      },
+      {
+        "case_id": "gear-65e4b3b57d675bbb",
+        "goal_row": 71848,
+        "goal_step": 123,
+        "init_row": 71823,
+        "init_step": 98,
+        "source_episode": 475,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-9b4d667856211d17",
+        "goal_row": 50813,
+        "goal_step": 77,
+        "init_row": 50788,
+        "init_step": 52,
+        "source_episode": 336,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-18828c8e90c94280",
+        "goal_row": 8657,
+        "goal_step": 32,
+        "init_row": 8632,
+        "init_step": 7,
+        "source_episode": 115,
+        "source_index": 1
+      },
+      {
+        "case_id": "gear-dcfe4f76c1a6e60b",
+        "goal_row": 110277,
+        "goal_step": 47,
+        "init_row": 110252,
+        "init_step": 22,
+        "source_episode": 730,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-8788aa45b19da314",
+        "goal_row": 53279,
+        "goal_step": 29,
+        "init_row": 53254,
+        "init_step": 4,
+        "source_episode": 710,
+        "source_index": 1
+      },
+      {
+        "case_id": "gear-b287e99a109862a6",
+        "goal_row": 145549,
+        "goal_step": 136,
+        "init_row": 145524,
+        "init_step": 111,
+        "source_episode": 963,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-d8d158e230cfc3ad",
+        "goal_row": 138879,
+        "goal_step": 110,
+        "init_row": 138854,
+        "init_step": 85,
+        "source_episode": 919,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-977a41a4674f403d",
+        "goal_row": 37271,
+        "goal_step": 125,
+        "init_row": 37246,
+        "init_step": 100,
+        "source_episode": 246,
+        "source_index": 2
+      },
+      {
+        "case_id": "gear-945511b4405c79bc",
+        "goal_row": 8011,
+        "goal_step": 61,
+        "init_row": 7986,
+        "init_step": 36,
+        "source_episode": 106,
+        "source_index": 1
+      },
+      {
+        "case_id": "gear-3999ed1de44844fd",
+        "goal_row": 99414,
+        "goal_step": 56,
+        "init_row": 99389,
+        "init_step": 31,
+        "source_episode": 658,
+        "source_index": 2
+      }
+    ]
+  },
+  "protocol": {
+    "action_block": 5,
+    "budget_raw_steps": 50,
+    "dev_usage": "observation only; forbidden for stopping/checkpoint selection",
+    "goal_offset_raw_steps": 25,
+    "horizon": 5,
+    "test_usage": "sealed until loss-selected checkpoints are frozen"
+  },
+  "schema_version": "paper-new-tasks-h5-pools-v2",
+  "selection_scope": "independent expert-restorable cases with current-launch RGB revalidation; planner repeats never count as cases"
+}

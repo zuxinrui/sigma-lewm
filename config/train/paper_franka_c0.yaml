@@ -1,0 +1,27 @@
+defaults:
+  - paper_franka_l0
+  - _self_
+
+output_model_name: paper_franka_c0_seed3072
+subdir: paper_new_tasks_v1/franka/c0_seed3072
+
+model:
+  _target_: trim.models.triadic.AlignedChampionJEPA
+  champion_embed_dim: ${embed_dim}
+  champion_action_input_dim: 1
+  champion_projection_dim: 64
+
+loss:
+  aligned_champion:
+    enabled: true
+    random_horizon: true
+    context_drop_probability: 0.1
+    diffusion_sigma_max: 0.3
+    teacher_weight: 1.0
+    autoregressive_weight: 1.0
+    autoregressive_warmup_epochs: 2
+    inverse_dcl_weight: 0.1
+    inverse_dcl_temperature: 0.1
+    dcl_idm_weight: 0.05
+    dcl_idm_temperature: 0.1
+    dcl_idm_duplicate_cosine: 0.98

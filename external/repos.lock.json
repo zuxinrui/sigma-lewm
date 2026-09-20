@@ -1,0 +1,11 @@
+{
+  "snapshot_date": "2026-09-09",
+  "repositories": [
+    {"path": "external/swm", "url": "https://github.com/galilai-group/stable-worldmodel.git", "commit": "6f1e499e9cc0c898d326112f485c1062c3d20f24"},
+    {"path": "external/sensorimotor-world-model", "url": "https://github.com/petr-ivashkov/sensorimotor-world-model.git", "commit": "9d22bcc15c6ad8af8cc93337a950df2b49a866b9"},
+    {"path": "external/gcidm", "url": "https://github.com/hdnndh/Latent-Geometry-Beyond-Search-Amortizing-Planning-in-World-Models.git", "commit": "48c45b1cb2b34dd2c1c61d222c8309de567fde55"},
+    {"path": "external/rc-aux", "url": "https://github.com/Guang000/RC-aux.git", "commit": "ecb4496d04421810c1e3022c31e5a379d1a8d8d4"},
+    {"path": "external/action-contrastive-jepa", "url": "https://github.com/jackboyla/action-contrastive-jepa.git", "commit": "43c96f66bb12c95208be68b0858ee658c7e1d363"},
+    {"path": "external/sub-jepa", "url": "https://github.com/intcomp/sub-jepa.git", "commit": "ef945ed434ce529bc7c5f1995f2e1cf173954843"}
+  ]
+}

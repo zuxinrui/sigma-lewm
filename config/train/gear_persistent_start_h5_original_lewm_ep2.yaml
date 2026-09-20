@@ -1,0 +1,32 @@
+defaults:
+  - gear_effective4
+  - override data: gear_persistent_start_h5
+  - _self_
+
+# Released LeWM model/training semantics on the corrected Gear v4 source data.
+# Keep the absolute JEPA transition, ARPredictor, BatchNorm projectors, moving
+# prediction targets, and positive-only one-step objective.  The aligned reader
+# merely exposes all five causal transitions from each H5 clip; it does not add
+# free-run, terminal, residual, stop-gradient, or ranking supervision.
+output_model_name: lewm_gear_persistent_start_h5_original_lewm_matchedinit_ep2
+subdir: lewm_gear_persistent_start_h5_original_lewm_matchedinit_ep2_seed3072
+# Experimental-control only: use the same per-component seed contract as the
+# champion so a single-run comparison is not confounded by an unseeded legacy
+# global RNG stream. This changes no model layer, forward path, or loss.
+component_seeded_init: true
+
+trainer:
+  max_epochs: 2
+
+loss:
+  prediction_mode: aligned_h5
+  teacher_forced_weight: 1.0
+  free_run_weight: 0.0
+  terminal_weight: 0.0
+  action_rank_weight: 0.0
+  action_rank_persistence_weight: 0.0
+
+wandb:
+  enabled: false
+  config:
+    project: lewm-gear-persistent-start-h5-original-lewm-ep2

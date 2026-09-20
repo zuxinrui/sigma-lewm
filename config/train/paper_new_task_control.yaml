@@ -1,0 +1,62 @@
+# Shared preregistered optimizer/checkpoint/early-stop contract for the
+# Gear/Franka 2x2 paper matrix. Task configs must supply the action probe schema.
+component_seeded_init: true
+epoch_seeded_sampler: true
+# The orchestrator overrides this to formal_epoch-1 on every fresh Trainer
+# invocation.  This closes the multi-worker DataLoader prefetch race on resume.
+epoch_seeded_sampler_start_epoch: 0
+paper_training_telemetry: true
+paper_rng_state: true
+deterministic_cublas_workspace_config: ":4096:8"
+save_epoch_interval: 1
+save_resume_checkpoint: true
+resume_full_state: true
+audit_source_validation_metrics: true
+scheduler_interval: step
+# Keep the LR trajectory frozen to a 100-epoch horizon even when the nightly
+# orchestrator pauses/resumes after each epoch for simulator observation.
+scheduler_horizon_epochs: 100
+scheduler_warmup_fraction: 0.01
+
+trainer:
+  min_epochs: 50
+  max_epochs: 100
+  devices: 1
+  accelerator: gpu
+  precision: bf16
+  gradient_clip_val: 1.0
+  deterministic: true
+  # Resumed jobs must not consume fresh stochastic validation probes before
+  # the restored epoch; every formal epoch already performs full validation.
+  num_sanity_val_steps: 0
+
+early_stopping:
+  enabled: true
+  min_epochs: 50
+  max_epochs: 100
+  ema_window: 3
+  patience: 10
+  slope_window: 5
+  min_improvement_fraction: 0.005
+  degradation_fraction: 0.05
+  degradation_patience: 5
+  collapse_std_ratio: 0.10
+  collapse_effective_rank_ratio: 0.10
+  collapse_condition_growth: 10.0
+  collapse_patience: 3
+  epsilon: 1.0e-12
+  component_keys:
+    teacher: teacher_pred_loss
+    free_run: rollout_pred_loss
+    terminal: terminal_pred_loss
+    action: task_action_probe_loss
+    sigreg: sigreg_loss
+  weights:
+    teacher: 0.30
+    free_run: 0.35
+    terminal: 0.20
+    action: 0.10
+    sigreg: 0.05
+
+wandb:
+  enabled: false

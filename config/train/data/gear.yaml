@@ -1,0 +1,37 @@
+# SRSA/AutoMate gear insertion (assembly 01036). The source policy emits
+# [dx,dy,dz,rx,ry,yaw], but AutoMate overwrites target roll/pitch and applies an
+# alpha=0.2 EMA before control. This derivative stores the actually-applied
+# Markov action [dx,dy,dz,yaw]. Evaluation must use action_dim=4, map yaw back to
+# env index 5, freeze rx/ry, and set env EMA to 1.0. There is no gripper action.
+#
+# Train and validation are separate episode-disjoint files so action-normalizer
+# statistics are fit from train only. The aligned reader also excludes each
+# episode's final action-shaped placeholder from normalization and returns six
+# images with exactly five causal macro-actions for multi-step training. Generate with
+# scripts/convert_gear_effective_actions.py; the split manifest records source
+# episode ids and proves zero overlap.
+split_mode: external_episode_disjoint
+
+dataset_factory:
+  _target_: trim.data.aligned_hdf5.AlignedControlHDF5Dataset
+  _partial_: true
+
+dataset:
+  # Resolves under $STABLEWM_HOME/datasets on both the workstation (symlink) and
+  # Snellius scratch, so the same config runs in both places.
+  name: gear_01036_effective4_balanced_train_v2.h5
+  transitions: 5
+  frameskip: 5
+  keys_to_load:
+    - pixels
+    - action
+  required_action_alignment: "obs[t]=s_t, action[t]=a_t"
+
+validation_dataset:
+  name: gear_01036_effective4_balanced_validation_v2.h5
+  transitions: 5
+  frameskip: 5
+  keys_to_load:
+    - pixels
+    - action
+  required_action_alignment: "obs[t]=s_t, action[t]=a_t"

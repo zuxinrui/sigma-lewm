@@ -1,0 +1,87 @@
+# sigma-lewm
+
+Training and evaluation code for latent world models with contrastive backward
+and inverse objectives added to a forward (LeWM-style) predictor.
+
+This repository contains code and configurations only. Datasets, checkpoints,
+logs and measurements are not included; every command below starts a new run.
+
+## Read the method
+
+Core code lives in `trim/`, separate from experiment orchestration scripts.
+
+- Model and rollout: [`trim/models/world_model.py`](trim/models/world_model.py).
+- Forward loss: [`trim/objectives/forward.py`](trim/objectives/forward.py).
+- Backward and inverse: [`trim/objectives/contrastive.py`](trim/objectives/contrastive.py).
+- Combined objective: [`trim/objectives/triadic.py`](trim/objectives/triadic.py).
+
+See the [code map](ARCHITECTURE.md) for task constraints, baselines, distributed
+training and compatibility aliases.
+
+## Install
+
+Python 3.10 on Linux with a CUDA GPU.
+
+```bash
+python3.10 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements-observed.txt
+export PYTHONPATH="$PWD"
+```
+
+Isaac Lab tasks (Gear, Franka) need a separate simulator installation and task
+assets, which are not distributed here.
+
+## Prepare data and checkpoints
+
+```bash
+export STABLEWM_HOME=/path/to/stablewm
+export TRIM_DATA_ROOT=/path/to/gear-franka-data
+export TRIM_CHECKPOINT_ROOT=/path/to/gear-franka-checkpoints
+export ISAAC_PYTHON=/path/to/isaac-environment/bin/python
+```
+
+Place benchmark datasets and checkpoints under `STABLEWM_HOME`. Dataset
+filenames and splits are set in `config/`. External repository versions are
+pinned in `external/repos.lock.json`.
+
+## Run experiments
+
+Commands print the invocation first. Add `--execute` to launch it.
+
+```bash
+# Original LeWM objective
+python reproduce.py train --task pusht --arm lewm --epochs 10
+
+# Full backward + inverse objective; the A0-A8 recipes assume two GPUs
+python reproduce.py train --task pusht --arm A7 --epochs 15
+
+# Gear/Franka: l0, c0, acmtm or smwm
+python reproduce.py train --task gear --arm c0 --epochs 30
+
+# Stock CEM checkpoint evaluation
+python reproduce.py eval --task pusht --checkpoint /path/to/weights.pt --horizon 5 --cem 30
+
+# Synthetic exact-MI experiment (CPU, no data needed)
+python reproduce.py toy --name exact --execute
+```
+
+`python reproduce.py list` prints every experiment family; the
+[experiment index](EXPERIMENTS.md) links each one to its entry points. For
+Gear/Franka, `--epochs` sets a fixed budget and disables early stopping.
+
+## Check the repository
+
+```bash
+python -m pytest -q tests release_tests
+python reproduce.py audit
+```
+
+The tests run on CPU without datasets. The audit checks that every registered
+entry point exists and parses. Some orchestration scripts under `scripts/` were
+written for a specific workstation layout and may need path arguments adjusted.
+
+## License
+
+LeWM's license is retained in `LICENSE`. Third-party datasets and simulator
+assets carry their own licenses.
