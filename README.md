@@ -90,7 +90,8 @@ python -m pip install -e .
 ```
 
 Isaac Lab tasks (Gear, Franka) need a separate simulator installation and task
-assets, which are not distributed here.
+assets, which are not distributed here; [docs/EVALUATION.md](docs/EVALUATION.md) has a
+minimal Isaac install and the evaluation protocol for every task.
 
 ## Prepare data and checkpoints
 
