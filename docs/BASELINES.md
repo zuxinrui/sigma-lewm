@@ -43,14 +43,28 @@ an extra Hydra override through and may be repeated.
 no cluster: the paths come from `REPO`, `PY`, `STABLEWM_HOME`, `SLEWM_DATA_ROOT` and
 `SLEWM_EXTERNAL`, each overridable with `--export`.
 
+`scripts/slurm/run_all.sh` submits all 36 in one go. It checks the interpreter, the
+installation, both dataset roots and the upstream checkout first, and submits nothing if
+any of them is missing.
+
 ```bash
-# 36 runs in two submissions; try SMOKE=1 first (two epochs, three batches)
-sbatch --array=0-23 --export=ALL,GROUP=standard,SMOKE=1 scripts/slurm/baselines.slurm
-sbatch --array=0-23 --export=ALL,GROUP=standard          scripts/slurm/baselines.slurm
-sbatch --array=0-11 --export=ALL,GROUP=isaac,SLEWM_EXTERNAL=$SLEWM_EXTERNAL scripts/slurm/baselines.slurm
+export STABLEWM_HOME=/scratch-shared/$USER/stable-wm
+export SLEWM_DATA_ROOT=$STABLEWM_HOME/isaac
+export SLEWM_EXTERNAL=~/slewm-external
+export PY=/path/to/python            # optional; defaults to ./.venv/bin/python
+
+./scripts/slurm/run_all.sh --smoke   # two epochs on three batches, about ten minutes
+./scripts/slurm/run_all.sh           # the real runs
+./scripts/slurm/run_all.sh --chain   # smoke first, real runs held until it passes
 ```
 
-Array index maps to `(task, arm, seed)` in that order, three seeds per arm.
+To submit one group by hand instead, the array index maps to `(task, arm, seed)` in that
+order, three seeds per arm:
+
+```bash
+sbatch --array=0-23 --export=ALL,GROUP=standard scripts/slurm/baselines.slurm
+sbatch --array=0-11 --export=ALL,GROUP=isaac    scripts/slurm/baselines.slurm
+```
 
 ## Inverse-dynamics coefficients
 
