@@ -1,7 +1,7 @@
 # Evaluating every task
 
-All six tasks are scored by closed-loop planning with CEM. The four standard tasks run in
-this repository's environment; Gear-Assembly and Cube-Stacking run inside Isaac Lab.
+All seven tasks are scored by closed-loop planning with CEM. The four standard tasks and OGBench-Scene
+run in this repository's environment; Gear-Assembly and Cube-Stacking run inside Isaac Lab.
 
 ## Standard tasks: Push-T, OGBench-Cube, Two-Room, Reacher
 
@@ -25,6 +25,23 @@ slewm eval --task pusht --checkpoint sigma-lewm/pusht/weights.pt --horizon 5 --c
 
 The CEM solve is not bit-reproducible on GPU: the same seed can differ by a few episodes
 between runs. Report the mean over seeds, never a single run.
+
+## OGBench-Scene
+
+AC-MTM's protocol on OGBench `visual-scene-play-v0`: the same h=5 CEM30 planner, the goal is
+the observation 25 steps ahead in the play data, and success needs every object (cube,
+both buttons, drawer, window) at its goal state. Prepare the data once, with internet access:
+
+```bash
+python scripts/prep_ogb_scene.py        # -> $STABLEWM_HOME/datasets/visual_scene_play.h5
+slewm train --task scene --arm A7 --epochs 10 --execute     # also lewm, acmtm, smwm
+slewm eval  --task scene --checkpoint <run>/weights_epoch_10.pt --seed 0 --execute
+```
+
+On a SLURM cluster, `scripts/slurm/run_scene.sh --chain` trains and evaluates all four
+methods for three training seeds (smoke test first). A random policy already solves a large
+share of these cases, and that share moves a lot between evaluation seeds: report success
+above the random floor alongside the raw rate.
 
 ## Gear-Assembly and Cube-Stacking (Isaac Lab)
 

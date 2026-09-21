@@ -782,11 +782,19 @@ def run(cfg):
             f.write("\n")
         os.replace(manifest_tmp, manifest_path)
 
+    # Full Lightning checkpoint (weights, optimizer, scheduler, loop state) at every saved
+    # epoch, so a run killed by a wall-clock limit or a crash continues where it stopped when
+    # the same command is resubmitted. Formal transition-triangle runs forbid resumable state.
+    resume_state_on = bool(cfg.get("save_resume_checkpoint", True)) and (
+        not transition_triangle_audit_on
+    )
     object_dump_callback = SaveCkptCallback(
         run_name=cfg.output_model_name,
         cfg=cfg.model,
         epoch_interval=int(cfg.get("save_epoch_interval", 1)),
         epoch_milestones=cfg.get("save_epoch_milestones", None),
+        resume_subdir=str(run_id or cfg.output_model_name),
+        save_resume_checkpoint=resume_state_on,
     )
 
     callbacks = []
@@ -893,6 +901,9 @@ def run(cfg):
         data=data_module,
         seed=int(cfg.seed) if full_seed_on else None,
         ckpt_path=ckpt_path if ckpt_path.exists() else None,
+        weights_only=not (
+            resume_state_on and bool(cfg.get("resume_full_state", True))
+        ),
     )
 
     manager()

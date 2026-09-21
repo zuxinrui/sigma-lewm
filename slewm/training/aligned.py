@@ -672,7 +672,7 @@ def run(cfg):
         epoch_interval=int(cfg.get("save_epoch_interval", 1)),
         resume_subdir=str(cfg.get("subdir") or cfg.output_model_name),
         save_resume_checkpoint=bool(
-            cfg.get("save_resume_checkpoint", False)
+            cfg.get("save_resume_checkpoint", True)
         ),
         audit_source_validation_metrics=bool(
             cfg.get("audit_source_validation_metrics", False)
@@ -760,7 +760,7 @@ def run(cfg):
         ),
         # Historical runs keep the prior weights-only behavior. V2 explicitly
         # opts into full optimizer/scheduler/RNG restoration.
-        weights_only=not bool(cfg.get("resume_full_state", False)),
+        weights_only=not bool(cfg.get("resume_full_state", True)),
     )
 
     manager()

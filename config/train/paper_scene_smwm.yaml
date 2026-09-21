@@ -1,0 +1,31 @@
+defaults:
+  - lewm
+  - override data: scene
+  - _self_
+
+output_model_name: paper_scene_smwm_seed3072
+subdir: paper_std_baselines/scene/smwm_seed3072
+seed: 3072
+
+model:
+  _target_: slewm.baselines.inverse.ExternalInverseJEPA
+  inverse_action_dim: 1  # replaced from the dataset contract at runtime
+  inverse_latent_dim: ${embed_dim}
+  inverse_hidden_dim: 256
+  inverse_depth: 2
+  inverse_layer_norm: false
+  inverse_activation: relu
+
+loss:
+  sigreg:
+    weight: 0.0
+  external_inverse:
+    enabled: true
+    method: smwm
+    # SMWM publishes no Scene coefficient; this is its OGBench-Cube value, the closest task.
+    inverse_weight: 1.0
+
+# AC-MTM's Scene budget: 10 epochs, no early stopping.
+trainer:
+  min_epochs: 10
+  max_epochs: 10

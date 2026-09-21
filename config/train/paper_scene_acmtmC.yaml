@@ -1,0 +1,32 @@
+defaults:
+  - lewm
+  - override data: scene
+  - _self_
+
+output_model_name: paper_scene_acmtmC_seed3072
+subdir: paper_std_baselines/scene/acmtmC_seed3072
+seed: 2
+
+model:
+  _target_: slewm.baselines.inverse.ExternalInverseJEPA
+  inverse_action_dim: 1  # replaced from the dataset contract at runtime
+  inverse_latent_dim: ${embed_dim}
+  inverse_hidden_dim: 512
+  inverse_depth: 2
+  inverse_layer_norm: true
+  inverse_activation: gelu
+
+loss:
+  sigreg:
+    weight: 0.0
+  external_inverse:
+    enabled: true
+    method: ac-mtm
+    # The coefficient AC-MTM uses for every task, including its own Scene numbers.
+    inverse_weight: 0.30
+    action_nce_temperature: 0.10
+
+# AC-MTM's Scene budget: 10 epochs, no early stopping.
+trainer:
+  min_epochs: 10
+  max_epochs: 10

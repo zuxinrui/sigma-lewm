@@ -1,0 +1,11 @@
+dataset:
+  # $STABLEWM_HOME/datasets/visual_scene_play.h5, written by scripts/prep_ogb_scene.py from
+  # OGBench visual-scene-play-v0 (1M transitions of 64x64 pixels, upsampled to img_size).
+  name: visual_scene_play.h5
+  num_steps: ${eval:'${num_preds} + ${history_size}'}
+  frameskip: 5
+  keys_to_load:
+    - pixels
+    - action
+  keys_to_cache:
+    - action

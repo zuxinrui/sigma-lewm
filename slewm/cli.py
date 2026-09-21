@@ -44,7 +44,7 @@ def main():
     sub.add_parser('list')
     sub.add_parser('audit')
     ev = sub.add_parser('eval')
-    ev.add_argument('--task', choices=['pusht', 'cube', 'tworoom', 'reacher'], required=True)
+    ev.add_argument('--task', choices=['pusht', 'cube', 'tworoom', 'reacher', 'scene'], required=True)
     ev.add_argument('--checkpoint', type=Path, required=True)
     ev.add_argument('--horizon', type=int, default=5)
     ev.add_argument('--cem', type=int, default=30)
@@ -55,7 +55,7 @@ def main():
     toy.add_argument('--name', choices=['exact', 'pushing', 'alignment'], required=True)
     toy.add_argument('--execute', action='store_true')
     tr = sub.add_parser('train')
-    tr.add_argument('--task', choices=['pusht', 'cube', 'tworoom', 'reacher', 'gear', 'franka'], required=True)
+    tr.add_argument('--task', choices=['pusht', 'cube', 'tworoom', 'reacher', 'scene', 'gear', 'franka'], required=True)
     tr.add_argument('--arm', choices=['lewm'] + [f'A{i}' for i in range(9)] + ['l0', 'c0', 'acmtm', 'smwm', 'subjepa', 'rcaux'], required=True)
     tr.add_argument('--epochs', type=int, required=True)
     tr.add_argument('--seed', type=int, default=3072)
@@ -82,7 +82,7 @@ def main():
             if args.execute and (not os.environ.get('SLEWM_DATA_ROOT')):
                 p.error('set SLEWM_DATA_ROOT for Isaac task data')
         else:
-            data = dict(pusht='pusht', cube='ogb', tworoom='tworoom', reacher='dmc')[args.task]
+            data = dict(pusht='pusht', cube='ogb', tworoom='tworoom', reacher='dmc', scene='scene')[args.task]
             if args.arm in ('smwm', 'acmtm'):
                 # The two inverse-dynamics baselines on the standard benchmarks: one config
                 # per task because SMWM publishes a per-environment inverse coefficient.

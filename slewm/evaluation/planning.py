@@ -61,7 +61,9 @@ def run(cfg: DictConfig):
     planner = str(cfg.get("planner", "cem"))
 
     cfg.world.max_episode_steps = 2 * cfg.eval.eval_budget
-    world = swm.World(**cfg.world, image_shape=(224, 224))
+    # Frames must come out at the dataset's resolution (Scene is 64x64); the policy transform
+    # resizes to img_size. Tasks without world.width/height keep the old 224x224.
+    world = swm.World(**cfg.world, image_shape=(int(cfg.world.get("height", 224)), int(cfg.world.get("width", 224))))
     transform = {"pixels": img_transform(cfg), "goal": img_transform(cfg)}
 
     dataset = get_dataset(cfg, cfg.eval.dataset_name)

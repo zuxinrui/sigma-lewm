@@ -125,6 +125,9 @@ slewm train --task pusht --arm lewm --epochs 10
 # Full backward + inverse objective; the A0-A8 recipes assume two GPUs
 slewm train --task pusht --arm A7 --epochs 15
 
+# OGBench-Scene (python scripts/prep_ogb_scene.py first): lewm, A7, acmtm or smwm
+slewm train --task scene --arm A7 --epochs 10
+
 # Gear/Franka: l0, c0, acmtm or smwm
 slewm train --task gear --arm c0 --epochs 30
 

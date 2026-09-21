@@ -9,7 +9,7 @@ from slewm import cli as release
 class InventoryTests(unittest.TestCase):
     def test_experiment_ids_unique(self):
         entries=release.registry()
-        self.assertEqual(len(entries),33)
+        self.assertEqual(len(entries),34)
         self.assertEqual(len({r['id'] for r in entries}),len(entries))
 
     def test_six_tasks_and_controls_present(self):
