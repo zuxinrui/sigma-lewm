@@ -1,0 +1,23 @@
+defaults:
+  - paper_gear_l0
+  - _self_
+
+output_model_name: paper_gear_subjepaC_seed3072
+subdir: paper_new_tasks_v4/gear/subjepaC_seed3072
+seed: 2
+
+loss:
+  sigreg:
+    weight: 0.09
+    kwargs:
+      _target_: slewm.baselines.auxiliary.SubspaceSIGReg
+      knots: 17
+      num_proj: 1024
+      num_subspaces: 32
+      subspace_dim: null
+      init_mode: orthogonal_frozen
+      embed_dim: ${embed_dim}
+
+trainer:
+  min_epochs: 30
+  max_epochs: 30

@@ -1,0 +1,30 @@
+defaults:
+  - lewm
+  - override data: pusht
+  - _self_
+
+output_model_name: paper_pusht_smwm_seed3072
+subdir: paper_std_baselines/pusht/smwm_seed3072
+seed: 3072
+
+model:
+  _target_: slewm.baselines.inverse.ExternalInverseJEPA
+  inverse_action_dim: 1  # replaced from the dataset contract at runtime
+  inverse_latent_dim: ${embed_dim}
+  inverse_hidden_dim: 256
+  inverse_depth: 2
+  inverse_layer_norm: false
+  inverse_activation: relu
+
+loss:
+  sigreg:
+    weight: 0.0
+  external_inverse:
+    enabled: true
+    method: smwm
+    # SMWM's published per-environment inverse coefficient for this task.
+    inverse_weight: 30.0
+
+trainer:
+  min_epochs: 15
+  max_epochs: 15

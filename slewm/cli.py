@@ -56,10 +56,12 @@ def main():
     toy.add_argument('--execute', action='store_true')
     tr = sub.add_parser('train')
     tr.add_argument('--task', choices=['pusht', 'cube', 'tworoom', 'reacher', 'gear', 'franka'], required=True)
-    tr.add_argument('--arm', choices=['lewm'] + [f'A{i}' for i in range(9)] + ['l0', 'c0', 'acmtm', 'smwm'], required=True)
+    tr.add_argument('--arm', choices=['lewm'] + [f'A{i}' for i in range(9)] + ['l0', 'c0', 'acmtm', 'smwm', 'subjepa', 'rcaux'], required=True)
     tr.add_argument('--epochs', type=int, required=True)
     tr.add_argument('--seed', type=int, default=3072)
     tr.add_argument('--execute', action='store_true')
+    tr.add_argument('--override', action='append', default=[], metavar='KEY=VALUE',
+                    help='extra Hydra override, repeatable (e.g. --override loader.batch_size=64)')
     args = p.parse_args()
     if args.command == 'list':
         for e in registry():
@@ -72,14 +74,26 @@ def main():
         if args.epochs < 1:
             p.error('epochs must be positive')
         if args.task in ('gear', 'franka'):
-            if args.arm not in ('l0', 'c0', 'acmtm', 'smwm'):
-                p.error('Isaac tasks use l0/c0/acmtm/smwm')
-            cmd = [sys.executable, '-m', 'slewm.training.aligned', f'--config-name=paper_{args.task}_{args.arm}', f'seed={args.seed}', f'trainer.max_epochs={args.epochs}', 'trainer.min_epochs=0', 'early_stopping.enabled=false']
+            if args.arm not in ('l0', 'c0', 'acmtm', 'smwm', 'subjepa', 'rcaux'):
+                p.error('Isaac tasks use l0/c0/acmtm/smwm/subjepa/rcaux')
+            suffix = {3072: '', 1: 'B', 2: 'C'}.get(args.seed, '')
+            name = f'paper_{args.task}_{args.arm}{suffix}' if args.arm in ('subjepa', 'rcaux') else f'paper_{args.task}_{args.arm}'
+            cmd = [sys.executable, '-m', 'slewm.training.aligned', f'--config-name={name}', f'seed={args.seed}', f'trainer.max_epochs={args.epochs}', 'trainer.min_epochs=0', 'early_stopping.enabled=false', 'trainer.devices=1']
             if args.execute and (not os.environ.get('SLEWM_DATA_ROOT')):
                 p.error('set SLEWM_DATA_ROOT for Isaac task data')
         else:
             data = dict(pusht='pusht', cube='ogb', tworoom='tworoom', reacher='dmc')[args.task]
-            if args.arm == 'lewm':
+            if args.arm in ('smwm', 'acmtm'):
+                # The two inverse-dynamics baselines on the standard benchmarks: one config
+                # per task because SMWM publishes a per-environment inverse coefficient.
+                suffix = {3072: '', 1: 'B', 2: 'C'}.get(args.seed)
+                if suffix is None:
+                    p.error('baseline arms are published for seeds 3072, 1 and 2')
+                cmd = [sys.executable, '-m', 'slewm.training.aligned',
+                       f'--config-name=paper_{args.task}_{args.arm}{suffix}',
+                       f'trainer.max_epochs={args.epochs}', f'trainer.min_epochs={args.epochs}',
+                       'trainer.devices=1']
+            elif args.arm == 'lewm':
                 cmd = [sys.executable, '-m', 'slewm.training.aligned', f'data={data}', f'seed={args.seed}', f'trainer.max_epochs={args.epochs}', 'wandb.enabled=false']
             else:
                 recipes = json.loads((ROOT / 'slewm/registry/training_recipes.json').read_text())
@@ -87,6 +101,10 @@ def main():
                     p.error('Four-task arms use lewm or A0-A8')
                 overrides = [s.replace('{DATA}', data).replace('{SEED}', str(args.seed)).replace('{EPOCHS}', str(args.epochs)) for s in recipes[args.arm]]
                 cmd = [sys.executable, '-m', 'slewm.training.multistep'] + overrides
+        for extra in args.override:
+            if '=' not in extra:
+                p.error(f'--override expects KEY=VALUE, got {extra!r}')
+        cmd += list(args.override)
         if args.execute and (not os.environ.get('STABLEWM_HOME')):
             p.error('set STABLEWM_HOME before training')
     elif args.command == 'eval':

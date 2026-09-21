@@ -24,6 +24,7 @@ from slewm.objectives.forward import aligned_horizon_loss
 from slewm.objectives.task_constraints import action_contrastive_horizon_loss, franka_terminal_listwise_loss
 from slewm.objectives.triadic import aligned_champion_horizon_loss
 from slewm.baselines.inverse import external_inverse_horizon_loss
+from slewm.baselines.auxiliary import reachability_aux_loss
 from slewm.training.stopping import LossCompositeEarlyStopping
 from slewm.training.sampler import EpochSeededRandomSampler
 from slewm.training.rng import PaperRNGState
@@ -186,6 +187,17 @@ def aligned_h5_forward(self, batch, stage, cfg):
         )
     for key, value in prediction.items():
         output[key] = value
+    reach_cfg = cfg.loss.get("reachability_aux", {})
+    if bool(reach_cfg.get("enabled", False)):
+        output.update(
+            reachability_aux_loss(
+                self.model,
+                emb,
+                weight=float(reach_cfg.get("weight", 0.1)),
+                margin=float(reach_cfg.get("margin", 1.0)),
+                temperature=float(reach_cfg.get("temperature", 1.0)),
+            )
+        )
     action_rank_weight = float(cfg.loss.get("action_rank_weight", 0.0))
     action_rank_probe = bool(cfg.loss.get("action_rank_probe", False))
     compute_action_rank = action_rank_weight > 0 or (
@@ -273,6 +285,7 @@ def aligned_h5_forward(self, batch, stage, cfg):
     output["loss"] = (
         output["pred_loss"]
         + sigreg_weight * output["sigreg_loss"]
+        + output.get("reachability_weighted", 0.0)
     )
     metrics_dict = {
         f"{stage}/{key}": value.detach()
@@ -628,7 +641,11 @@ def run(cfg):
     data_module = spt.data.DataModule(train=train, val=val)
     world_model = spt.Module(
         model = world_model,
-        sigreg = SIGReg(**cfg.loss.sigreg.kwargs),
+        # Sub-JEPA keeps LeWM's loss but computes the statistic inside random
+        # subspaces; selecting it is a `_target_` in loss.sigreg.kwargs.
+        sigreg = hydra.utils.instantiate(cfg.loss.sigreg.kwargs)
+        if '_target_' in cfg.loss.sigreg.kwargs
+        else SIGReg(**cfg.loss.sigreg.kwargs),
         forward=partial(lejepa_forward, cfg=cfg),
         optim=optimizers,
     )

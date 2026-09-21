@@ -1,0 +1,32 @@
+defaults:
+  - lewm
+  - override data: dmc
+  - _self_
+
+output_model_name: paper_reacher_acmtmC_seed3072
+subdir: paper_std_baselines/reacher/acmtmC_seed3072
+seed: 2
+
+model:
+  _target_: slewm.baselines.inverse.ExternalInverseJEPA
+  inverse_action_dim: 1  # replaced from the dataset contract at runtime
+  inverse_latent_dim: ${embed_dim}
+  inverse_hidden_dim: 512
+  inverse_depth: 2
+  inverse_layer_norm: true
+  inverse_activation: gelu
+
+loss:
+  sigreg:
+    weight: 0.0
+  external_inverse:
+    enabled: true
+    method: ac-mtm
+    # AC-MTM publishes no per-environment coefficient; we keep the value used
+    # for the manipulation arms so every AC-MTM run in the paper shares it.
+    inverse_weight: 0.30
+    action_nce_temperature: 0.10
+
+trainer:
+  min_epochs: 15
+  max_epochs: 15

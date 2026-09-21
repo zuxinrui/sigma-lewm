@@ -1,0 +1,24 @@
+defaults:
+  - paper_franka_l0
+  - _self_
+
+output_model_name: paper_franka_rcaux_seed3072
+subdir: paper_new_tasks_v4/franka/rcaux_seed3072
+seed: 3072
+
+model:
+  _target_: slewm.baselines.auxiliary.RCAuxJEPA
+  reachability_latent_dim: ${embed_dim}
+  reachability_hidden_dim: 256
+  reachability_depth: 2
+
+loss:
+  reachability_aux:
+    enabled: true
+    weight: 0.1
+    margin: 1.0
+    temperature: 1.0
+
+trainer:
+  min_epochs: 20
+  max_epochs: 20
