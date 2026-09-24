@@ -48,6 +48,11 @@ class SubspaceSIGReg(nn.Module):
     Drop-in for `module.SIGReg`, so `train.py` needs no change: it takes the same
     ``(T, B, D)`` input and returns a scalar. ``orthogonality_loss`` is added with weight
     ``theta``, as in the authors' `train.py`.
+
+    The upstream module takes ``(B, T, D)`` (the authors call ``self.sigreg(emb)``), so the
+    input is transposed back before the call. Passing ``(T, B, D)`` straight through makes
+    the Epps-Pulley test average over the few time steps instead of the batch, and the
+    regulariser then no longer penalises the embeddings shrinking towards a point.
     """
 
     def __init__(
@@ -73,7 +78,9 @@ class SubspaceSIGReg(nn.Module):
         self.theta = float(theta)
 
     def forward(self, proj: Tensor) -> Tensor:
-        value = self.inner(proj)
+        if proj.dim() != 3:
+            raise ValueError(f"expected (T, B, D) embeddings, got {tuple(proj.shape)}")
+        value = self.inner(proj.transpose(0, 1))  # (T, B, D) -> the authors' (B, T, D)
         if self.theta:
             value = value + self.theta * self.inner.orthogonality_loss()
         return value
