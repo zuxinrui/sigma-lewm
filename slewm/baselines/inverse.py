@@ -149,6 +149,42 @@ def external_inverse_horizon_loss(
         terminal_weight=0.0,
     )
     forward_loss = output["pred_loss"]
+    output.update(
+        external_inverse_term(
+            model,
+            emb,
+            raw_action,
+            method=method,
+            inverse_weight=inverse_weight,
+            action_nce_temperature=action_nce_temperature,
+        )
+    )
+    output["base_pred_loss"] = forward_loss
+    output["pred_loss"] = (
+        forward_loss + float(inverse_weight) * output["external_inverse_loss"]
+    )
+    return output
+
+
+def external_inverse_term(
+    model: Any,
+    emb: Tensor,
+    raw_action: Tensor,
+    *,
+    method: str,
+    inverse_weight: float,
+    action_nce_temperature: float = 0.1,
+) -> dict[str, Tensor]:
+    """The published inverse objective alone, over every adjacent latent pair.
+
+    ``raw_action[:, t]`` is the action taken between ``emb[:, t]`` and ``emb[:, t + 1]``.
+    The caller adds ``inverse_weight * external_inverse_loss`` to its own forward loss.
+    """
+
+    if not bool(getattr(model, "external_inverse_baseline", False)):
+        raise TypeError("external inverse loss requires ExternalInverseJEPA")
+    if raw_action.shape[:2] != (emb.shape[0], emb.shape[1] - 1):
+        raise ValueError("one normalized macro action is required per transition")
     predicted_action = model.predict_action(emb[:, :-1], emb[:, 1:])
     method = str(method).lower().replace("_", "-")
     if method == "ac-mtm":
@@ -163,12 +199,12 @@ def external_inverse_horizon_loss(
     else:
         raise ValueError("external inverse method must be 'ac-mtm' or 'smwm'")
 
-    output["base_pred_loss"] = forward_loss
-    output["external_inverse_loss"] = inverse_loss
-    output["external_inverse_weight"] = raw_action.new_tensor(inverse_weight)
+    output = {
+        "external_inverse_loss": inverse_loss,
+        "external_inverse_weight": raw_action.new_tensor(inverse_weight),
+    }
     if inverse_accuracy is not None:
         output["external_inverse_acc1"] = inverse_accuracy
-    output["pred_loss"] = forward_loss + float(inverse_weight) * inverse_loss
     return output
 
 
@@ -177,4 +213,5 @@ __all__ = [
     "InverseActionHead",
     "action_nce_loss",
     "external_inverse_horizon_loss",
+    "external_inverse_term",
 ]

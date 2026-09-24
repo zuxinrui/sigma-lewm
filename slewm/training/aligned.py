@@ -23,7 +23,7 @@ from slewm.training.utilities import (
 from slewm.objectives.forward import aligned_horizon_loss
 from slewm.objectives.task_constraints import action_contrastive_horizon_loss, franka_terminal_listwise_loss
 from slewm.objectives.triadic import aligned_champion_horizon_loss
-from slewm.baselines.inverse import external_inverse_horizon_loss
+from slewm.baselines.inverse import external_inverse_horizon_loss, external_inverse_term
 from slewm.baselines.auxiliary import reachability_aux_loss
 from slewm.training.stopping import LossCompositeEarlyStopping
 from slewm.training.sampler import EpochSeededRandomSampler
@@ -95,6 +95,47 @@ def lejepa_forward(self, batch, stage, cfg):
     output["pred_loss"] = (pred_emb - tgt_emb).pow(2).mean()
     output["sigreg_loss"]= self.sigreg(emb.transpose(0, 1))
     output["loss"] = output["pred_loss"] + lambd * output["sigreg_loss"]
+
+    # SMWM / AC-MTM on the standard benchmarks: the configs zero SIGReg and rely on
+    # this inverse term; without it the forward MSE alone collapses the encoder.
+    external_cfg = cfg.loss.get("external_inverse", {})
+    if bool(getattr(self.model, "external_inverse_baseline", False)) and not bool(
+        external_cfg.get("enabled", False)
+    ):
+        raise ValueError("ExternalInverseJEPA trained without loss.external_inverse.enabled")
+    if bool(external_cfg.get("enabled", False)):
+        weight = float(external_cfg.get("inverse_weight", 1.0))
+        output.update(
+            external_inverse_term(
+                self.model,
+                emb,
+                batch["action"][:, :-1],
+                method=str(external_cfg.get("method")),
+                inverse_weight=weight,
+                action_nce_temperature=float(
+                    external_cfg.get("action_nce_temperature", 0.1)
+                ),
+            )
+        )
+        output["loss"] = output["loss"] + weight * output["external_inverse_loss"]
+
+    # RC-aux: the training-only reachability head, added exactly as in aligned_h5_forward.
+    reach_cfg = cfg.loss.get("reachability_aux", {})
+    if bool(getattr(self.model, "rc_aux_baseline", False)) and not bool(
+        reach_cfg.get("enabled", False)
+    ):
+        raise ValueError("RCAuxJEPA trained without loss.reachability_aux.enabled")
+    if bool(reach_cfg.get("enabled", False)):
+        output.update(
+            reachability_aux_loss(
+                self.model,
+                emb,
+                weight=float(reach_cfg.get("weight", 0.1)),
+                margin=float(reach_cfg.get("margin", 1.0)),
+                temperature=float(reach_cfg.get("temperature", 1.0)),
+            )
+        )
+        output["loss"] = output["loss"] + output.get("reachability_weighted", 0.0)
 
     losses_dict = {f"{stage}/{k}": v.detach() for k, v in output.items() if "loss" in k}
     self.log_dict(losses_dict, on_step=True, sync_dist=True)
