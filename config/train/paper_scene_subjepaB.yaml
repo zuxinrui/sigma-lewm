@@ -1,0 +1,27 @@
+defaults:
+  - lewm
+  - override data: scene
+  - _self_
+
+output_model_name: paper_scene_subjepaB_seed3072
+subdir: paper_std_baselines/scene/subjepaB_seed3072
+seed: 1
+
+loss:
+  # LeWM's loss with the statistic computed inside 32 random orthogonal subspaces; the
+  # weight stays LeWM's, only the regulariser is swapped (as on Gear and Cube-Stacking).
+  sigreg:
+    weight: 0.09
+    kwargs:
+      _target_: slewm.baselines.auxiliary.SubspaceSIGReg
+      knots: 17
+      num_proj: 1024
+      num_subspaces: 32
+      subspace_dim: null
+      init_mode: orthogonal_frozen
+      embed_dim: ${embed_dim}
+
+# AC-MTM's Scene budget: 10 epochs, no early stopping.
+trainer:
+  min_epochs: 10
+  max_epochs: 10

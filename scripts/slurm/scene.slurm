@@ -21,6 +21,8 @@
 #SBATCH --cpus-per-task=18
 #SBATCH --gpus=1
 #SBATCH --time=24:00:00
+# Node-local NVMe for the dataset; both A100 and H100 nodes offer it.
+#SBATCH --constraint=scratch-node
 #SBATCH --output=%x_%A_%a.out
 #SBATCH --error=%x_%A_%a.err
 
@@ -33,7 +35,13 @@ REPO=${REPO:-$SLURM_SUBMIT_DIR}
 PY=${PY:-$REPO/.venv/bin/python}
 export CUBLAS_WORKSPACE_CONFIG=:4096:8
 export STABLEWM_HOME=${STABLEWM_HOME:-/scratch-shared/$USER/stable-wm}
+if [[ "${SMOKE:-0}" == 1 ]]; then
+  # The trainers resume from any <run>_weights.ckpt they find, so a smoke run must not write
+  # into the real run directory. The smoke root holds a `datasets` symlink to the real one.
+  export STABLEWM_HOME=${SMOKE_HOME:-/scratch-shared/$USER/stable-wm-smoke}
+fi
 export HF_HOME=${HF_HOME:-/scratch-shared/$USER/hf}
+export SPT_CACHE_DIR=${SPT_CACHE_DIR:-/scratch-shared/$USER/spt-cache}
 export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 export MUJOCO_GL=egl SDL_VIDEODRIVER=dummy TOKENIZERS_PARALLELISM=false
 export OMP_NUM_THREADS=4 MKL_NUM_THREADS=4
@@ -44,6 +52,10 @@ SEEDS=(3072 1 2)
 case $ARMS in
   single) LIST=(lewm acmtm smwm); arm=${LIST[$(( i / 3 ))]} ;;
   ours)   arm=A7 ;;
+  # Sub-JEPA and RC-aux call the authors' own code; docs/BASELINES.md says how to get it.
+  aux)    LIST=(subjepa rcaux); arm=${LIST[$(( i / 3 ))]}
+          : "${SLEWM_EXTERNAL:?clone the pinned upstream repos and export SLEWM_EXTERNAL}"
+          export SLEWM_EXTERNAL ;;
   *) echo "unknown ARMS=$ARMS" >&2; exit 2 ;;
 esac
 seed=${SEEDS[$(( i % 3 ))]}
@@ -63,6 +75,15 @@ case $arm in
   *)     name=paper_scene_${arm}${suf}_seed3072 ;;
 esac
 [[ "${SMOKE:-0}" == 1 ]] && name_note=" (smoke)" || name_note=""
+
+# Stage the dataset onto node-local NVMe; both trainers read <LOCAL_DATASET_DIR>/datasets/.
+LOCAL=/scratch-node/$USER.$SLURM_JOB_ID
+if [[ -d $LOCAL && -w $LOCAL ]]; then
+  mkdir -p "$LOCAL/datasets"
+  cp "$STABLEWM_HOME/datasets/visual_scene_play.h5" "$LOCAL/datasets/"
+  export LOCAL_DATASET_DIR=$LOCAL
+fi
+echo "==> code: $REPO ($(cat "$REPO/CODE_VERSION" 2>/dev/null || git -C "$REPO" rev-parse --short HEAD 2>/dev/null)); checkpoints under $STABLEWM_HOME; data ${LOCAL_DATASET_DIR:-$STABLEWM_HOME}"
 
 echo "==> array $i: scene / $arm / seed $seed / $epochs epochs$name_note  $(date -Is)"
 "$PY" -m slewm.cli train --task scene --arm "$arm" --epochs "$epochs" --seed "$seed" --execute "${X[@]}"

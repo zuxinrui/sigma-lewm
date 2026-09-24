@@ -1,0 +1,27 @@
+defaults:
+  - lewm
+  - override data: scene
+  - _self_
+
+output_model_name: paper_scene_rcauxB_seed3072
+subdir: paper_std_baselines/scene/rcauxB_seed3072
+seed: 1
+
+model:
+  _target_: slewm.baselines.auxiliary.RCAuxJEPA
+  reachability_latent_dim: ${embed_dim}
+  reachability_hidden_dim: 256
+  reachability_depth: 2
+
+loss:
+  # LeWM's loss plus the training-only reachability head: the lambda=0 arm, as on Gear.
+  reachability_aux:
+    enabled: true
+    weight: 0.1
+    margin: 1.0
+    temperature: 1.0
+
+# AC-MTM's Scene budget: 10 epochs, no early stopping.
+trainer:
+  min_epochs: 10
+  max_epochs: 10

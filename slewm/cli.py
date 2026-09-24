@@ -83,7 +83,19 @@ def main():
                 p.error('set SLEWM_DATA_ROOT for Isaac task data')
         else:
             data = dict(pusht='pusht', cube='ogb', tworoom='tworoom', reacher='dmc', scene='scene')[args.task]
-            if args.arm in ('smwm', 'acmtm'):
+            if args.arm in ('subjepa', 'rcaux'):
+                # Sub-JEPA and RC-aux read the authors' own code through SLEWM_EXTERNAL;
+                # only Scene has configs for them among the standard benchmarks.
+                if args.task != 'scene':
+                    p.error('subjepa/rcaux are configured for scene, gear and franka')
+                suffix = {3072: '', 1: 'B', 2: 'C'}.get(args.seed)
+                if suffix is None:
+                    p.error('baseline arms are published for seeds 3072, 1 and 2')
+                cmd = [sys.executable, '-m', 'slewm.training.aligned',
+                       f'--config-name=paper_scene_{args.arm}{suffix}',
+                       f'trainer.max_epochs={args.epochs}', f'trainer.min_epochs={args.epochs}',
+                       'trainer.devices=1']
+            elif args.arm in ('smwm', 'acmtm'):
                 # The two inverse-dynamics baselines on the standard benchmarks: one config
                 # per task because SMWM publishes a per-environment inverse coefficient.
                 suffix = {3072: '', 1: 'B', 2: 'C'}.get(args.seed)
