@@ -89,6 +89,41 @@ RC-aux is this repository's implementation of the reachability head and its
 time-contrastive loss (`slewm/baselines/auxiliary.py`); Sub-JEPA imports the authors'
 `subjepa.py`. Only the latter is an adapter over upstream code.
 
+## A7 without SIGReg (Push-T, Cube)
+
+The counterpart of Gear's `c0_nosig` / `c0_symidm_nosig`: Σ-LeWM (A7) as published ("base"),
+with `standalone_sigreg_weight=0` ("nosig"), and additionally with the symmetric DCL inverse
+("symidm_nosig"). One training seed (3072), 10 epochs, 5 planner seeds x 50 episodes, h5 CEM30.
+
+| | base | nosig | symidm_nosig |
+|---|---|---|---|
+| Push-T | **95.2 ± 3.0** | 90.4 ± 2.3 | 84.8 ± 1.6 |
+| Cube | 82.4 ± 3.4 | **84.4 ± 5.0** | 83.2 ± 6.0 |
+
+For reference, the Gear arms (3 training seeds, sealed test30): c0 39.4, c0_nosig 72.2 ± 1.9,
+c0_symidm_nosig 73.9 ± 5.4. Removing SIGReg helps Gear a lot, costs 5 points on Push-T and is
+within noise on Cube. One training seed per cell: read the Cube differences as no effect.
+
+## RC-aux with the authors' objective
+
+`scripts/slurm/rcaux_authors.slurm` runs the authors' `train.py` (rc-aux ecb4496, `rcaux_default`)
+as they produced the released checkpoints: a fine-tune of a LeWM checkpoint, 125 batches per
+epoch, 4 epochs (TwoRoom 1), cosine to step 500 (125), read from the scheduler and loop state in
+the released files. Evaluation uses this repository's planner, which ignores the reachability
+head (the lambda=0 arm).
+
+Reproduction of the released seed-3072 checkpoints from the official LeWM weights:
+
+| | Cube | Reacher | TwoRoom |
+|---|---|---|---|
+| released | 68.4 | 84.8 | 94.8 |
+| reproduced here | 68.8 | 86.0 | 92.0 |
+
+New cells: Push-T seed 3072 84.4 ± 3.7 (the authors publish no Push-T checkpoint); Scene,
+3 training seeds, 58.0 ± 5.3, which replaces the simplified-RC-aux Scene number above
+(58.8 ± 6.7). The simplified head in `RCAuxJEPA` is not the authors' objective and should not
+be reported as RC-aux.
+
 ## Pending
 
 - **Σ-LeWM on the four standard tasks**: checkpoints available, not yet evaluated.
