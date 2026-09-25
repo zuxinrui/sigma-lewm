@@ -124,12 +124,38 @@ New cells: Push-T seed 3072 84.4 ± 3.7 (the authors publish no Push-T checkpoin
 (58.8 ± 6.7). The simplified head in `RCAuxJEPA` is not the authors' objective and should not
 be reported as RC-aux.
 
+## LeWM and Sub-JEPA over three training seeds
+
+Seeds 1 and 2 retrained here with each released checkpoint's recipe (10 epochs; Sub-JEPA: the
+authors' config, 16 subspaces of dim 12), next to the released seed-3072 checkpoints. Each cell
+pools 3 training seeds x 5 planner seeds (n = 15), 50 episodes each, h5 CEM30; sd is the sample
+sd over the 15 evaluations. Per-seed columns are means over the 5 planner seeds.
+
+| Task | Method | 3 seeds | seed 3072 (released) | seed 1 | seed 2 |
+|---|---|---|---|---|---|
+| Push-T | LeWM | 90.0 ± 5.7 | 85.2 | 91.2 | 93.6 |
+| Push-T | Sub-JEPA | 84.0 ± 8.7 | 93.2 | 77.6 | 81.2 |
+| Cube | LeWM | 66.5 ± 6.3 | 64.8 | 67.6 | 67.2 |
+| Cube | Sub-JEPA | 70.3 ± 6.6 | 69.2 | 69.6 | 72.0 |
+| Reacher | LeWM | 86.0 ± 6.3 | 87.6 | 86.0 | 84.4 |
+| Reacher | Sub-JEPA | 80.7 ± 5.9 | 84.0 | 80.0 | 78.0 |
+| TwoRoom | LeWM | 90.9 ± 4.1 | 90.4 | 93.2 | 89.2 |
+| TwoRoom | Sub-JEPA | 93.6 ± 2.8 | 94.0 | 95.6 | 91.2 |
+
+The released Sub-JEPA Push-T checkpoint (93.2) sits 12-16 points above both seeds trained here;
+the other cells agree with their released checkpoints within the planner noise. The three-seed
+means are the ones to put in the main table; the released-only numbers in the first table
+understate the spread.
+
+## Gear v5 checkpoints (for Isaac evaluation)
+
+Longer Gear dataset, one training seed (3072), 10 epochs, under
+`$STABLEWM_HOME/checkpoints/`: `gear_v5_l0_s3072_e10` (LeWM) and `gear_v5_c0_bw1inv1_s3072_e10`
+(Σ-LeWM champion), `weights_epoch_{1..10}.pt` each. Evaluation runs on an RTX machine.
+
 ## Pending
 
 - **Σ-LeWM on the four standard tasks**: checkpoints available, not yet evaluated.
-- **A7 without SIGReg on Push-T and Cube** (the counterpart of Gear's `c0_nosig` and
-  `c0_symidm_nosig`): base, `standalone_sigreg_weight=0` and additionally
-  `dcl_idm_symmetric=true`, one training seed, 10 epochs, training.
 - **Sub-JEPA and RC-aux on Gear and Cube-Stacking**, 3 training seeds, 20 epochs: training.
   Evaluation needs Isaac Lab on an RTX GPU (the sealed `test30` pools, 30 cases per planner
   seed), so it runs outside the cluster.
