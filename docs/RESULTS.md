@@ -153,6 +153,24 @@ Longer Gear dataset, one training seed (3072), 10 epochs, under
 `$STABLEWM_HOME/checkpoints/`: `gear_v5_l0_s3072_e10` (LeWM) and `gear_v5_c0_bw1inv1_s3072_e10`
 (Σ-LeWM champion), `weights_epoch_{1..10}.pt` each. Evaluation runs on an RTX machine.
 
+## RC-aux over three training seeds
+
+Seeds 1 and 2 are the authors' fine-tune (`rcaux_default`, 4 epochs, TwoRoom 1) of the LeWM
+seed-1 and seed-2 checkpoints trained here; seed 3072 is the fine-tune of the official LeWM
+weights reproduced above (Push-T and Scene: of the seed-3072 LeWM, as there is no released
+RC-aux checkpoint). 3 training seeds x 5 planner seeds (n = 15), h5 CEM30, sample sd.
+
+| Task | 3 seeds | seed 3072 | seed 1 | seed 2 | with released 3072 instead |
+|---|---|---|---|---|---|
+| Push-T | 87.9 ± 5.2 | 84.4 | 89.2 | 90.0 | — |
+| Cube | 70.3 ± 5.4 | 68.8 | 73.2 | 68.8 | 70.1 ± 6.1 |
+| Reacher | 84.8 ± 5.4 | 86.0 | 84.0 | 84.4 | 84.4 ± 5.0 |
+| TwoRoom | 91.6 ± 3.4 | 92.0 | 92.0 | 90.8 | 92.5 ± 3.1 |
+| Scene | 58.0 ± 5.5 | 56.8 | 58.8 | 58.4 | — |
+
+Swapping the reproduced seed-3072 run for the released checkpoint moves no cell by more than
+one point, so the pipeline and the released recipe agree.
+
 ## Pending
 
 - **Σ-LeWM on the four standard tasks**: checkpoints available, not yet evaluated.
