@@ -187,6 +187,9 @@ were trained off-cluster, so those two cells pool seeds 1 and 2 only (n = 10).
 | TwoRoom | 90.9 ± 4.1 | 73.1 ± 38.9 † | 92.4 ± 2.7 | 93.6 ± 2.8 | 91.6 ± 3.4 | **94.0 ± 3.8** ‡ |
 | Scene | 57.7 ± 8.0 | 60.0 ± 3.1 | 60.9 ± 5.1 | 55.5 ± 8.1 | 58.0 ± 5.5 | **80.7 ± 4.2** |
 
+Raw rows (one per evaluation, 440): `docs/results/main_table_raw.tsv`; the checkpoint behind
+each training seed: `docs/results/main_table_checkpoints.tsv`.
+
 Σ-LeWM per training seed (3072 / 1 / 2): Push-T 95.2 / 93.2 / 95.2, Cube 82.4 / 80.0 / 82.4,
 Reacher — / 82.8 / 85.2, TwoRoom — / 94.0 / 94.0. ‡ seeds 1 and 2 only. Σ-LeWM leads on
 Push-T and TwoRoom, ties SMWM on Cube (0.3 apart, sd 5) and is within noise of the pack on Reacher.
