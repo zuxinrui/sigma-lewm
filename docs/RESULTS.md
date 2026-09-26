@@ -174,16 +174,18 @@ one point, so the pipeline and the released recipe agree.
 ## Main table over three training seeds
 
 Every cell pools training seeds x 5 planner seeds (50 episodes each, h5 CEM30), sample sd.
-LeWM, Sub-JEPA and RC-aux as in the sections above; SMWM and AC-MTM from the first table.
+All cells recomputed from the raw result rows with the sample sd (SMWM and AC-MTM therefore
+differ from the first table in the last digit). Scene RC-aux is the authors' objective.
 Σ-LeWM is A7 at epoch 10 of a 10-epoch run. On TwoRoom and Reacher its seed-3072 checkpoints
 were trained off-cluster, so those two cells pool seeds 1 and 2 only (n = 10).
 
 | Task | LeWM | SMWM | AC-MTM | Sub-JEPA | RC-aux | Σ-LeWM |
 |---|---|---|---|---|---|---|
-| Push-T | 90.0 ± 5.7 | 88.5 ± 5.2 | 89.2 ± 3.6 | 84.0 ± 8.7 | 87.9 ± 5.2 | **94.5 ± 3.0** |
-| Cube | 66.5 ± 6.3 | **81.9 ± 4.7** | 77.3 ± 5.7 | 70.3 ± 6.6 | 70.3 ± 5.4 | 81.6 ± 5.0 |
-| Reacher | **86.0 ± 6.3** | 84.5 ± 5.6 | 84.9 ± 2.3 | 80.7 ± 5.9 | 84.8 ± 5.4 | 84.0 ± 4.5 ‡ |
-| TwoRoom | 90.9 ± 4.1 | 73.1 ± 37.6 † | 92.4 ± 2.7 | 93.6 ± 2.8 | 91.6 ± 3.4 | **94.0 ± 3.8** ‡ |
+| Push-T | 90.0 ± 5.7 | 88.5 ± 5.4 | 89.2 ± 3.8 | 84.0 ± 8.7 | 87.9 ± 5.2 | **94.5 ± 3.0** |
+| Cube | 66.5 ± 6.3 | **81.9 ± 4.9** | 77.3 ± 5.9 | 70.3 ± 6.6 | 70.3 ± 5.4 | 81.6 ± 5.0 |
+| Reacher | **86.0 ± 6.3** | 84.5 ± 5.8 | 84.9 ± 2.4 | 80.7 ± 5.9 | 84.8 ± 5.4 | 84.0 ± 4.5 ‡ |
+| TwoRoom | 90.9 ± 4.1 | 73.1 ± 38.9 † | 92.4 ± 2.7 | 93.6 ± 2.8 | 91.6 ± 3.4 | **94.0 ± 3.8** ‡ |
+| Scene | 57.7 ± 8.0 | 60.0 ± 3.1 | 60.9 ± 5.1 | 55.5 ± 8.1 | 58.0 ± 5.5 | **80.7 ± 4.2** |
 
 Σ-LeWM per training seed (3072 / 1 / 2): Push-T 95.2 / 93.2 / 95.2, Cube 82.4 / 80.0 / 82.4,
 Reacher — / 82.8 / 85.2, TwoRoom — / 94.0 / 94.0. ‡ seeds 1 and 2 only. Σ-LeWM leads on
