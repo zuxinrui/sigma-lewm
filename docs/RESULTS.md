@@ -171,9 +171,73 @@ RC-aux checkpoint). 3 training seeds x 5 planner seeds (n = 15), h5 CEM30, sampl
 Swapping the reproduced seed-3072 run for the released checkpoint moves no cell by more than
 one point, so the pipeline and the released recipe agree.
 
+## Main table over three training seeds
+
+Every cell pools training seeds x 5 planner seeds (50 episodes each, h5 CEM30), sample sd.
+LeWM, Sub-JEPA and RC-aux as in the sections above; SMWM and AC-MTM from the first table.
+Σ-LeWM is A7 at epoch 10 of a 10-epoch run. On TwoRoom and Reacher its seed-3072 checkpoints
+were trained off-cluster, so those two cells pool seeds 1 and 2 only (n = 10).
+
+| Task | LeWM | SMWM | AC-MTM | Sub-JEPA | RC-aux | Σ-LeWM |
+|---|---|---|---|---|---|---|
+| Push-T | 90.0 ± 5.7 | 88.5 ± 5.2 | 89.2 ± 3.6 | 84.0 ± 8.7 | 87.9 ± 5.2 | **94.5 ± 3.0** |
+| Cube | 66.5 ± 6.3 | **81.9 ± 4.7** | 77.3 ± 5.7 | 70.3 ± 6.6 | 70.3 ± 5.4 | 81.6 ± 5.0 |
+| Reacher | **86.0 ± 6.3** | 84.5 ± 5.6 | 84.9 ± 2.3 | 80.7 ± 5.9 | 84.8 ± 5.4 | 84.0 ± 4.5 ‡ |
+| TwoRoom | 90.9 ± 4.1 | 73.1 ± 37.6 † | 92.4 ± 2.7 | 93.6 ± 2.8 | 91.6 ± 3.4 | **94.0 ± 3.8** ‡ |
+
+Σ-LeWM per training seed (3072 / 1 / 2): Push-T 95.2 / 93.2 / 95.2, Cube 82.4 / 80.0 / 82.4,
+Reacher — / 82.8 / 85.2, TwoRoom — / 94.0 / 94.0. ‡ seeds 1 and 2 only. Σ-LeWM leads on
+Push-T and TwoRoom, ties SMWM on Cube (0.3 apart, sd 5) and is within noise of the pack on Reacher.
+
+## Loss-weight ablation (Table 2) over three training seeds
+
+Push-T, the A7 recipe with one weight scaled 0.5x or 2x (backward = FMCA 0.05 / 0.1 / 0.2,
+inverse = DCL-IDM 0.025 / 0.05 / 0.1, SIGReg 0.045 / 0.09 / 0.18), 10 epochs, epoch 10.
+3 training seeds x 5 planner seeds (n = 15). Paper values in brackets.
+
+fc-h10 (h=10, full commit, goal +25, budget 100: the protocol of the paper's numbers):
+
+| | 0.5x | 1x | 2x |
+|---|---|---|---|
+| inverse | 85.6 ± 4.7 (82) | 86.3 ± 4.5 (90) | 88.9 ± 4.4 (87) |
+| backward | 84.8 ± 4.5 (86) | 86.3 ± 4.5 (90) | 84.4 ± 6.9 (82) |
+| SIGReg | 86.8 ± 4.1 (88) | 86.3 ± 4.5 (90) | 80.8 ± 5.7 (76) |
+
+h5 (the main-table protocol):
+
+| | 0.5x | 1x | 2x |
+|---|---|---|---|
+| inverse | 93.6 ± 4.2 | 94.5 ± 3.0 | 94.3 ± 2.7 |
+| backward | 93.6 ± 3.0 | 94.5 ± 3.0 | 94.0 ± 3.4 |
+| SIGReg | 91.1 ± 4.7 | 94.5 ± 3.0 | 94.1 ± 4.0 |
+
+With three seeds the recipe is flat to 0.5x-2x on every weight except SIGReg 2x at fc-h10
+(-5.5, the paper's -14 direction). The paper's 1x (90) is above all three seeds here (84.0 /
+87.2 / 87.6); its 0.5x/2x dips for inverse and backward are within one sd. Inverse 2x reaches
+88.9, so the source record's 38 does not reproduce. Under h5 every cell is 91-95.
+
+## Phase-JEPA on Reacher
+
+le-wm's DynamicsJEPA (ported as `slewm.models.dynamics`, zero-initialised velocity pathways and
+`second_order_gain`), the LeWM recipe with the model swapped, seed 1, 10 epochs, paired with
+LeWM seed 1 (same data, schedule and shared initial weights). 5 planner seeds x 50, h5 CEM30.
+
+| | success | final val pred / SIGReg |
+|---|---|---|
+| LeWM seed 1 | **86.0 ± 4.0** | 0.024 / 1.7 |
+| latent_velocity | 84.0 ± 3.2 | 0.025 / 1.6 |
+| second_order | 84.0 ± 3.7 | 0.020 / 1.9 |
+| obs_velocity | 66.0 ± 7.1 | 0.001 / 1.7 |
+
+No variant beats LeWM on its own seed. second_order started with a high SIGReg (76.5 after epoch
+1, 28 after epoch 2) and settled at LeWM's level by epoch 5; no persistence collapse.
+obs_velocity drives the validation prediction loss to 0.001, 20x below LeWM, and loses 20
+points: with the frame difference as an input channel the latent becomes easy to predict
+without carrying what the planner needs. One training seed; read latent_velocity and
+second_order as ties.
+
 ## Pending
 
-- **Σ-LeWM on the four standard tasks**: checkpoints available, not yet evaluated.
 - **Sub-JEPA and RC-aux on Gear and Cube-Stacking**, 3 training seeds, 20 epochs: training.
   Evaluation needs Isaac Lab on an RTX GPU (the sealed `test30` pools, 30 cases per planner
   seed), so it runs outside the cluster.
