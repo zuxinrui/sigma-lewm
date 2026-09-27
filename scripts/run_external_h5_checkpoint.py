@@ -373,7 +373,7 @@ def _run_franka(
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--task", required=True, choices=("gear", "franka"))
-    parser.add_argument("--arm", required=True, choices=("L0", "L1", "C0", "C1", "AC-MTM", "SMWM"))
+    parser.add_argument("--arm", required=True, choices=("L0", "L1", "C0", "C1", "AC-MTM", "SMWM", "Sub-JEPA", "RC-aux"))
     parser.add_argument("--checkpoint", type=Path, required=True)
     parser.add_argument("--epoch", type=int, required=True)
     parser.add_argument("--split", choices=("dev", "test"), default="dev")
