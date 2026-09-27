@@ -1,0 +1,54 @@
+# Janus-OS on OGBench-Scene, training seed 1: the S1 arm of the Phase-SIAM quick look (2026-09-27).
+# le-wm's paper_gear_janus_os recipe on the standard Scene windows (history 3 + 1 prediction):
+# the LeWM architecture (the Scene LeWM of the main table: model/lewm, 10 epochs), a backward
+# predictor built like the forward one (same AR transformer config and pred_proj, run on the
+# time-reversed window), one-step MSE to a stop-gradient target in both directions, DCL-IDM 1.0 on
+# the raw action, no SIGReg, no sphere, the released MSE planning cost.
+defaults:
+  - lewm
+  - override data: scene
+  - _self_
+
+output_model_name: paper_scene_janus_osB_seed3072
+subdir: paper_phase_siam/scene/janus_osB_seed3072
+seed: 1
+
+model:
+  _target_: slewm.models.siam.SiamJEPA
+  siam_embed_dim: ${embed_dim}
+  # Replaced from the dataset contract before model construction.
+  siam_action_input_dim: 1
+  siam_sphere: false
+  siam_backward_bottleneck: 0.25
+  siam_inverse: dcl_idm
+  siam_projection_dim: 64
+  siam_cosine_planning: false
+  siam_backward_arch: transformer
+  siam_backward_predictor_cfg: ${model.predictor}
+  siam_backward_proj_cfg: ${model.pred_proj}
+
+loss:
+  sigreg:
+    weight: 0.0
+  siam:
+    enabled: true
+    backward_recipe: one_step
+    distance: mse
+    stop_gradient: true
+    random_horizon: false
+    context_drop_probability: 0.0
+    diffusion_sigma_max: 0.0
+    teacher_weight: 1.0
+    autoregressive_weight: 0.0
+    autoregressive_warmup_epochs: 2
+    forward_weight: 0.5
+    backward_weight: 0.5
+    inverse_weight: 1.0
+    dcl_idm_temperature: 0.1
+    dcl_idm_duplicate_cosine: 0.98
+    dcl_idm_symmetric: false
+
+# The Scene budget of the main table: 10 epochs, no early stopping, evaluated at epoch 10.
+trainer:
+  min_epochs: 10
+  max_epochs: 10

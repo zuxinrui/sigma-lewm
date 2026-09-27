@@ -23,6 +23,7 @@ from slewm.training.utilities import (
 from slewm.objectives.forward import aligned_horizon_loss
 from slewm.objectives.task_constraints import action_contrastive_horizon_loss, franka_terminal_listwise_loss
 from slewm.objectives.triadic import aligned_champion_horizon_loss
+from slewm.objectives.siam import siam_horizon_loss
 from slewm.baselines.inverse import external_inverse_horizon_loss, external_inverse_term
 from slewm.baselines.auxiliary import reachability_aux_loss
 from slewm.training.stopping import LossCompositeEarlyStopping
@@ -94,6 +95,43 @@ def lejepa_forward(self, batch, stage, cfg):
     # LeWM loss
     output["pred_loss"] = (pred_emb - tgt_emb).pow(2).mean()
     output["sigreg_loss"]= self.sigreg(emb.transpose(0, 1))
+
+    # siam-jepa / Janus on the standard windows (e.g. OGBench-Scene): the objective of le-wm's
+    # siam branch on all T states and their T - 1 transitions of the window, replacing the LeWM
+    # prediction loss. SIGReg stays at loss.sigreg.weight (0 in the siam configs).
+    siam_cfg = cfg.loss.get("siam", {})
+    if bool(getattr(self.model, "siam_jepa", False)) != bool(siam_cfg.get("enabled", False)):
+        raise ValueError("SiamJEPA and loss.siam.enabled go together")
+    if bool(siam_cfg.get("enabled", False)):
+        siam_out = siam_horizon_loss(
+                self.model,
+                emb,
+                act_emb[:, :-1],
+                batch["action"][:, :-1],
+                max_history=int(cfg.history_size),
+                current_epoch=int(self.current_epoch),
+                training=stage == "train",
+                random_horizon=bool(siam_cfg.get("random_horizon", True)),
+                context_drop_probability=float(siam_cfg.get("context_drop_probability", 0.1)),
+                diffusion_sigma_max=float(siam_cfg.get("diffusion_sigma_max", 0.3)),
+                teacher_weight=float(siam_cfg.get("teacher_weight", 1.0)),
+                autoregressive_weight=float(siam_cfg.get("autoregressive_weight", 1.0)),
+                autoregressive_warmup_epochs=int(siam_cfg.get("autoregressive_warmup_epochs", 2)),
+                forward_weight=float(siam_cfg.get("forward_weight", 0.5)),
+                backward_weight=float(siam_cfg.get("backward_weight", 0.5)),
+                inverse_weight=float(siam_cfg.get("inverse_weight", 1.0)),
+                dcl_idm_temperature=float(siam_cfg.get("dcl_idm_temperature", 0.1)),
+                dcl_idm_duplicate_cosine=float(siam_cfg.get("dcl_idm_duplicate_cosine", 0.98)),
+                dcl_idm_symmetric=bool(siam_cfg.get("dcl_idm_symmetric", False)),
+                distance=str(siam_cfg.get("distance", "cos")),
+                stop_gradient=bool(siam_cfg.get("stop_gradient", True)),
+                backward_recipe=str(siam_cfg.get("backward_recipe", "one_step")),
+                forward_stop_gradient=siam_cfg.get("forward_stop_gradient", None),
+                backward_contrastive_weight=float(siam_cfg.get("backward_contrastive_weight", 0.0)),
+                backward_contrastive_temperature=float(siam_cfg.get("backward_contrastive_temperature", 0.1)),
+        )
+        for key, value in siam_out.items():
+            output[key] = value
     output["loss"] = output["pred_loss"] + lambd * output["sigreg_loss"]
 
     # SMWM / AC-MTM on the standard benchmarks: the configs zero SIGReg and rely on
@@ -159,7 +197,41 @@ def aligned_h5_forward(self, batch, stage, cfg):
         external_cfg.get("enabled", False)
     ):
         raise ValueError("champion and external inverse objectives are mutually exclusive")
-    if bool(external_cfg.get("enabled", False)):
+    siam_cfg = cfg.loss.get("siam", {})
+    if bool(getattr(self.model, "siam_jepa", False)) != bool(siam_cfg.get("enabled", False)):
+        raise ValueError("SiamJEPA and loss.siam.enabled go together")
+    if bool(siam_cfg.get("enabled", False)):
+        if bool(champion_cfg.get("enabled", False)) or bool(external_cfg.get("enabled", False)):
+            raise ValueError("siam, champion and external inverse objectives are mutually exclusive")
+        # le-wm train.py's siam branch (19e4f60), argument for argument.
+        prediction = siam_horizon_loss(
+            self.model,
+            emb,
+            act_emb,
+            batch["action"],
+            max_history=int(cfg.history_size),
+            current_epoch=int(self.current_epoch),
+            training=stage == "train",
+            random_horizon=bool(siam_cfg.get("random_horizon", True)),
+            context_drop_probability=float(siam_cfg.get("context_drop_probability", 0.1)),
+            diffusion_sigma_max=float(siam_cfg.get("diffusion_sigma_max", 0.3)),
+            teacher_weight=float(siam_cfg.get("teacher_weight", 1.0)),
+            autoregressive_weight=float(siam_cfg.get("autoregressive_weight", 1.0)),
+            autoregressive_warmup_epochs=int(siam_cfg.get("autoregressive_warmup_epochs", 2)),
+            forward_weight=float(siam_cfg.get("forward_weight", 0.5)),
+            backward_weight=float(siam_cfg.get("backward_weight", 0.5)),
+            inverse_weight=float(siam_cfg.get("inverse_weight", 1.0)),
+            dcl_idm_temperature=float(siam_cfg.get("dcl_idm_temperature", 0.1)),
+            dcl_idm_duplicate_cosine=float(siam_cfg.get("dcl_idm_duplicate_cosine", 0.98)),
+            dcl_idm_symmetric=bool(siam_cfg.get("dcl_idm_symmetric", False)),
+            distance=str(siam_cfg.get("distance", "cos")),
+            stop_gradient=bool(siam_cfg.get("stop_gradient", True)),
+            backward_recipe=str(siam_cfg.get("backward_recipe", "one_step")),
+            forward_stop_gradient=siam_cfg.get("forward_stop_gradient", None),
+            backward_contrastive_weight=float(siam_cfg.get("backward_contrastive_weight", 0.0)),
+            backward_contrastive_temperature=float(siam_cfg.get("backward_contrastive_temperature", 0.1)),
+        )
+    elif bool(external_cfg.get("enabled", False)):
         prediction = external_inverse_horizon_loss(
             self.model,
             emb,
@@ -501,6 +573,9 @@ def run(cfg):
         )
 
     transforms = [get_img_preprocessor(source='pixels', target='pixels', img_size=cfg.img_size)]
+    if bool(getattr(dataset, "previous_frame", False)):
+        # The previous observation of a two-frame encoder gets the same image preprocessing.
+        transforms.append(get_img_preprocessor(source='pixels_prev', target='pixels_prev', img_size=cfg.img_size))
 
     context_keys = set(cfg.data.get("context_keys", []))
     no_normalize_keys = context_keys | set(
@@ -559,6 +634,10 @@ def run(cfg):
             )
         else:
             cfg.model.action_encoder.input_dim = (
+                cfg.data.dataset.frameskip * dataset.get_dim("action")
+            )
+        if "siam_action_input_dim" in cfg.model:
+            cfg.model.siam_action_input_dim = int(
                 cfg.data.dataset.frameskip * dataset.get_dim("action")
             )
         if "champion_action_input_dim" in cfg.model:

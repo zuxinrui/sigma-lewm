@@ -1,0 +1,9 @@
+# Janus-OS (le-wm paper_gear_janus_os), training seed 1: the S1 arm of the Phase-SIAM quick look
+# (2026-09-27). LeWM architecture, backward predictor built like the forward one, one-step MSE to a
+# stop-gradient target in both directions, DCL-IDM 1.0, no SIGReg, no sphere.
+defaults:
+  - paper_gear_janus_os
+  - _self_
+seed: 1
+output_model_name: paper_gear_janus_osB_seed3072
+subdir: paper_new_tasks_v3/gear/janus_osB_seed3072

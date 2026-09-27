@@ -1,0 +1,14 @@
+# Phase-SIAM S2 on OGBench-Scene, training seed 1 (2026-09-27): paper_scene_janus_osB with a
+# two-frame encoder input [o_t, o_t - o_(t-1)] (six channels; the second half of the patch embedding starts at
+# zero, so at initialisation this is S1). Each window loads one extra leading frame, used only as the
+# predecessor of its first state. Planning passes [o_(t-1), o_t] and [o_(g-1), o_g].
+defaults:
+  - paper_scene_janus_osB
+  - _self_
+output_model_name: paper_scene_janus_os_v2B_seed3072
+subdir: paper_phase_siam/scene/janus_os_v2B_seed3072
+model:
+  siam_input_mode: obs_velocity
+data:
+  dataset:
+    num_steps: ${eval:'${num_preds} + ${history_size} + 1'}

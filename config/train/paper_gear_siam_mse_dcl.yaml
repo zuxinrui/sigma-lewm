@@ -1,0 +1,15 @@
+# siam-jepa ablation (2026-09-26): siam_dcl with the SimSiam distance replaced by the LeWM squared
+# error, mean((p - stopgrad(z))^2), on unconstrained states (no sphere) and the released MSE planning
+# cost. Stop-gradient on the target and the DCL-IDM inverse are kept; SIGReg stays off.
+defaults:
+  - paper_gear_siam_dcl
+  - _self_
+output_model_name: paper_gear_siam_mse_dcl_seed3072
+subdir: paper_new_tasks_v3/gear/siam_mse_dcl_seed3072
+model:
+  siam_sphere: false
+  siam_cosine_planning: false
+loss:
+  siam:
+    distance: mse
+    stop_gradient: true

@@ -782,6 +782,18 @@ def run(cfg: DictConfig):
     eval_episodes = dataset.get_row_data(random_episode_indices)[col_name]
     eval_start_idx = dataset.get_row_data(random_episode_indices)["step_idx"]
 
+    if getattr(model, "siam_input_mode", "single") != "single":
+        # Two-frame encoder (Phase-SIAM): the model sees [o_(t-1), o_t] and [o_(g-1), o_g].
+        if planner != "cem":
+            raise ValueError("two-frame encoders are wired for the cem planner only")
+        from slewm.planning.two_frame_policy import TwoFramePolicy, previous_frames
+        start_previous, goal_previous = previous_frames(
+            dataset, np.asarray(eval_episodes), np.asarray(eval_start_idx),
+            goal_offset=int(cfg.eval.goal_offset_steps), block=int(cfg.plan_config.action_block))
+        policy_obj = TwoFramePolicy(solver=solver, config=config, process=process, transform=transform,
+                                    initial_previous=start_previous, goal_previous=goal_previous)
+        print(f"[eval_ext] two-frame encoder ({model.siam_input_mode}): previous frames one block back")
+
     world.set_policy(policy_obj)
     results_path.mkdir(parents=True, exist_ok=True)
     t0 = time.time()

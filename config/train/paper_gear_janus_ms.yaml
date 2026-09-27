@@ -1,0 +1,16 @@
+# Janus-JEPA, multi-step (Janus-MS), 2026-09-26: siam_mse_dcl with a backward predictor built exactly
+# like the forward one (6-layer AR transformer + pred_proj, run on time-reversed windows), and the
+# Sigma-LeWM-style multi-step recipe on both directions: teacher forcing with context drop plus a noisy
+# autoregressive rollout with warm-up and a random horizon. MSE to a stop-gradient target, DCL-IDM 1.0.
+defaults:
+  - paper_gear_siam_mse_dcl
+  - _self_
+output_model_name: paper_gear_janus_ms_seed3072
+subdir: paper_new_tasks_v3/gear/janus_ms_seed3072
+model:
+  siam_backward_arch: transformer
+  siam_backward_predictor_cfg: ${model.predictor}
+  siam_backward_proj_cfg: ${model.pred_proj}
+loss:
+  siam:
+    backward_recipe: multi_step

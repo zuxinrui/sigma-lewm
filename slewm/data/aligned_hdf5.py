@@ -38,6 +38,7 @@ class AlignedControlHDF5Dataset(torch.utils.data.Dataset):
         keys_to_load: list[str] | None = None,
         transform: Callable[[dict], dict] | None = None,
         required_action_alignment: str | None = None,
+        previous_frame: bool = False,
     ) -> None:
         super().__init__()
         if transitions < 1:
@@ -67,6 +68,10 @@ class AlignedControlHDF5Dataset(torch.utils.data.Dataset):
         self.frameskip = int(frameskip)
         self.clip_stride = int(clip_stride)
         self.goal_window_repeat = int(goal_window_repeat)
+        # Two-frame encoders (Phase-SIAM): also return the observation one block before the first
+        # state as "pixels_prev" [1, C, H, W]. At an episode's first rows there is none; the first
+        # state is repeated (zero velocity; the persistent-start episodes begin at rest).
+        self.previous_frame = bool(previous_frame)
         self.transform = transform
         self.h5_file: h5py.File | None = None
         self._keys = list(dict.fromkeys(keys_to_load or ["pixels", "action"]))
@@ -210,6 +215,13 @@ class AlignedControlHDF5Dataset(torch.utils.data.Dataset):
             ):
                 tensor = tensor.permute(0, 3, 1, 2)
             sample[key] = tensor
+        if self.previous_frame:
+            previous_row = max(int(self.offsets[episode]), start - self.frameskip)
+            value = np.asarray(self.h5_file["pixels"][[previous_row]])
+            tensor = torch.from_numpy(value)
+            if tensor.ndim == 4 and tensor.shape[-1] in (1, 3):
+                tensor = tensor.permute(0, 3, 1, 2)
+            sample["pixels_prev"] = tensor
 
         # Training transforms fit raw-action statistics, so apply them before
         # concatenating each block.  This exactly matches the legacy HDF5 reader.

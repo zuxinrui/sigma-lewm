@@ -1,0 +1,18 @@
+# Phase-SIAM S2 on Gear, training seed 1 (2026-09-27): paper_gear_janus_osB with a two-frame encoder
+# input [o_t, o_t - o_(t-1)] (six channels; the second half of the patch embedding starts at zero, so at
+# initialisation this is S1). Each clip also carries the observation one block before its first
+# state (pixels_prev; repeated first state at an episode start). Planning passes [o_(t-1), o_t] and
+# [o_(g-1), o_g].
+defaults:
+  - paper_gear_janus_os
+  - _self_
+seed: 1
+output_model_name: paper_gear_janus_os_v2B_seed3072
+subdir: paper_phase_siam/gear/janus_os_v2B_seed3072
+model:
+  siam_input_mode: obs_velocity
+data:
+  dataset:
+    previous_frame: true
+  validation_dataset:
+    previous_frame: true
