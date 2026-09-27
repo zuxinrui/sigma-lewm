@@ -177,21 +177,22 @@ Every cell pools training seeds x 5 planner seeds (50 episodes each, h5 CEM30), 
 All cells recomputed from the raw result rows with the sample sd (SMWM and AC-MTM therefore
 differ from the first table in the last digit). Scene RC-aux is the authors' objective.
 Σ-LeWM is A7 at epoch 10 of a 10-epoch run. On TwoRoom and Reacher its seed-3072 checkpoints
-were trained off-cluster, so those two cells pool seeds 1 and 2 only (n = 10).
+were trained off-cluster (le-wm `t3_ours_{tworoom,reacher}_plan`); their Table 1 evaluations
+(TwoRoom 84/92/88/94/88, Reacher 80/90/80/88/92) come with the upload and are pooled here.
 
 | Task | LeWM | SMWM | AC-MTM | Sub-JEPA | RC-aux | Σ-LeWM |
 |---|---|---|---|---|---|---|
 | Push-T | 90.0 ± 5.7 | 88.5 ± 5.4 | 89.2 ± 3.8 | 84.0 ± 8.7 | 87.9 ± 5.2 | **94.5 ± 3.0** |
 | Cube | 66.5 ± 6.3 | **81.9 ± 4.9** | 77.3 ± 5.9 | 70.3 ± 6.6 | 70.3 ± 5.4 | 81.6 ± 5.0 |
-| Reacher | **86.0 ± 6.3** | 84.5 ± 5.8 | 84.9 ± 2.4 | 80.7 ± 5.9 | 84.8 ± 5.4 | 84.0 ± 4.5 ‡ |
-| TwoRoom | 90.9 ± 4.1 | 73.1 ± 38.9 † | 92.4 ± 2.7 | 93.6 ± 2.8 | 91.6 ± 3.4 | **94.0 ± 3.8** ‡ |
+| Reacher | **86.0 ± 6.3** | 84.5 ± 5.8 | 84.9 ± 2.4 | 80.7 ± 5.9 | 84.8 ± 5.4 | 84.7 ± 4.8 |
+| TwoRoom | 90.9 ± 4.1 | 73.1 ± 38.9 † | 92.4 ± 2.7 | **93.6 ± 2.8** | 91.6 ± 3.4 | 92.4 ± 4.4 |
 | Scene | 57.7 ± 8.0 | 60.0 ± 3.1 | 60.9 ± 5.1 | 55.5 ± 8.1 | 58.0 ± 5.5 | **80.7 ± 4.2** |
 
 Raw rows (one per evaluation, 440): `docs/results/main_table_raw.tsv`; the checkpoint behind
 each training seed: `docs/results/main_table_checkpoints.tsv`.
 
 Σ-LeWM per training seed (3072 / 1 / 2): Push-T 95.2 / 93.2 / 95.2, Cube 82.4 / 80.0 / 82.4,
-Reacher — / 82.8 / 85.2, TwoRoom — / 94.0 / 94.0. ‡ seeds 1 and 2 only. Σ-LeWM leads on
+Reacher 86.0 / 82.8 / 85.2, TwoRoom 89.2 / 94.0 / 94.0. Σ-LeWM leads on
 Push-T and TwoRoom, ties SMWM on Cube (0.3 apart, sd 5) and is within noise of the pack on Reacher.
 
 ## Loss-weight ablation (Table 2) over three training seeds
@@ -240,6 +241,102 @@ obs_velocity drives the validation prediction loss to 0.001, 20x below LeWM, and
 points: with the frame difference as an input channel the latent becomes easy to predict
 without carrying what the planner needs. One training seed; read latent_velocity and
 second_order as ties.
+
+## Figure 4: search budget (3 training x 5 planner seeds)
+
+Table 1's protocol (h = 5, goal +25, budget 50, 300 samples, top 30, 50 episodes, planner seeds
+0-4) with CEM iterations 8, 4 and 2, on the 72 Table 1 checkpoints of
+`docs/results/fig345_checkpoints.tsv` (4 tasks x 6 arms x 3 training seeds): 1,080 evaluations,
+`docs/results/fig4_budget_raw.tsv`. The CEM30 row is Table 1. Mean ± sample sd over n = 15.
+
+**Push-T**
+
+| CEM | LeWM | Sub-JEPA | RC-aux | SMWM | AC-MTM | Σ-LeWM |
+|---|---|---|---|---|---|---|
+| 30 (Table 1) | 90.0 ± 5.7 | 84.0 ± 8.7 | 87.9 ± 5.2 | 88.5 ± 5.4 | 89.2 ± 3.8 | 94.5 ± 3.0 |
+| 8 | 84.0 ± 6.7 | 75.3 ± 10.5 | 81.9 ± 2.8 | 75.6 ± 5.2 | 81.6 ± 7.5 | 91.5 ± 3.7 |
+| 4 | 67.5 ± 6.8 | 58.0 ± 12.3 | 62.0 ± 5.8 | 58.9 ± 7.3 | 64.5 ± 5.7 | 79.3 ± 5.5 |
+| 2 | 43.6 ± 5.1 | 33.9 ± 8.6 | 43.9 ± 4.8 | 44.1 ± 3.9 | 46.8 ± 6.8 | 60.3 ± 6.7 |
+
+**Cube**
+
+| CEM | LeWM | Sub-JEPA | RC-aux | SMWM | AC-MTM | Σ-LeWM |
+|---|---|---|---|---|---|---|
+| 30 (Table 1) | 66.5 ± 6.3 | 70.3 ± 6.6 | 70.3 ± 5.4 | 81.9 ± 4.9 | 77.3 ± 5.9 | 81.6 ± 5.0 |
+| 8 | 66.4 ± 7.1 | 73.5 ± 7.2 | 72.3 ± 4.7 | 80.7 ± 6.7 | 77.9 ± 6.1 | 79.1 ± 5.5 |
+| 4 | 65.6 ± 6.7 | 70.7 ± 5.5 | 70.5 ± 3.8 | 74.0 ± 6.6 | 72.1 ± 6.9 | 70.9 ± 6.2 |
+| 2 | 49.6 ± 3.7 | 54.8 ± 3.4 | 53.7 ± 4.2 | 59.7 ± 5.5 | 59.6 ± 3.9 | 56.3 ± 3.9 |
+
+**Reacher**
+
+| CEM | LeWM | Sub-JEPA | RC-aux | SMWM | AC-MTM | Σ-LeWM |
+|---|---|---|---|---|---|---|
+| 30 (Table 1) | 86.0 ± 6.3 | 80.7 ± 5.9 | 84.8 ± 5.4 | 84.5 ± 5.8 | 84.9 ± 2.4 | 84.7 ± 4.8 |
+| 8 | 79.6 ± 3.0 | 75.7 ± 6.7 | 78.8 ± 4.9 | 83.7 ± 4.1 | 83.6 ± 3.1 | 79.7 ± 4.3 |
+| 4 | 76.9 ± 5.9 | 72.5 ± 6.9 | 75.9 ± 6.8 | 77.1 ± 4.5 | 80.1 ± 4.3 | 76.4 ± 5.0 |
+| 2 | 76.5 ± 4.8 | 70.7 ± 7.2 | 76.5 ± 4.4 | 76.5 ± 5.0 | 78.3 ± 5.5 | 75.6 ± 5.2 |
+
+**TwoRoom**
+
+| CEM | LeWM | Sub-JEPA | RC-aux | SMWM | AC-MTM | Σ-LeWM |
+|---|---|---|---|---|---|---|
+| 30 (Table 1) | 90.9 ± 4.1 | 93.6 ± 2.8 | 91.6 ± 3.4 | 73.1 ± 38.9 | 92.4 ± 2.7 | 92.4 ± 4.4 |
+| 8 | 90.7 ± 4.8 | 93.3 ± 3.8 | 91.6 ± 4.8 | 73.7 ± 38.2 | 92.8 ± 2.8 | 91.5 ± 4.7 |
+| 4 | 87.9 ± 4.9 | 93.1 ± 3.8 | 90.9 ± 4.9 | 74.8 ± 36.4 | 91.2 ± 3.3 | 91.2 ± 6.1 |
+| 2 | 82.5 ± 5.5 | 89.3 ± 3.8 | 84.9 ± 6.7 | 72.5 ± 37.6 | 90.1 ± 2.6 | 87.6 ± 9.1 |
+
+At CEM 8, Σ-LeWM loses 3 points on Push-T, where the other arms lose 6-13; at CEM 2 it is 13
+points above the next arm. On Cube, SMWM and AC-MTM degrade least; on Reacher and TwoRoom all
+arms are within noise of each other at every budget.
+
+## Figure 3: planning horizon (3 training x 5 planner seeds)
+
+CEM30, h in {3, 10, 15}, goal 5h env steps, budget 10h, receding horizon h (full commit); h = 5
+is Table 1. Same 72 checkpoints: 1,080 evaluations, `docs/results/fig3_horizon_raw.tsv`.
+
+**Push-T**
+
+| h | LeWM | Sub-JEPA | RC-aux | SMWM | AC-MTM | Σ-LeWM |
+|---|---|---|---|---|---|---|
+| 3 | 97.6 ± 2.6 | 95.9 ± 4.0 | 96.0 ± 2.6 | 96.0 ± 1.9 | 95.5 ± 3.2 | 98.4 ± 1.9 |
+| 5 (Table 1) | 90.0 ± 5.7 | 84.0 ± 8.7 | 87.9 ± 5.2 | 88.5 ± 5.4 | 89.2 ± 3.8 | 94.5 ± 3.0 |
+| 10 | 34.4 ± 6.9 | 32.1 ± 10.2 | 28.5 ± 5.8 | 37.6 ± 5.6 | 42.8 ± 8.4 | 54.1 ± 6.8 |
+| 15 | 14.9 ± 4.4 | 10.7 ± 7.6 | 8.7 ± 3.8 | 15.6 ± 4.8 | 14.8 ± 3.8 | 20.7 ± 5.5 |
+
+**Cube**
+
+| h | LeWM | Sub-JEPA | RC-aux | SMWM | AC-MTM | Σ-LeWM |
+|---|---|---|---|---|---|---|
+| 3 | 89.6 ± 3.6 | 93.9 ± 2.7 | 94.5 ± 1.8 | 99.3 ± 1.2 | 98.7 ± 1.6 | 96.1 ± 2.7 |
+| 5 (Table 1) | 66.5 ± 6.3 | 70.3 ± 6.6 | 70.3 ± 5.4 | 81.9 ± 4.9 | 77.3 ± 5.9 | 81.6 ± 5.0 |
+| 10 | 47.5 ± 6.7 | 45.3 ± 8.2 | 46.9 ± 7.0 | 55.3 ± 7.9 | 50.8 ± 5.6 | 52.9 ± 9.8 |
+| 15 | 47.1 ± 3.7 | 47.7 ± 5.8 | 44.7 ± 3.6 | 62.5 ± 6.3 | 51.9 ± 5.4 | 55.7 ± 5.7 |
+
+**Reacher**
+
+| h | LeWM | Sub-JEPA | RC-aux | SMWM | AC-MTM | Σ-LeWM |
+|---|---|---|---|---|---|---|
+| 3 | 84.5 ± 5.2 | 82.4 ± 6.3 | 84.5 ± 5.8 | 84.9 ± 4.7 | 81.6 ± 5.9 | 85.6 ± 5.0 |
+| 5 (Table 1) | 86.0 ± 6.3 | 80.7 ± 5.9 | 84.8 ± 5.4 | 84.5 ± 5.8 | 84.9 ± 2.4 | 84.7 ± 4.8 |
+| 10 | 77.2 ± 7.5 | 69.6 ± 6.7 | 76.9 ± 7.3 | 77.7 ± 6.4 | 73.9 ± 6.3 | 75.9 ± 5.2 |
+| 15 | 65.7 ± 7.4 | 65.9 ± 8.8 | 69.3 ± 6.1 | 67.5 ± 7.8 | 63.2 ± 5.1 | 68.5 ± 6.9 |
+
+**TwoRoom**
+
+| h | LeWM | Sub-JEPA | RC-aux | SMWM | AC-MTM | Σ-LeWM |
+|---|---|---|---|---|---|---|
+| 3 | 95.3 ± 3.7 | 98.7 ± 1.2 | 96.4 ± 2.9 | 82.8 ± 25.3 | 99.1 ± 1.0 | 96.3 ± 4.7 |
+| 5 (Table 1) | 90.9 ± 4.1 | 93.6 ± 2.8 | 91.6 ± 3.4 | 73.1 ± 38.9 | 92.4 ± 2.7 | 92.4 ± 4.4 |
+| 10 | 62.7 ± 9.0 | 58.3 ± 7.8 | 63.5 ± 5.3 | 68.5 ± 43.8 | 58.3 ± 7.2 | 63.9 ± 5.8 |
+| 15 | 37.3 ± 9.2 | 35.9 ± 9.1 | 43.3 ± 6.7 | 64.0 ± 42.3 | 36.9 ± 5.4 | 43.1 ± 7.7 |
+
+Σ-LeWM's Push-T lead widens with the horizon (h = 10: 54.1 vs 42.8 for the next arm). On Cube,
+SMWM is best at h = 10 and 15. SMWM's TwoRoom sd reflects its collapsed seed 3072 (Table 1 †).
+
+Deviations from `docs/FIG345_PLAN.md`, both figures: three evaluations share one A100 (PAR=3) and
+each job copies its dataset to node-local NVMe, so `wall_seconds` is measured under that sharing
+and is not comparable with the plan's 3090 timings; the evaluation itself is `slewm eval`, as for
+Table 1.
 
 ## Pending
 
