@@ -407,6 +407,7 @@ Deviations from le-wm's scripts (058d998):
 
 ## Pending
 
+- **Phase-SIAM quick look (S1/S2/S3)**: Janus-OS and two-frame encoders on Gear and Scene, seed 1; design and code in `docs/PHASE_SIAM.md`, running.
 - **Sub-JEPA and RC-aux on Gear and Cube-Stacking**, 3 training seeds, 20 epochs: training.
   Evaluation needs Isaac Lab on an RTX GPU (the sealed `test30` pools, 30 cases per planner
   seed), so it runs outside the cluster.
