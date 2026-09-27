@@ -1,0 +1,178 @@
+[
+ {
+  "task": "tworoom",
+  "level": "T0",
+  "threshold": "16.0",
+  "delta_pp": 0.8,
+  "ours_only": 37,
+  "lewm_only": 31,
+  "both": 654,
+  "neither": 28,
+  "mcnemar_p": 0.5446122234192592
+ },
+ {
+  "task": "tworoom",
+  "level": "T1",
+  "threshold": "8.0",
+  "delta_pp": 2.4,
+  "ours_only": 53,
+  "lewm_only": 35,
+  "both": 630,
+  "neither": 32,
+  "mcnemar_p": 0.06934604368506445
+ },
+ {
+  "task": "tworoom",
+  "level": "T2",
+  "threshold": "4.0",
+  "delta_pp": 4.8,
+  "ours_only": 102,
+  "lewm_only": 66,
+  "both": 516,
+  "neither": 66,
+  "mcnemar_p": 0.006751369163205512
+ },
+ {
+  "task": "tworoom",
+  "level": "T3",
+  "threshold": "2.0",
+  "delta_pp": 4.53,
+  "ours_only": 156,
+  "lewm_only": 122,
+  "both": 302,
+  "neither": 170,
+  "mcnemar_p": 0.047597326796524786
+ },
+ {
+  "task": "reacher",
+  "level": "T0",
+  "threshold": "0.05",
+  "delta_pp": -2.27,
+  "ours_only": 65,
+  "lewm_only": 82,
+  "both": 562,
+  "neither": 41,
+  "mcnemar_p": 0.18676536981201722
+ },
+ {
+  "task": "reacher",
+  "level": "T1",
+  "threshold": "0.03",
+  "delta_pp": -0.27,
+  "ours_only": 132,
+  "lewm_only": 134,
+  "both": 349,
+  "neither": 135,
+  "mcnemar_p": 0.951124515830573
+ },
+ {
+  "task": "reacher",
+  "level": "T2",
+  "threshold": "0.02",
+  "delta_pp": -0.93,
+  "ours_only": 138,
+  "lewm_only": 145,
+  "both": 202,
+  "neither": 265,
+  "mcnemar_p": 0.7214131574535902
+ },
+ {
+  "task": "reacher",
+  "level": "T3",
+  "threshold": "0.01",
+  "delta_pp": -1.87,
+  "ours_only": 101,
+  "lewm_only": 115,
+  "both": 39,
+  "neither": 495,
+  "mcnemar_p": 0.37644713102656024
+ },
+ {
+  "task": "pusht",
+  "level": "T0",
+  "threshold": "(20, 20)",
+  "delta_pp": 4.0,
+  "ours_only": 55,
+  "lewm_only": 25,
+  "both": 656,
+  "neither": 14,
+  "mcnemar_p": 0.0010527348573533446
+ },
+ {
+  "task": "pusht",
+  "level": "T1",
+  "threshold": "(15, 15)",
+  "delta_pp": 6.13,
+  "ours_only": 86,
+  "lewm_only": 40,
+  "both": 593,
+  "neither": 31,
+  "mcnemar_p": 5.103265178960252e-05
+ },
+ {
+  "task": "pusht",
+  "level": "T2",
+  "threshold": "(10, 10)",
+  "delta_pp": 11.47,
+  "ours_only": 158,
+  "lewm_only": 72,
+  "both": 438,
+  "neither": 82,
+  "mcnemar_p": 1.429881613042129e-08
+ },
+ {
+  "task": "pusht",
+  "level": "T3",
+  "threshold": "(7, 7)",
+  "delta_pp": 14.8,
+  "ours_only": 211,
+  "lewm_only": 100,
+  "both": 254,
+  "neither": 185,
+  "mcnemar_p": 2.901702311216377e-10
+ },
+ {
+  "task": "cube",
+  "level": "T0",
+  "threshold": "0.04",
+  "delta_pp": 15.07,
+  "ours_only": 123,
+  "lewm_only": 10,
+  "both": 488,
+  "neither": 129,
+  "mcnemar_p": 6.735807262088145e-26
+ },
+ {
+  "task": "cube",
+  "level": "T1",
+  "threshold": "0.02",
+  "delta_pp": 20.13,
+  "ours_only": 177,
+  "lewm_only": 26,
+  "both": 374,
+  "neither": 173,
+  "mcnemar_p": 8.372560247281458e-29
+ },
+ {
+  "task": "cube",
+  "level": "T2",
+  "threshold": "0.01",
+  "delta_pp": 19.2,
+  "ours_only": 176,
+  "lewm_only": 32,
+  "both": 266,
+  "neither": 276,
+  "mcnemar_p": 2.743026013035991e-25
+ },
+ {
+  "task": "cube",
+  "level": "T3",
+  "threshold": "0.005",
+  "delta_pp": 7.6,
+  "ours_only": 79,
+  "lewm_only": 22,
+  "both": 204,
+  "neither": 445,
+  "mcnemar_p": 1.012134755360389e-08
+ }
+]

@@ -339,6 +339,72 @@ each job copies its dataset to node-local NVMe, so `wall_seconds` is measured un
 and is not comparable with the plan's 3090 timings; the evaluation itself is `slewm eval`, as for
 Table 1.
 
+## Figure 5: goal tolerance (3 training x 5 planner seeds)
+
+Table 1's episodes and planner (h5 CEM30, goal +25, budget 50) re-run with termination disabled
+and the native goal error saved at every step (`scripts/goal_tolerance_eval.py`), then re-scored
+offline at four tolerances (`scripts/goal_tolerance_rescore.py`): success at level T = error
+within T at some step of the budget. 72 checkpoints x 5 planner seeds = 360 runs of 50 episodes,
+so each cell pools 750 episodes. Pooled success (%), with Wilson intervals, retention and the
+paired Σ-LeWM-vs-LeWM McNemar tests in `docs/results/fig5_tolerance.tsv` and
+`fig5_tolerance.pairs.json`; the per-step errors are in `fig5_goal_tolerance_npz.tar`
+(`goal_tolerance/<task>_<arm>_ts<training seed>_s<planner seed>.npz`).
+
+**Push-T (px, deg)**
+
+| level | threshold | LeWM | Sub-JEPA | RC-aux | SMWM | AC-MTM | Σ-LeWM |
+|---|---|---|---|---|---|---|---|
+| T0 | (20, 20) | 90.8 | 83.3 | 86.9 | 88.3 | 89.1 | 94.8 |
+| T1 | (15, 15) | 84.4 | 74.7 | 79.5 | 85.1 | 83.5 | 90.5 |
+| T2 | (10, 10) | 68.0 | 56.3 | 57.6 | 71.9 | 72.5 | 79.5 |
+| T3 | (7, 7) | 47.2 | 39.9 | 38.4 | 58.1 | 52.8 | 62.0 |
+
+**Cube (m)**
+
+| level | threshold | LeWM | Sub-JEPA | RC-aux | SMWM | AC-MTM | Σ-LeWM |
+|---|---|---|---|---|---|---|---|
+| T0 | 0.04 | 66.4 | 70.3 | 70.3 | 81.9 | 77.1 | 81.5 |
+| T1 | 0.02 | 53.3 | 57.6 | 54.5 | 72.7 | 66.0 | 73.5 |
+| T2 | 0.01 | 39.7 | 41.9 | 42.0 | 59.3 | 52.8 | 58.9 |
+| T3 | 0.005 | 30.1 | 32.0 | 32.1 | 42.0 | 36.0 | 37.7 |
+
+**Reacher (rad)**
+
+| level | threshold | LeWM | Sub-JEPA | RC-aux | SMWM | AC-MTM | Σ-LeWM |
+|---|---|---|---|---|---|---|---|
+| T0 | 0.05 | 85.9 | 81.7 | 84.5 | 84.3 | 83.6 | 83.6 |
+| T1 | 0.03 | 64.4 | 62.4 | 65.5 | 64.4 | 65.3 | 64.1 |
+| T2 | 0.02 | 46.3 | 44.8 | 47.1 | 46.3 | 47.9 | 45.3 |
+| T3 | 0.01 | 20.5 | 18.3 | 20.4 | 19.2 | 22.3 | 18.7 |
+
+**TwoRoom (px)**
+
+| level | threshold | LeWM | Sub-JEPA | RC-aux | SMWM | AC-MTM | Σ-LeWM |
+|---|---|---|---|---|---|---|---|
+| T0 | 16.0 | 91.3 | 93.7 | 91.9 | 73.6 | 92.4 | 92.1 |
+| T1 | 8.0 | 88.7 | 92.7 | 90.4 | 69.5 | 92.1 | 91.1 |
+| T2 | 4.0 | 77.6 | 82.9 | 79.5 | 63.9 | 84.5 | 82.4 |
+| T3 | 2.0 | 56.5 | 61.2 | 58.4 | 47.6 | 61.5 | 61.1 |
+
+**T0 cross-check against Table 1**, per checkpoint and planner seed (360 pairs): mean difference
+-0.1 points, mean |difference| 1.3 (Cube 0.2, Push-T 1.2, TwoRoom 0.4, Reacher 3.3), at most 10
+points (5 episodes); pooled per task and arm, within 1.3 points. On Push-T, Cube and TwoRoom
+the native success flag equals the error-based T0 on every episode.
+
+Deviations from le-wm's scripts (058d998):
+- The evaluation script is ported to this repository's Table 1 evaluator: same configs, episode
+  draw, CEM seed and model loader (config.json + state dict) as `slewm eval`.
+- Reacher: one env step is `action_repeat` dm_control steps and the native check runs after each
+  of them, while le-wm's script records the error only at the end of the env step and disables
+  the native flag. That missed passes through the goal between env steps: T0 came out 2.8 points
+  below Table 1 on average (4.4 mean |difference|). The port records max_j |dq_j| after every
+  dm_control step and keeps the minimum per env step, which is the native rule exactly; the
+  dynamics are unchanged. All Reacher runs above use it. The first Reacher runs are kept on
+  Snellius (`results/fig345/goal_tolerance_reacher_v1`). The le-wm script has the same
+  granularity, so a local Reacher tolerance run with it reads low by about that much.
+- The final-step column of the TSV is, for Reacher, the best sub-step of the last env step.
+- Three runs share one A100 (PAR=3), so the `wall` values in the npz are under sharing.
+
 ## Pending
 
 - **Sub-JEPA and RC-aux on Gear and Cube-Stacking**, 3 training seeds, 20 epochs: training.

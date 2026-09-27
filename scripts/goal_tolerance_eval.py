@@ -54,6 +54,12 @@ def native_error(task, u):
     if task == "tworoom":     # 224 px image coordinates
         return [float(torch.norm(u.agent_position - u.target_position))]   # px (native: <16)
     if task == "reacher":     # per-joint |qpos - target| in rad
+        # One env step is action_repeat dm_control steps, and the native check runs after each of
+        # them. Report the smallest error over the sub-steps since the last call (recorded by
+        # _record_reacher_substeps), so "error < T at some step" is the native rule exactly.
+        sub = getattr(u, "_sub_err", None)
+        if sub:
+            v = min(sub); sub.clear(); return [v]
         d = np.abs(u.env.physics.data.qpos - u.env.task.target_qpos)
         return [float(d.max())]                             # rad (native: all < 0.05)
     if task == "cube":        # cube centre to mocap target, metres
@@ -61,6 +67,18 @@ def native_error(task, u):
         tar = u._data.mocap_pos[u._cube_target_mocap_ids[0]]
         return [float(np.linalg.norm(obj - tar))]           # m (native: <= 0.04)
     raise ValueError(task)
+
+
+def _record_reacher_substeps(u):
+    """Record max_j |qpos_j - target_j| after every dm_control step inside one env step. Wraps the
+    dm_control env's step without changing it, so the dynamics are untouched."""
+    inner = u.env.step
+    u._sub_err = []
+    def step(action):
+        ts = inner(action)
+        u._sub_err.append(float(np.abs(u.env.physics.data.qpos - u.env.task.target_qpos).max()))
+        return ts
+    u.env.step = step
 
 
 def main():
@@ -115,6 +133,7 @@ def main():
     if a.task == "reacher":   # also stop the dm_control task from ending sub-steps early once inside the tolerance
         for i in range(n):
             world.envs.envs[i].unwrapped.env.task.qpos_threshold = -1.0
+            _record_reacher_substeps(world.envs.envs[i].unwrapped)
     pref = world.infos["pixels"].shape[:2]
     for src in (init_state, goal_state):
         for k, v in src.items():
