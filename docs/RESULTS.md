@@ -193,7 +193,8 @@ each training seed: `docs/results/main_table_checkpoints.tsv`.
 
 Σ-LeWM per training seed (3072 / 1 / 2): Push-T 95.2 / 93.2 / 95.2, Cube 82.4 / 80.0 / 82.4,
 Reacher 86.0 / 82.8 / 85.2, TwoRoom 89.2 / 94.0 / 94.0. Σ-LeWM leads on
-Push-T and TwoRoom, ties SMWM on Cube (0.3 apart, sd 5) and is within noise of the pack on Reacher.
+Push-T and Scene, ties SMWM on Cube (0.3 apart, sd 5) and is within noise of the pack on Reacher
+and TwoRoom (TwoRoom: 92.4 vs Sub-JEPA 93.6, sd 3-4).
 
 ## Loss-weight ablation (Table 2) over three training seeds
 
