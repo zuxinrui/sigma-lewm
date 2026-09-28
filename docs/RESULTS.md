@@ -405,6 +405,30 @@ Deviations from le-wm's scripts (058d998):
 - The final-step column of the TSV is, for Reacher, the best sub-step of the last env step.
 - Three runs share one A100 (PAR=3), so the `wall` values in the npz are under sharing.
 
+## A0: LeWM + multi-step (Reacher, TwoRoom, Scene; 3 training x 5 planner seeds)
+
+A0 is the Σ-LeWM (A7) recipe with the backward (FMCA) and inverse (DCL-IDM) weights at 0: LeWM
+plus the multi-step training (5-step prediction, autoregressive rollout, diffusion forcing,
+SIGReg 0.09). Same pipeline as the Σ-LeWM row: 10 epochs on 2 A100s, epoch 10, h5 CEM30, 5 planner
+seeds x 50 episodes.
+
+| Task | A0 | per training seed (3072 / 1 / 2) | LeWM | Σ-LeWM |
+|---|---|---|---|---|
+| Reacher | 83.6 ± 4.4 | 84.8 / 81.2 / 84.8 | 86.0 ± 6.3 | 84.7 ± 4.8 |
+| TwoRoom | 92.8 ± 4.2 | 91.6 / 93.6 / 93.2 | 90.9 ± 4.1 | 92.4 ± 4.4 |
+| Scene | 53.6 ± 5.9 | 52.8 / 56.8 / 51.2 | 57.7 ± 8.0 | **80.7 ± 4.2** |
+
+Multi-step training alone does not move any of the three tasks: A0 is within noise of LeWM on all
+of them. On Scene, where Σ-LeWM leads by 23 points, the whole gain therefore comes from the
+backward and inverse terms.
+
+Two DDP settings differ from the A7 runs, for A0 only
+(`slewm-frozen/20260927-A0b`, `scripts/slurm/aarms.slurm`): with the FMCA and DCL-IDM weights at 0
+their heads stay in the model without entering the loss, so training uses
+`trainer.strategy=ddp_find_unused_parameters_true`, and the encoder's gradient checkpointing runs
+non-reentrant (`encoder_gc_non_reentrant=true`), because reentrant checkpointing cannot run under
+find_unused_parameters. Neither changes the loss or the updates.
+
 ## Pending
 
 - **Phase-SIAM quick look (S1/S2/S3)**: Janus-OS and two-frame encoders on Gear and Scene, seed 1; design and code in `docs/PHASE_SIAM.md`, running.
