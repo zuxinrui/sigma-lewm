@@ -81,6 +81,8 @@ EFFECTIVE_ACTION_SEMANTICS = "gear_effective_filtered_xyz_yaw_v1"
 LEGACY_ACTION_SEMANTICS = "gear_raw_policy_xyz_rx_ry_rz_v1"
 DEFAULT_MASTER_OFFSETS = (5, 15, 25)
 SUPPORTED_GOAL_OFFSETS = DEFAULT_MASTER_OFFSETS
+# One action block: the real history a context-frame planner receives (frame t-5, actions t-5..t-1).
+CONTEXT_STEPS = 5
 
 
 def validate_restoration_reconstruction(
@@ -590,6 +592,25 @@ def load_paired_gear_cases(
                     ),
                     "init_pixels": np.asarray(source["pixels"][init_row]).copy(),
                     "goal": np.asarray(source["pixels"][metadata["goal_row"]]).copy(),
+                    # The goal's own predecessor one action block back (two-frame encoders plan
+                    # with [o_(g-1), o_g]); within the episode, else the goal frame itself.
+                    "goal_prev": np.asarray(
+                        source["pixels"][max(episode_row, metadata["goal_row"] - CONTEXT_STEPS)]
+                    ).copy(),
+                    # The demonstration's own history into the restored state: the frames of rows
+                    # init-5 .. init-1 and the effective4 actions applied at those rows. Only read
+                    # by planning with real context frames (eval_gear_worldmodel --context_frames).
+                    # Before the episode's first row the system is at its reset state, at rest, so
+                    # missing history is that first frame with a zero action.
+                    "context_pixels": np.stack(
+                        [np.asarray(source["pixels"][episode_row + max(0, init_step - k)])
+                         for k in range(CONTEXT_STEPS, 0, -1)]
+                    ),
+                    "context_effective4": np.stack(
+                        [np.asarray(episode_effective[init_step - k], dtype=np.float32)
+                         if init_step - k >= 0 else np.zeros(EFFECTIVE_ACTION_DIM, dtype=np.float32)
+                         for k in range(CONTEXT_STEPS, 0, -1)]
+                    ),
                 }
             )
 

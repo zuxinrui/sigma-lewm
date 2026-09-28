@@ -30,6 +30,7 @@ Usage:
 
 from __future__ import annotations
 
+import os
 import argparse
 import json
 import pickle
@@ -130,6 +131,15 @@ def _parser() -> argparse.ArgumentParser:
     # misaligned unless the interface also supplies/skips the true history actions,
     # so one frame is the only supported planning convention here.
     p.add_argument("--history_len", type=int, default=1)
+    # Real context without an imagined step lost: with --context_frames 1 every request also
+    # carries the frame one action block back (t-5) and the five effective4 actions executed since
+    # (at the episode start: the demonstration's own frames and actions into the restored state).
+    # The server feeds them to JEPA.rollout as context, so the plan still covers `horizon` blocks.
+    p.add_argument("--context_frames", type=int, choices=(0, 1), default=0)
+    # Two-frame encoders (Phase-SIAM S2/S3): the state is [o_(t-1), o_t] and the goal [o_(g-1), o_g].
+    # Sends the same frame one action block back as --context_frames, plus the goal's predecessor;
+    # the server encodes the pair instead of using the frame as rollout context.
+    p.add_argument("--two_frame", type=int, choices=(0, 1), default=0)
     p.add_argument("--assembly_id", default="01036")
     p.add_argument("--seed", type=int, default=42)
     p.add_argument(
@@ -250,6 +260,7 @@ from isaaclab_tasks.direct.automate.assembly_tasks_cfg import ASSET_DIR  # noqa:
 from isaaclab_tasks.utils import parse_env_cfg  # noqa: E402
 
 from isaac_gear_eval_env import (  # noqa: E402
+    CONTEXT_STEPS,
     EFFECTIVE_ACTION_SEMANTICS,
     LEGACY_ACTION_SEMANTICS,
     complete_action_consistency_audit,
@@ -402,7 +413,9 @@ def main() -> None:
     import tempfile
 
     torch.manual_seed(args.seed)
-    rng = np.random.default_rng(args.seed)
+    # The random policy's action stream. The environment seed must stay equal to the expert gate's,
+    # so repeated random-floor runs on the same cases vary only this (unset: args.seed, as before).
+    rng = np.random.default_rng(int(os.environ.get("GEAR_RANDOM_POLICY_SEED", args.seed)))
     planner_seed = args.seed if args.planner_seed is None else int(args.planner_seed)
     paired_planner_seeds = None
     if args.paired_planner_seeds is not None:
@@ -589,6 +602,13 @@ def main() -> None:
             )
             continue
         history = deque([frame] * args.history_len, maxlen=args.history_len)
+        if args.context_frames or args.two_frame:
+            if paired_cases is None or case.get("context_pixels") is None:
+                raise ValueError("--context_frames needs a paired case with CONTEXT_STEPS of history")
+            # frames and actions of the last CONTEXT_STEPS steps before the current frame
+            past_frames = deque(list(case["context_pixels"]), maxlen=CONTEXT_STEPS)
+            past_actions = deque([list(map(float, a)) for a in case["context_effective4"]],
+                                 maxlen=CONTEXT_STEPS)
         if sock is not None:
             reset_request = {"cmd": "reset"}
             if paired_cases is not None:
@@ -605,7 +625,8 @@ def main() -> None:
                 reply,
                 action_protocol=args.action_protocol,
                 expected_horizon=expected_macro_horizon,
-                expected_receding_horizon=expected_macro_horizon,
+                # planner studies may replan more often; they must say so explicitly (recorded in planner_config)
+                expected_receding_horizon=int(os.environ.get("SLEWM_EXPECT_RH", expected_macro_horizon)),
             )
             if server_planner_config is None:
                 server_planner_config = reset_planner_config
@@ -656,11 +677,19 @@ def main() -> None:
                 action = np.asarray(sequence[t], dtype=np.float32)
             else:
                 stacked = np.stack(list(history)).astype(np.uint8)  # oldest first
-                _send(sock, {
+                request = {
                     "cmd": "act",
                     "pixels": stacked.tobytes(), "pixels_shape": tuple(stacked.shape),
                     "goal": goal.tobytes(), "goal_shape": tuple(goal.shape),
-                })
+                }
+                if args.context_frames or args.two_frame:
+                    ctx = np.ascontiguousarray(past_frames[0], dtype=np.uint8)
+                    request.update(context_pixels=ctx.tobytes(), context_pixels_shape=tuple(ctx.shape),
+                                   context_action=[list(a) for a in past_actions])
+                if args.two_frame:
+                    gprev = np.ascontiguousarray(case["goal_prev"], dtype=np.uint8)
+                    request.update(two_frame=True, goal_prev=gprev.tobytes(), goal_prev_shape=tuple(gprev.shape))
+                _send(sock, request)
                 reply = _recv(sock)
                 if not (reply and reply.get("ok")):
                     raise RuntimeError(f"server act failed at ep{ep} t{t}: {reply}")
@@ -740,6 +769,9 @@ def main() -> None:
                 _log(f"  ep{ep}: env truncated at step {t + 1} before the budget ran out")
                 break
 
+            if args.context_frames or args.two_frame:
+                past_frames.append(frame)
+                past_actions.append([float(x) for x in np.asarray(action, dtype=np.float32).reshape(-1)])
             frame = env.aim_camera_and_capture()[0]
             history.append(frame)
             if gif is not None:
@@ -820,6 +852,8 @@ def main() -> None:
             else None
         ),
         "eval_budget": args.eval_budget, "history_len": args.history_len,
+        "context_frames": args.context_frames,
+        "two_frame": args.two_frame,
         "max_control_steps": int(env.max_episode_length),
         "strict_criterion": {
             "max_height_m": args.strict_max_height_m,

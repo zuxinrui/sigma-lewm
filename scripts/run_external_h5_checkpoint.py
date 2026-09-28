@@ -185,6 +185,7 @@ def _run_gear(
     env: dict[str, str],
     env_seed: int,
     planner_seed_base: int,
+    extra_client_args: list[str] | None = None,
 ) -> tuple[list[dict], list[dict]]:
     sources = {int(item["source_index"]): item for item in pool["gear"]["sources"]}
     grouped: dict[int, list[tuple[int, dict]]] = defaultdict(list)
@@ -241,6 +242,7 @@ def _run_gear(
             "--output",
             str(result_path),
             "--headless",
+            *(extra_client_args or []),
         ]
         _run_logged(command, log=group_dir / "client.log", env=env)
         result = _verify_committed(
@@ -373,7 +375,7 @@ def _run_franka(
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--task", required=True, choices=("gear", "franka"))
-    parser.add_argument("--arm", required=True, choices=("L0", "L1", "C0", "C1", "AC-MTM", "SMWM", "Sub-JEPA", "RC-aux"))
+    parser.add_argument("--arm", required=True, choices=("L0", "L1", "C0", "C1", "AC-MTM", "SMWM", "Sub-JEPA", "RC-aux", "Janus-OS", "PSIAM-v2", "PSIAM-p2"))
     parser.add_argument("--checkpoint", type=Path, required=True)
     parser.add_argument("--epoch", type=int, required=True)
     parser.add_argument("--split", choices=("dev", "test"), default="dev")
@@ -465,6 +467,15 @@ def main() -> None:
     try:
         _wait_for_socket(socket_path, server)
         runner = _run_gear if args.task == "gear" else _run_franka
+        # Two-frame encoders (Phase-SIAM S2/S3, config.json siam_input_mode) plan with
+        # [o_(t-1), o_t] and [o_(g-1), o_g]: the Gear client sends both previous frames.
+        input_mode = json.loads((checkpoint.parent / "config.json").read_text()).get("siam_input_mode", "single")
+        extra = {}
+        if input_mode != "single":
+            if args.task != "gear":
+                raise ValueError(f"two-frame evaluation ({input_mode}) is wired for gear only")
+            extra = {"extra_client_args": ["--two_frame", "1"]}
+            print(f"[run] two-frame encoder ({input_mode}): client --two_frame 1", flush=True)
         records, components = runner(
             pool=pool,
             cases=cases,
@@ -473,6 +484,7 @@ def main() -> None:
             env=env,
             env_seed=args.env_seed,
             planner_seed_base=args.planner_seed_base,
+            **extra,
         )
     finally:
         if server.poll() is None:

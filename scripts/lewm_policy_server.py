@@ -751,6 +751,8 @@ def build_policy(args):
             ),
         }
     )
+    policy.siam_input_mode = getattr(model, "siam_input_mode", "single")
+    print(f"[server] encoder input: {policy.siam_input_mode}", flush=True)
     return policy
 
 
@@ -937,6 +939,25 @@ def main():
                     "action": np.zeros((1, T, args.action_dim), dtype=np.float32),
                     "terminated": np.zeros(1, dtype=bool),
                 }
+                if getattr(policy, "siam_input_mode", "single") != "single":
+                    # Two-frame encoder (Phase-SIAM S2/S3): the state is [o_(t-1), o_t] with o_(t-1)
+                    # the frame one action block back, the goal [o_(g-1), o_g]. SiamJEPA encodes the
+                    # pair into one embedding (encode/rollout), so it is not rollout context.
+                    if not msg.get("two_frame") or "context_pixels" not in msg or "goal_prev" not in msg:
+                        raise ValueError("this checkpoint needs --two_frame 1 (context_pixels and goal_prev)")
+                    if T != 1:
+                        raise ValueError(f"two-frame encoders take one current frame, got {T}")
+                    ctx = np.frombuffer(msg["context_pixels"], dtype=np.uint8).reshape(
+                        msg["context_pixels_shape"]
+                    ).copy()
+                    goal_prev = np.frombuffer(msg["goal_prev"], dtype=np.uint8).reshape(
+                        msg["goal_prev_shape"]
+                    ).copy()
+                    info["pixels"] = np.concatenate((ctx[None, None], info["pixels"]), axis=1)
+                    info["goal"] = np.stack((goal_prev, goal))[None]
+                    info["action"] = np.zeros((1, 2, args.action_dim), dtype=np.float32)
+                elif "context_pixels" in msg:
+                    raise ValueError("context frames need le-wm's JEPA.rollout context support")
                 action = policy.get_action(info)
                 a = np.asarray(action, dtype=np.float32).reshape(-1)
                 n_act += 1
