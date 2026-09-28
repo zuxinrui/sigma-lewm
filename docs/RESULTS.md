@@ -429,9 +429,32 @@ their heads stay in the model without entering the loss, so training uses
 non-reentrant (`encoder_gc_non_reentrant=true`), because reentrant checkpointing cannot run under
 find_unused_parameters. Neither changes the loss or the updates.
 
+## Phase-SIAM quick look (S1, S2, S3; training seed 1)
+
+Design and code: `docs/PHASE_SIAM.md`. One recipe (le-wm Janus-OS: same-architecture backward
+predictor, one-step MSE to stop-gradient targets both ways, DCL-IDM 1.0, no SIGReg, no sphere) with
+three encoder inputs: S1 `o_t`, S2 `[o_t, o_t - o_(t-1)]`, S3 `[o_t, o_(t-1)]` (S2/S3 plan with
+`[o_(t-1), o_t]` and `[o_(g-1), o_g]`). No arm collapsed (Gear `siam_unit_std_ratio` 0.87-0.90).
+
+**OGBench-Scene** (epoch 10, h5 CEM30, 5 planner seeds x 50; one training seed):
+
+| S1 | S2 | S3 | LeWM | A0 | Σ-LeWM |
+|---|---|---|---|---|---|
+| 59.6 ± 5.2 | 60.8 ± 6.1 | **66.0 ± 6.8** | 57.7 ± 8.0 | 53.6 ± 5.9 | **80.7 ± 4.2** |
+
+The references pool 3 training seeds. The same-architecture MSE/stop-gradient backward term alone
+(S1) is at LeWM's level on Scene; the two-frame state adds 1 (S2) to 6 (S3) points, and all three
+stay well below Σ-LeWM. One training seed each: the S3 - S1 gap (6 points, sd about 6) needs
+seeds before it counts.
+
+**Gear-Assembly** (trained here, evaluation on Isaac off-cluster): early stopping on the validation
+loss composite stopped S1 at epoch 74 (selected 64), S2 at 66 (selected 56) and S3 at 74 (selected
+64). The selected epoch, its neighbours and the final epoch are packaged
+(`phase-siam-gear-20260927.tar`); S2/S3 need the two-frame input in the Isaac policy server.
+
 ## Pending
 
-- **Phase-SIAM quick look (S1/S2/S3)**: Janus-OS and two-frame encoders on Gear and Scene, seed 1; design and code in `docs/PHASE_SIAM.md`, running.
+- **Phase-SIAM on Gear**: Isaac evaluation of S1/S2/S3 (S2/S3 need the two-frame policy server).
 - **Sub-JEPA and RC-aux on Gear and Cube-Stacking**, 3 training seeds, 20 epochs: training.
   Evaluation needs Isaac Lab on an RTX GPU (the sealed `test30` pools, 30 cases per planner
   seed), so it runs outside the cluster.
