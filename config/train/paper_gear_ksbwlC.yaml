@@ -1,0 +1,7 @@
+# paper_gear_ksbwl at training seed 2.
+defaults:
+  - paper_gear_ksbwl
+  - _self_
+output_model_name: paper_gear_ksbwlC_seed3072
+subdir: paper_bwlatent/gear/ksbwlC_seed3072
+seed: 2

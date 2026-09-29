@@ -89,6 +89,29 @@ RC-aux is this repository's implementation of the reachability head and its
 time-contrastive loss (`slewm/baselines/auxiliary.py`); Sub-JEPA imports the authors'
 `subjepa.py`. Only the latter is an adapter over upstream code.
 
+## bwlatent (le-wm key-space ablation) against Σ-LeWM at the same epoch
+
+bwlatent is Σ-LeWM with the backward query aligned with z_t itself (`backward_key=latent`: head_f lands in
+the 192-d latent, no key-side head_g); everything else is A7 (`docs/BWLATENT.md`, recipe `A7bwl`). 5 epochs,
+3 training seeds, evaluated at epoch 5 with Table 1's protocol (h5 CEM30, 5 planner seeds x 50). The matched
+comparator is Σ-LeWM at epoch 5 of the main-table runs (same planner seeds); on TwoRoom and Reacher its seed-3072
+run is off-cluster, so that column pools seeds 1 and 2. Cells: mean ± sd over the evaluations (per training
+seed 3072 / 1 / 2). Raw rows: `docs/results/bwlatent_raw.tsv`.
+
+| Task | bwlatent @ epoch 5 | Σ-LeWM @ epoch 5 | Σ-LeWM @ epoch 10 (Table 1) |
+|---|---|---|---|
+| Push-T | running | 92.8 ± 2.9 (92.4 / 92.4 / 93.6) | 94.5 |
+| Cube | running | 80.4 ± 5.8 (79.2 / 80.8 / 81.2) | 81.6 |
+| Reacher | running | 69.2 ± 7.6 (– / 63.6 / 74.8) | 84.7 |
+| TwoRoom | 87.3 ± 5.6 (81.6 / 89.2 / 91.2) | 93.6 ± 5.4 (– / 93.2 / 94.0) | 92.4 |
+| Scene | running | 80.8 ± 4.3 (82.0 / 79.6 / 80.8) | 80.7 |
+
+TwoRoom: bwlatent is 3 points below Σ-LeWM on the matched seeds 1 and 2 (90.2 vs 93.6); seed 3072 (81.6) has no
+epoch-5 Σ-LeWM run here. Reacher at epoch 5 is far from converged for Σ-LeWM (69.2 vs 84.7 at epoch 10).
+Gear and Cube-Stacking bwlatent (`paper_{gear,franka}_ksbwl{,B,C}`: Figure 6's ours with
+`champion_backward_key: latent`, 10 epochs, 3 seeds) are trained here and evaluated on Isaac off-cluster
+(`bwlatent-isaac-20260929.tar`; comparator Figure 6's ours `c0_symidm_nosig{,B,C}` at epoch 10).
+
 ## A7 without SIGReg (Push-T, Cube)
 
 The counterpart of Gear's `c0_nosig` / `c0_symidm_nosig`: Σ-LeWM (A7) as published ("base"),
