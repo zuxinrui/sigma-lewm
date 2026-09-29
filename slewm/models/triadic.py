@@ -21,12 +21,23 @@ def _attach_champion_heads(
     embed_dim: int,
     action_input_dim: int,
     projection_dim: int,
+    backward_key: str = "head",
 ) -> None:
+    """``backward_key`` (le-wm's 2026-09-20 key-space ablation): ``"head"`` is the champion, a learned
+    projection of z_t as the backward key; ``"latent"`` ("bwlatent") removes the key-side head and sizes the
+    query head to land in the latent space, so the backward query is aligned with z_t itself."""
     if min(embed_dim, action_input_dim, projection_dim) < 1:
         raise ValueError("champion head dimensions must be positive")
+    if backward_key not in ("head", "latent"):
+        raise ValueError(f"unknown champion backward key {backward_key!r}")
+    model.champion_backward_key = backward_key
     # Backward: [z_(t+1); action_embedding_t] <-> z_t.
-    model.head_f = ProjHead(2 * embed_dim, projection_dim, depth=2)
-    model.head_g = ProjHead(embed_dim, projection_dim, depth=2)
+    if backward_key == "head":
+        model.head_f = ProjHead(2 * embed_dim, projection_dim, depth=2)
+        model.head_g = ProjHead(embed_dim, projection_dim, depth=2)
+    else:
+        model.head_f = ProjHead(2 * embed_dim, embed_dim, depth=2)
+        model.head_g = torch.nn.Identity()
     # Inverse: [z_t; z_(t+1)] <-> raw five-step action block.
     model.head_f_idm = torch.nn.Sequential(
         torch.nn.Linear(2 * embed_dim, 256),
@@ -58,6 +69,7 @@ class AlignedChampionJEPA(JEPA):
         champion_embed_dim: int = 192,
         champion_action_input_dim: int,
         champion_projection_dim: int = 64,
+        champion_backward_key: str = "head",
     ):
         super().__init__(
             encoder=encoder,
@@ -71,6 +83,7 @@ class AlignedChampionJEPA(JEPA):
             embed_dim=int(champion_embed_dim),
             action_input_dim=int(champion_action_input_dim),
             projection_dim=int(champion_projection_dim),
+            backward_key=str(champion_backward_key),
         )
 
 
@@ -90,6 +103,7 @@ class AlignedChampionResidualTransitionJEPA(ResidualTransitionJEPA):
         champion_embed_dim: int = 192,
         champion_action_input_dim: int,
         champion_projection_dim: int = 64,
+        champion_backward_key: str = "head",
     ):
         super().__init__(
             encoder=encoder,
@@ -103,6 +117,7 @@ class AlignedChampionResidualTransitionJEPA(ResidualTransitionJEPA):
             embed_dim=int(champion_embed_dim),
             action_input_dim=int(champion_action_input_dim),
             projection_dim=int(champion_projection_dim),
+            backward_key=str(champion_backward_key),
         )
 
 

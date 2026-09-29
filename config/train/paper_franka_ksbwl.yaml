@@ -1,0 +1,15 @@
+# Cube-Stacking "bwlatent" (le-wm 2026-09-20 key-space ablation, docs/BWLATENT.md): Figure 6's ours
+# (paper_franka_c0 + SIGReg 0 + symmetric DCL-IDM = le-wm paper_franka_c0_symidm_nosig) with the backward query
+# aligned with z_t itself (champion_backward_key: latent; no key-side head_g). Seed 3072.
+defaults:
+  - paper_franka_c0
+  - _self_
+output_model_name: paper_franka_ksbwl_seed3072
+subdir: paper_bwlatent/franka/ksbwl_seed3072
+model:
+  champion_backward_key: latent
+loss:
+  sigreg:
+    weight: 0.0
+  aligned_champion:
+    dcl_idm_symmetric: true

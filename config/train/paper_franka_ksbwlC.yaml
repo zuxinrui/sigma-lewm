@@ -1,0 +1,7 @@
+# paper_franka_ksbwl at training seed 2.
+defaults:
+  - paper_franka_ksbwl
+  - _self_
+output_model_name: paper_franka_ksbwlC_seed3072
+subdir: paper_bwlatent/franka/ksbwlC_seed3072
+seed: 2

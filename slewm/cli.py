@@ -56,7 +56,7 @@ def main():
     toy.add_argument('--execute', action='store_true')
     tr = sub.add_parser('train')
     tr.add_argument('--task', choices=['pusht', 'cube', 'tworoom', 'reacher', 'scene', 'gear', 'franka'], required=True)
-    tr.add_argument('--arm', choices=['lewm'] + [f'A{i}' for i in range(9)] + ['l0', 'c0', 'acmtm', 'smwm', 'subjepa', 'rcaux'], required=True)
+    tr.add_argument('--arm', choices=['lewm'] + [f'A{i}' for i in range(9)] + ['A7bwl', 'l0', 'c0', 'acmtm', 'smwm', 'subjepa', 'rcaux', 'ksbwl'], required=True)
     tr.add_argument('--epochs', type=int, required=True)
     tr.add_argument('--seed', type=int, default=3072)
     tr.add_argument('--execute', action='store_true')
@@ -74,10 +74,10 @@ def main():
         if args.epochs < 1:
             p.error('epochs must be positive')
         if args.task in ('gear', 'franka'):
-            if args.arm not in ('l0', 'c0', 'acmtm', 'smwm', 'subjepa', 'rcaux'):
-                p.error('Isaac tasks use l0/c0/acmtm/smwm/subjepa/rcaux')
+            if args.arm not in ('l0', 'c0', 'acmtm', 'smwm', 'subjepa', 'rcaux', 'ksbwl'):
+                p.error('Isaac tasks use l0/c0/acmtm/smwm/subjepa/rcaux/ksbwl')
             suffix = {3072: '', 1: 'B', 2: 'C'}.get(args.seed, '')
-            name = f'paper_{args.task}_{args.arm}{suffix}' if args.arm in ('subjepa', 'rcaux') else f'paper_{args.task}_{args.arm}'
+            name = f'paper_{args.task}_{args.arm}{suffix}' if args.arm in ('subjepa', 'rcaux', 'ksbwl') else f'paper_{args.task}_{args.arm}'
             cmd = [sys.executable, '-m', 'slewm.training.aligned', f'--config-name={name}', f'seed={args.seed}', f'trainer.max_epochs={args.epochs}', 'trainer.min_epochs=0', 'early_stopping.enabled=false', 'trainer.devices=1']
             if args.execute and (not os.environ.get('SLEWM_DATA_ROOT')):
                 p.error('set SLEWM_DATA_ROOT for Isaac task data')

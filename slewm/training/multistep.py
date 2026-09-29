@@ -181,8 +181,20 @@ def run(cfg):
     K_fmca = int(cfg.get("fmca_k", 64))
     D_emb = int(cfg.embed_dim)
     A_act = int(cfg.get("action_emb_dim", D_emb))
-    world_model.head_f = ProjHead(D_emb + A_act, K_fmca, depth=2)
-    world_model.head_g = ProjHead(D_emb,         K_fmca, depth=2)
+    # le-wm 2026-09-20 key-space ablation ("bwlatent"): backward_key=latent aligns the backward query with z_t
+    # itself (head_f lands in the D_emb latent space, the key-side head is removed). Default = champion.
+    backward_key = str(cfg.get("backward_key", "head"))
+    if backward_key not in ("head", "latent"):
+        raise ValueError(f"unknown backward_key {backward_key!r}")
+    if backward_key == "latent":
+        if not bool(cfg.get("fmca_inverse_on", False)) or bool(cfg.get("mi_multistep_on", False)):
+            raise ValueError("backward_key=latent is defined for the one-step inverse-state DCL (C_T) only")
+        world_model.head_f = ProjHead(D_emb + A_act, D_emb, depth=2)
+        world_model.head_g = torch.nn.Identity()
+        print(f"[MULTISTEP] backward_key=latent: head_f -> R^{D_emb}, key = z_t (no head_g)", flush=True)
+    else:
+        world_model.head_f = ProjHead(D_emb + A_act, K_fmca, depth=2)
+        world_model.head_g = ProjHead(D_emb,         K_fmca, depth=2)
 
     # ---- Optional SECOND FMCA head pair (Arm C_M): action-recovery FMCA ----
     # X = [z_t; z_{t+1}] (2 D_emb), Y = a_t (A_act). Measures how state-pair reveals action
