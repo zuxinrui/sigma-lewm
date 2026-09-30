@@ -98,16 +98,18 @@ comparator is Σ-LeWM at epoch 5 of the main-table runs (same planner seeds); on
 run is off-cluster, so that column pools seeds 1 and 2. Cells: mean ± sd over the evaluations (per training
 seed 3072 / 1 / 2). Raw rows: `docs/results/bwlatent_raw.tsv`.
 
-| Task | bwlatent @ epoch 5 | Σ-LeWM @ epoch 5 | Σ-LeWM @ epoch 10 (Table 1) |
-|---|---|---|---|
-| Push-T | running | 92.8 ± 2.9 (92.4 / 92.4 / 93.6) | 94.5 |
-| Cube | running | 80.4 ± 5.8 (79.2 / 80.8 / 81.2) | 81.6 |
-| Reacher | running | 69.2 ± 7.6 (– / 63.6 / 74.8) | 84.7 |
-| TwoRoom | 87.3 ± 5.6 (81.6 / 89.2 / 91.2) | 93.6 ± 5.4 (– / 93.2 / 94.0) | 92.4 |
-| Scene | running | 80.8 ± 4.3 (82.0 / 79.6 / 80.8) | 80.7 |
+| Task | bwlatent @ epoch 5 | Σ-LeWM @ epoch 5 | matched seeds: bwlatent − Σ-LeWM | Σ-LeWM @ epoch 10 (Table 1) |
+|---|---|---|---|---|
+| Push-T | 81.7 ± 6.7 (75.2 / 85.6 / 84.4) | 92.8 ± 2.9 (92.4 / 92.4 / 93.6) | -11.1 (seeds 3072, 1, 2) | 94.5 |
+| Cube | 71.7 ± 7.0 (69.2 / 71.6 / 74.4) | 80.4 ± 5.8 (79.2 / 80.8 / 81.2) | -8.7 (seeds 3072, 1, 2) | 81.6 |
+| Reacher | 83.3 ± 5.4 (83.6 / 81.2 / 85.2) | 69.2 ± 7.6 (– / 63.6 / 74.8) | +14.0 (seeds 1, 2) | 84.7 |
+| TwoRoom | 87.3 ± 5.6 (81.6 / 89.2 / 91.2) | 93.6 ± 5.4 (– / 93.2 / 94.0) | -3.4 (seeds 1, 2) | 92.4 |
+| Scene | 76.3 ± 4.1 (76.0 / 77.6 / 75.2) | 80.8 ± 4.3 (82.0 / 79.6 / 80.8) | -4.5 (seeds 3072, 1, 2) | 80.7 |
 
-TwoRoom: bwlatent is 3 points below Σ-LeWM on the matched seeds 1 and 2 (90.2 vs 93.6); seed 3072 (81.6) has no
-epoch-5 Σ-LeWM run here. Reacher at epoch 5 is far from converged for Σ-LeWM (69.2 vs 84.7 at epoch 10).
+On the matched training seeds bwlatent is below Σ-LeWM at epoch 5 on Push-T (-11.1), Cube (-8.7), TwoRoom (-3.4), Scene (-4.5); not below on Reacher (+14.0). Differences within about one sd (5 points) are noise at 3 x 5 evaluations. On Reacher the sign flips, but Σ-LeWM's Reacher runs are far from converged at epoch 5 (69.2, and 84.7 at
+epoch 10) while bwlatent already reaches 83.3: the +14.0 is a difference in training speed at this epoch,
+not an advantage at convergence, until both are compared at a common later epoch.
+
 Gear and Cube-Stacking bwlatent (`paper_{gear,franka}_ksbwl{,B,C}`: Figure 6's ours with
 `champion_backward_key: latent`, 10 epochs, 3 seeds) are trained here and evaluated on Isaac off-cluster
 (`bwlatent-isaac-20260929.tar`; comparator Figure 6's ours `c0_symidm_nosig{,B,C}` at epoch 10).
