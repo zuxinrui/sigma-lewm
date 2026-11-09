@@ -28,6 +28,7 @@ scripts/toy/*.json
 scripts/toy/*.md
 logs/
 outputs/
+docs/results/
 runs/
 artifacts/
 !assets/*.svg

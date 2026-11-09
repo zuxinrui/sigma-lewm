@@ -3,7 +3,7 @@
 Success(T) = native any-time rule: the goal error is within T at some step of the budget.
 Also reports the final-step variant. Paired test: exact McNemar (binomial on discordant pairs), same episodes.
 
-  python scripts/goal_tolerance_rescore.py --dir <npz dir> --out docs/results/fig5_tolerance.tsv
+  python scripts/goal_tolerance_rescore.py --dir <npz dir> --out outputs/goal_tolerance/summary.tsv
 
 Port of le-wm scripts/goal_tolerance_rescore.py (058d998) for Figure 5 at 3 training x 5 planner seeds.
 Files are <task>_<arm>_ts<training seed>_s<planner seed>.npz; each arm pools its training seeds
@@ -74,7 +74,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--arms", nargs="+", default=["sigma_lewm", "lewm", "subjepa", "rcaux", "smwm", "acmtm"])
     ap.add_argument("--dir", required=True)
-    ap.add_argument("--out", default=str(ROOT / "docs/results/fig5_tolerance.tsv"))
+    ap.add_argument("--out", default=str(ROOT / "outputs/goal_tolerance/summary.tsv"))
     a = ap.parse_args()
     d = Path(a.dir); rows = []; pairs = []
     for task in TASKS:

@@ -65,6 +65,8 @@ only forward dynamics is used, so planning is identical to LeWM: CEM in latent s
 
 This repository contains code and configurations only. Datasets, checkpoints, logs
 and measurements are not included; every command below starts a new run.
+Save generated measurements under `outputs/` or outside this repository. Evaluation
+and analysis utilities operate on user-provided artifacts; no recorded scores are bundled.
 
 ## Read the method
 

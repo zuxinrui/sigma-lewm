@@ -83,7 +83,3 @@ AC-MTM publishes no per-environment value; every AC-MTM arm here uses the same
 These arms set the SIGReg weight to zero, which leaves part of the network out of the
 loss. DistributedDataParallel rejects that, so the configs train on a single device; the
 CLI passes `trainer.devices=1` for you.
-
-## Results
-
-Success rates, protocol and the fixes that invalidated earlier runs: [RESULTS.md](RESULTS.md).

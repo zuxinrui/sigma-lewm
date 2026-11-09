@@ -9,21 +9,6 @@
 
 Everything else is unchanged.
 
-## What is already known
-
-le-wm, one training seed:
-
-| Task | Σ-LeWM recipe | bwlatent |
-|---|---|---|
-| Gear v4 (10 epochs), test30 | 20/30 | 12/30 |
-| Gear v4 (10 epochs), dev30 | 19/30 | 15/30 |
-| Push-T, epoch 2 (planner seeds 0–2) | 89.3% (88/88/92) | 80.7% (88/80/74) |
-
-- Gear control: `ks_base` = `paper_gear_c0_bw1inv1`.
-- Push-T: the run was stopped after epoch 3 (bwlatent seed 0: 88%).
-
-These runs complete the picture on the remaining tasks.
-
 ## Code
 
 Branch `baseline-fixes`:
@@ -66,8 +51,7 @@ python -m slewm.cli eval --task $task --checkpoint <run>/weights_epoch_5.pt --se
 
 - **Comparator:** Σ-LeWM (A7) evaluated at the **same epoch 5** of the main-table runs (they save every epoch),
   same planner seeds. Table 1 is epoch 10, so it is not the matched comparison.
-- **What to report:** add `A7bwl` rows (epoch 5) and `A7@5` rows to `docs/results/`, with mean ± sd over the
-  15 evaluations, as in Table 1.
+- Save evaluation outputs outside the source tree, or under the ignored `outputs/` directory.
 
 **Cube-Stacking** is evaluated locally on Isaac (sealed v4eval, projected CEM).
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Figures 3, 4 and 5 at 3 training seeds x 5 planner seeds (docs/FIG345_PLAN.md), on the Table 1
-# checkpoints listed in docs/results/fig345_checkpoints.tsv (one array task per checkpoint, 72).
+# Horizon, CEM-budget and tolerance evaluation on user-supplied checkpoints.
+# Set LIST to a TSV with header and columns: task, method, training_seed, checkpoint.
 #
 #   FIG=4   h=5, goal +25, budget 50, CEM iterations 8/4/2           -> fig4_budget_raw.tsv
 #   FIG=5   scripts/goal_tolerance_eval.py, h5 CEM30, per-step errors -> goal_tolerance/*.npz
@@ -31,7 +31,7 @@ i=${SLURM_ARRAY_TASK_ID:?submit with --array}
 REPO=${REPO:-$SLURM_SUBMIT_DIR}
 PY=${PY:-$REPO/.venv/bin/python}
 FIG=${FIG:?set FIG=3, 4 or 5}
-LIST=${LIST:-$REPO/docs/results/fig345_checkpoints.tsv}
+LIST=${LIST:?set LIST to your checkpoint manifest TSV}
 export CUBLAS_WORKSPACE_CONFIG=:4096:8
 export STABLEWM_HOME=${STABLEWM_HOME:-/scratch-shared/$USER/stable-wm}
 export HF_HOME=${HF_HOME:-/scratch-shared/$USER/hf}
