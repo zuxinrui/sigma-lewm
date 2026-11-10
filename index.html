@@ -174,12 +174,12 @@ footer{padding-block:36px 60px;border-top:1px solid var(--rule);font-size:14px;c
   <span class="eyebrow">Gear assembly · IsaacSim</span>
   <h2>Seat the peg in the hub</h2>
   <p>On Gear-Assembly, Σ-LeWM improves strict success from 10.9% for LeWM to 74.9%. Goals are the first successful frames of held-out episodes, with planning horizon h=5 for Gear-Assembly and h=10 for Cube-Stacking.</p>
-  <figure style="margin-top:22px"><img src="fig/arxiv-gear-stack.svg" alt="Gear-Assembly and Cube-Stacking results from the arXiv version" loading="lazy"><figcaption>Fig. 6 — Strict success on Gear-Assembly and Cube-Stacking, comparing all six methods in the arXiv version.</figcaption></figure>
+  <figure style="margin-top:22px"><img src="fig/gear.gif" alt="Animated comparison of six gear-assembly episodes for LeWM and Σ-LeWM" loading="lazy"><figcaption>Illustrative rollout batch: six of thirty episodes are shown. The animation’s embedded 1/30 and 21/30 counts describe this demo batch; the arXiv aggregate strict-success rates are 10.9% and 74.9%, respectively.</figcaption></figure>
 </section>
 
 <section>
   <span class="eyebrow">The idea</span>
-  <h2>One transition, three directions</h2>
+  <h2>three views of a transition</h2>
   <p class="lead">Forward, backward and inverse dynamics are three readings of one transition.</p>
   <p>LeWorldModel (LeWM) learns a latent transition <span class="mi">f(z<sub>t</sub>, a<sub>t</sub>) → z<sub>t+1</sub></span> without a decoder. Σ-LeWM adds two auxiliary predictors, used only during training, so that every variable of the transition is predictable from the other two. Each predictor is a lower bound on a mutual-information term, and the three terms are the three orientations of one shape.</p>
   <div class="dirs">
@@ -237,6 +237,7 @@ footer{padding-block:36px 60px;border-top:1px solid var(--rule);font-size:14px;c
   <p class="tcap">Table 1 — Success rate (%), mean ± standard deviation, on the four standard LeWM benchmarks and OGBench-Scene. Same CEM planner (h=5, 30 iterations); 3 training seeds × 5 evaluation seeds × 50 episodes. Bold numbers mark the highest mean in each column.</p>
   <p class="tcap">† Multi-step forward term only, with backward and inverse weights set to zero. ‡ One SMWM training seed collapses (20.0); the other two reach 99.6. § Backward alignment directly to the raw latent z<sub>t</sub>, without a projection head.</p>
   <figure><img src="fig/arxiv-overview.svg" alt="arXiv overview: longer horizons, CEM search budget, Scene gain over random and success tolerance"><figcaption>Fig. 2 — Longer horizons (a), planning efficiency (b), OGBench-Scene gain over the random-action floor (c), and tighter success tolerance (d). Scene error bars show standard deviation over all 15 evaluations, as in Table 1.</figcaption></figure>
+  <figure><img src="fig/arxiv-gear-stack.svg" alt="Gear-Assembly and Cube-Stacking results from the arXiv version" loading="lazy"><figcaption>Fig. 6 — Strict success on Gear-Assembly and Cube-Stacking, comparing all six methods in the arXiv version.</figcaption></figure>
   <p class="tcap">Planning-efficiency results use the separate experiment in Fig. 4: on Push-T, Σ-LeWM at 8 CEM iterations reaches 91.2%, versus 85.2% for LeWM at 30. These values are distinct from the aggregated main-table results.</p>
 </section>
 
