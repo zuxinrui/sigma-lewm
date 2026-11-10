@@ -126,15 +126,16 @@ tr.ours td{font-weight:400}
 tr.ours td:first-child,tr.ours td.best{font-weight:600}
 .tcap{font-size:14.5px;color:var(--muted);margin-top:10px}
 
-/* ablation bars */
-.abl{display:flex;flex-direction:column;gap:8px;margin-top:22px;font-family:var(--mono);font-size:13px}
-.abl .row{display:grid;grid-template-columns:150px 1fr 44px;align-items:center;gap:12px}
+/* Compact overview and ablation bars */
+.figure-overview{max-width:600px;margin-inline:auto}
+.abl{display:flex;flex-direction:column;gap:18px;margin-top:28px;font-family:var(--mono);font-size:13px}
+.abl .row{display:grid;grid-template-columns:175px 1fr 44px;align-items:center;gap:16px}
 .abl .bar{height:14px;background:var(--soft);border-radius:1px;overflow:hidden}
-.abl .bar i{display:block;height:100%;background:var(--muted)}
+.abl .bar i{display:block;height:100%;width:var(--value);background:var(--muted)}
 .abl .row.ours .bar i{background:var(--accent)}
 .abl .row.ours{color:var(--accent);font-weight:500}
 .abl .v{text-align:right}
-@media (max-width:520px){.abl .row{grid-template-columns:110px 1fr 40px}}
+@media(max-width:520px){.abl .row{grid-template-columns:125px 1fr 32px;gap:10px;font-size:11px}}
 
 pre{font-family:var(--mono);font-size:13px;line-height:1.6;background:var(--soft);padding:18px 20px;overflow-x:auto;border-radius:2px;margin:0}
 footer{padding-block:36px 60px;border-top:1px solid var(--rule);font-size:14px;color:var(--muted);line-height:1.6}
@@ -237,7 +238,7 @@ footer{padding-block:36px 60px;border-top:1px solid var(--rule);font-size:14px;c
   </table></div>
   <p class="tcap">Table 1 — Success rate (%), mean ± standard deviation, on the four standard LeWM benchmarks and OGBench-Scene. Same CEM planner (h=5, 30 iterations); 3 training seeds × 5 evaluation seeds × 50 episodes. Bold numbers mark the highest mean in each column.</p>
   <p class="tcap">† Multi-step forward term only, with backward and inverse weights set to zero. ‡ One SMWM training seed collapses (20.0); the other two reach 99.6. § Backward alignment directly to the raw latent z<sub>t</sub>, without a projection head.</p>
-  <figure><img src="fig/arxiv-overview.svg" alt="arXiv overview: longer horizons, CEM search budget, Scene gain over random and success tolerance"><figcaption>Fig. 2 — Longer horizons (a), planning efficiency (b), OGBench-Scene gain over the random-action floor (c), and tighter success tolerance (d). Scene error bars show standard deviation over all 15 evaluations, as in Table 1.</figcaption></figure>
+  <figure class="figure-overview"><img src="fig/arxiv-overview.svg" alt="arXiv overview: longer horizons, CEM search budget, Scene gain over random and success tolerance"><figcaption>Fig. 2 — Longer horizons (a), planning efficiency (b), OGBench-Scene gain over the random-action floor (c), and tighter success tolerance (d). Scene error bars show standard deviation over all 15 evaluations, as in Table 1.</figcaption></figure>
   <figure><img src="fig/arxiv-gear-stack.svg" alt="Gear-Assembly and Cube-Stacking results from the arXiv version" loading="lazy"><figcaption>Fig. 6 — Strict success on Gear-Assembly and Cube-Stacking, comparing all six methods in the arXiv version.</figcaption></figure>
   <p class="tcap">Planning-efficiency results use the separate experiment in Fig. 4: on Push-T, Σ-LeWM at 8 CEM iterations reaches 91.2%, versus 85.2% for LeWM at 30. These values are distinct from the aggregated main-table results.</p>
 </section>
@@ -248,8 +249,15 @@ footer{padding-block:36px 60px;border-top:1px solid var(--rule);font-size:14px;c
   <p>PCA views of the frozen latents show structure related to block height, gripper state and one-step reachability under sixteen action directions. Gear-Assembly uses a supervised linear view of task success; held-out linear probes are reported in the appendix. In the separate GC-IDM experiment (Fig. 8), a learned planner reaches 97.6% on Cube with our latents, versus 90.4% with LeWM’s, evaluated with 5 seeds × 50 episodes per bin.</p>
   <figure><img src="fig/arxiv-latents.svg" alt="Latent visualisations of LeWM and Σ-LeWM: PCA and a supervised linear view for Gear-Assembly"><figcaption>Fig. 7 — Push-T reachability, Cube block height, Cube gripper state and Gear task success. PCA for Push-T and Cube; supervised linear view for Gear. Top row LeWM, bottom row Σ-LeWM.</figcaption></figure>
   <h3 style="margin-top:34px">Both <b style="color:var(--bwd);font-weight:600">backward</b> and <b style="color:var(--inv);font-weight:600">inverse</b> are necessary</h3>
-  <p style="font-size:16px;color:var(--muted)">Cube success (%) at h=5 and h=10. The base arm includes multi-step forward prediction only; I and B add inverse or backward objectives. Combining both contrastive objectives gives the best result.</p>
-  <figure><img src="fig/arxiv-ablation.svg" alt="Cube objective ablation at horizons 5 and 10, including LeWM, multi-step base, MSE and DCL variants"><figcaption>Fig. 9 — The ablation uses three banks of 100 evaluation episodes per checkpoint, so its values differ from Table 1. At h=5: LeWM 64, multi-step base 71, inverse DCL 72, backward DCL 80, and both DCL 84.</figcaption></figure>
+  <p style="font-size:16px;color:var(--muted)">Cube, h=5, success %. Each contrastive auxiliary objective helps; combining backward and inverse delivers the strongest result.</p>
+  <div class="abl" role="figure" aria-label="Cube ablation at horizon 5, success percent; all bars use a zero to 100 scale.">
+    <div class="row"><span>LeWM</span><span class="bar" aria-hidden="true"><i style="--value:64%"></i></span><span class="v">64</span></div>
+    <div class="row"><span>+ multi-step (base)</span><span class="bar" aria-hidden="true"><i style="--value:71%"></i></span><span class="v">71</span></div>
+    <div class="row"><span>+ inverse</span><span class="bar" aria-hidden="true"><i style="--value:72%"></i></span><span class="v">72</span></div>
+    <div class="row"><span>+ backward</span><span class="bar" aria-hidden="true"><i style="--value:80%"></i></span><span class="v">80</span></div>
+    <div class="row ours"><span>+ both (Σ-LeWM)</span><span class="bar" aria-hidden="true"><i style="--value:84%"></i></span><span class="v">84</span></div>
+  </div>
+  <p class="tcap" style="margin-top:20px">ArXiv Fig. 9 · Cube, h=5. Base includes multi-step forward prediction; auxiliary terms use DCL. Three banks of 100 episodes per checkpoint, distinct from Table 1.</p>
 </section>
 
 <section>
