@@ -119,6 +119,10 @@ th:first-child,td:first-child{text-align:left;padding-left:0}
 td{padding:9px 10px;border-bottom:1px solid var(--rule);text-align:right}
 tr.ours td{font-weight:600;color:var(--accent)}
 td.best{font-weight:600}
+td{white-space:nowrap}
+.std{font-size:.8em;font-weight:400;color:var(--muted)}
+tr.ours td{font-weight:400}
+tr.ours td:first-child,tr.ours td.best{font-weight:600}
 .tcap{font-size:14.5px;color:var(--muted);margin-top:10px}
 
 /* ablation bars */
@@ -163,14 +167,14 @@ footer{padding-block:36px 60px;border-top:1px solid var(--rule);font-size:14px;c
 
 <section>
   <span class="eyebrow">In one sentence</span>
-  <p class="lede">A decoder-free latent world model is trained not only to predict the <em>next</em> latent state, but also to explain the <em>current</em> state from where it lands and to recover the <em>action</em> that connects them. Together, the three objectives maximise the S-information of the transition <span class="mi">(Z<sub>t</sub>, A<sub>t</sub>, Z<sub>t+1</sub>)</span> — and the resulting latent space plans better, further ahead, and with up to 7.5× less search.</p>
+  <p class="lede">A decoder-free latent world model is trained not only to predict the <em>next</em> latent state, but also to explain the <em>current</em> state from where it lands and to recover the <em>action</em> that connects them. Together, the three objectives maximise the S-information of the transition <span class="mi">(Z<sub>t</sub>, A<sub>t</sub>, Z<sub>t+1</sub>)</span> — and the resulting latent space plans better, further ahead, and with up to a 7.5× smaller CEM search budget.</p>
 </section>
 
 <section>
   <span class="eyebrow">Gear assembly · IsaacSim</span>
   <h2>Seat the peg in the hub</h2>
-  <p>Same encoder, same planner, same data — only the training objective differs. Six of thirty test episodes, side by side: LeWM solves 1 of 30, Σ-LeWM solves 21 of 30.</p>
-  <figure style="margin-top:22px"><img src="fig/gear.gif" alt="Animated grid of gear-assembly episodes: LeWM solves 1 of 30, Σ-LeWM solves 21 of 30" loading="lazy"></figure>
+  <p>On Gear-Assembly, Σ-LeWM improves strict success from 10.9% for LeWM to 74.9%. Goals are the first successful frames of held-out episodes, with planning horizon h=5 for Gear-Assembly and h=10 for Cube-Stacking.</p>
+  <figure style="margin-top:22px"><img src="fig/arxiv-gear-stack.svg" alt="Gear-Assembly and Cube-Stacking results from the arXiv version" loading="lazy"><figcaption>Fig. 6 — Strict success on Gear-Assembly and Cube-Stacking, comparing all six methods in the arXiv version.</figcaption></figure>
 </section>
 
 <section>
@@ -182,12 +186,12 @@ footer{padding-block:36px 60px;border-top:1px solid var(--rule);font-size:14px;c
     <div class="dir f">
       <div class="name">forward <small>MSE + SIGReg</small></div>
       <span class="mi">I<sub>F</sub> = I(Z<sub>t+1</sub>; Z<sub>t</sub>, A<sub>t</sub>)</span>
-      <p>Predict the next latent from the current latent and the action. This is the standard LeWM objective, and the only predictor used at test time.</p>
+      <p>Predict the next latent from the current latent and the action. Training also includes a multi-step forward term (maximum offset 5). Forward dynamics is the only predictor used at test time.</p>
     </div>
     <div class="dir b">
       <div class="name">backward <small>DCL</small></div>
       <span class="mi">I<sub>B</sub> = I(Z<sub>t</sub>; Z<sub>t+1</sub>, A<sub>t</sub>)</span>
-      <p>Explain the current latent from where the action lands. A contrastive backward-dynamics head keeps states that lead to the same outcome close together.</p>
+      <p>Explain the current latent from where the action lands. A contrastive backward-dynamics head aligns its prediction with a projection of the current latent state.</p>
     </div>
     <div class="dir i">
       <div class="name">inverse <small>DCL</small></div>
@@ -202,7 +206,7 @@ footer{padding-block:36px 60px;border-top:1px solid var(--rule);font-size:14px;c
   </div>
   <p class="eqcap">The sum of the three directional terms is the total correlation plus the dual total correlation — the <b>S-information</b>, written Σ. Hence the name.</p>
   <figure>
-    <img src="fig/fig1.png" alt="Diagram of the forward, backward and inverse predictors trained on the shared encoder">
+    <img src="fig/arxiv-method.svg" alt="Diagram of the forward, backward and inverse predictors trained on the shared encoder">
     <figcaption>Fig. 1 — One shared encoder, three predictors. Forward dynamics is trained with the LeWM loss; backward and inverse dynamics with the decoupled contrastive loss (DCL). At test time only forward dynamics is used, so planning is identical to LeWM: CEM in latent space.</figcaption>
   </figure>
 </section>
@@ -211,49 +215,47 @@ footer{padding-block:36px 60px;border-top:1px solid var(--rule);font-size:14px;c
   <span class="eyebrow">Results</span>
   <h2>Better plans, longer horizons, less search</h2>
   <div class="nums">
-    <div class="num"><span class="v">93.6<small>%</small></span><span class="k">Push-T success</span><span class="d">vs. 85.2% for LeWM at the same planner setting (h=5, CEM30).</span></div>
-    <div class="num"><span class="v">+18<small> pp</small></span><span class="k">Long horizon</span><span class="d">Gain over random at h=15 on Cube; the margin over LeWM grows with the horizon.</span></div>
-    <div class="num"><span class="v">7.5<small>×</small></span><span class="k">Faster planning</span><span class="d">4 CEM iterations already match LeWM at 30 on Push-T; 8 iterations beat it.</span></div>
-    <div class="num"><span class="v">73<small>%</small></span><span class="k">Gear assembly</span><span class="d">Strict success on a sealed gear-assembly task, vs. 10% for LeWM (IsaacSim).</span></div>
+    <div class="num"><span class="v">94.5<small>%</small></span><span class="k">Push-T success</span><span class="d">vs. 90.0% for LeWM in Table 1 (h=5, CEM30).</span></div>
+    <div class="num"><span class="v">+23.0<small> pp</small></span><span class="k">Scene gain</span><span class="d">80.7% vs. 57.7% for LeWM on OGBench-Scene in Table 1.</span></div>
+    <div class="num"><span class="v">7.5<small>×</small></span><span class="k">Less CEM search</span><span class="d">4 iterations remain competitive with LeWM at 30 on Push-T; 8 iterations outperform it in the planning-efficiency experiment.</span></div>
+    <div class="num"><span class="v">74.9<small>%</small></span><span class="k">Gear assembly</span><span class="d">Strict success on a sealed gear-assembly task, vs. 10.9% for LeWM (IsaacSim).</span></div>
   </div>
-  <div class="tablewrap"><table>
-    <thead><tr><th>Method</th><th>Push-T</th><th>Cube</th><th>TwoRoom</th><th>Reacher</th></tr></thead>
+  <div class="tablewrap"><table aria-label="Standard benchmark success rates from arXiv Table 1">
+    <thead><tr><th>Method</th><th>Push-T</th><th>TwoRoom</th><th>Reacher</th><th>Cube</th><th>Scene</th></tr></thead>
     <tbody>
-      <tr><td>Random policy (floor)</td><td>2.0</td><td>43.6</td><td>23.6</td><td>13.6</td></tr>
-      <tr><td>LeWM</td><td>85.2</td><td>64.8</td><td>90.4</td><td>87.2</td></tr>
-      <tr><td>Sub-JEPA</td><td>93.2</td><td>69.2</td><td class="best">94.0</td><td>84.0</td></tr>
-      <tr><td>RC-aux</td><td>—</td><td>68.4</td><td>94.8</td><td>84.8</td></tr>
-      <tr class="ours"><td>Σ-LeWM (ours)</td><td>93.6</td><td>82.8</td><td>91.2</td><td>88.0</td></tr>
+      <tr><td>Random policy (floor)</td><td>2.0 <span class="std">±2.0</span></td><td>23.6 <span class="std">±3.6</span></td><td>13.6 <span class="std">±3.8</span></td><td>43.6 <span class="std">±8.9</span></td><td>43.2 <span class="std">±6.7</span></td></tr>
+      <tr><td>LeWM</td><td>90.0 <span class="std">±5.7</span></td><td>90.9 <span class="std">±4.1</span></td><td class="best">86.0 <span class="std">±6.3</span></td><td>66.5 <span class="std">±6.3</span></td><td>57.7 <span class="std">±8.0</span></td></tr>
+      <tr><td>LeWM + multi-step<sup>†</sup></td><td>88.9 <span class="std">±3.3</span></td><td>92.8 <span class="std">±4.2</span></td><td>83.6 <span class="std">±4.4</span></td><td>71.0 <span class="std">±5.3</span></td><td>53.6 <span class="std">±5.9</span></td></tr>
+      <tr><td>Sub-JEPA</td><td>84.0 <span class="std">±8.7</span></td><td class="best">93.6 <span class="std">±2.8</span></td><td>80.7 <span class="std">±5.9</span></td><td>70.3 <span class="std">±6.6</span></td><td>55.5 <span class="std">±8.1</span></td></tr>
+      <tr><td>RC-aux</td><td>87.9 <span class="std">±5.2</span></td><td>91.6 <span class="std">±3.4</span></td><td>84.8 <span class="std">±5.4</span></td><td>70.3 <span class="std">±5.4</span></td><td>58.0 <span class="std">±5.5</span></td></tr>
+      <tr><td>SMWM</td><td>88.5 <span class="std">±5.4</span></td><td>73.1<sup>‡</sup> <span class="std">±38.9</span></td><td>84.5 <span class="std">±5.8</span></td><td>81.9 <span class="std">±4.9</span></td><td>60.0 <span class="std">±3.1</span></td></tr>
+      <tr><td>AC-MTM</td><td>89.2 <span class="std">±3.8</span></td><td>92.4 <span class="std">±2.7</span></td><td>84.9 <span class="std">±2.4</span></td><td>77.3 <span class="std">±5.9</span></td><td>60.9 <span class="std">±5.1</span></td></tr>
+      <tr><td>Backward to raw z<sub>t</sub><sup>§</sup></td><td>81.7 <span class="std">±6.7</span></td><td>87.3 <span class="std">±5.6</span></td><td>83.3 <span class="std">±5.4</span></td><td>71.7 <span class="std">±7.0</span></td><td>76.3 <span class="std">±4.1</span></td></tr>
+      <tr class="ours"><td>Σ-LeWM (ours)</td><td class="best">94.5 <span class="std">±3.0</span></td><td>92.4 <span class="std">±4.4</span></td><td class="best">86.0 <span class="std">±4.8</span></td><td class="best">82.6 <span class="std">±5.0</span></td><td class="best">80.7 <span class="std">±4.2</span></td></tr>
     </tbody>
   </table></div>
-  <p class="tcap">Table I — Success rate (%) on the four standard LeWM benchmarks, same CEM planner (h=5, 30 iterations), 5 seeds × 50 episodes.</p>
-  <div class="two">
-    <figure><img src="fig/fig2.png" alt="Overview of main results: longer horizon, planning speed, robot manipulation, task difficulty"><figcaption>Fig. 2 — Longer horizons (a), planning speed (b), sealed gear assembly (c) and tightening success tolerance (d).</figcaption></figure>
-    <figure><img src="fig/fig6.png" alt="Gear assembly and Franka stacking results"><figcaption>Fig. 6 — Two IsaacSim manipulation tasks with strict success criteria, against LeWM, AC-MTM and SMWM.</figcaption></figure>
-  </div>
+  <p class="tcap">Table 1 — Success rate (%), mean ± standard deviation, on the four standard LeWM benchmarks and OGBench-Scene. Same CEM planner (h=5, 30 iterations); 3 training seeds × 5 evaluation seeds × 50 episodes. Bold numbers mark the highest mean in each column.</p>
+  <p class="tcap">† Multi-step forward term only, with backward and inverse weights set to zero. ‡ One SMWM training seed collapses (20.0); the other two reach 99.6. § Backward alignment directly to the raw latent z<sub>t</sub>, without a projection head.</p>
+  <figure><img src="fig/arxiv-overview.svg" alt="arXiv overview: longer horizons, CEM search budget, Scene gain over random and success tolerance"><figcaption>Fig. 2 — Longer horizons (a), planning efficiency (b), OGBench-Scene gain over the random-action floor (c), and tighter success tolerance (d). Scene error bars show standard deviation over all 15 evaluations, as in Table 1.</figcaption></figure>
+  <p class="tcap">Planning-efficiency results use the separate experiment in Fig. 4: on Push-T, Σ-LeWM at 8 CEM iterations reaches 91.2%, versus 85.2% for LeWM at 30. These values are distinct from the aggregated main-table results.</p>
 </section>
 
 <section>
   <span class="eyebrow">Why it works</span>
   <h2>The latent space keeps what control needs</h2>
-  <p>PCA of the frozen latents, coloured by physical quantities. With the backward and inverse objectives, block height, gripper closure and task success each occupy a compact, separable region; one-step reachability from a state forms a clean fan of sixteen action directions. A learned GC-IDM planner also does better on these latents than on LeWM's (Cube: 97.6% vs. 90.4%).</p>
-  <figure><img src="fig/fig7.png" alt="PCA visualisations of LeWM and Σ-LeWM latents coloured by physical quantities"><figcaption>Fig. 7 — Push-T reachability, Cube block height, Cube gripper state and Gear task-relevance. Top row LeWM, bottom row Σ-LeWM.</figcaption></figure>
+  <p>PCA views of the frozen latents show structure related to block height, gripper state and one-step reachability under sixteen action directions. Gear-Assembly uses a supervised linear view of task success; held-out linear probes are reported in the appendix. In the separate GC-IDM experiment (Fig. 8), a learned planner reaches 97.6% on Cube with our latents, versus 90.4% with LeWM’s, evaluated with 5 seeds × 50 episodes per bin.</p>
+  <figure><img src="fig/arxiv-latents.svg" alt="Latent visualisations of LeWM and Σ-LeWM: PCA and a supervised linear view for Gear-Assembly"><figcaption>Fig. 7 — Push-T reachability, Cube block height, Cube gripper state and Gear task success. PCA for Push-T and Cube; supervised linear view for Gear. Top row LeWM, bottom row Σ-LeWM.</figcaption></figure>
   <h3 style="margin-top:34px">Both <b style="color:var(--bwd);font-weight:600">backward</b> and <b style="color:var(--inv);font-weight:600">inverse</b> are necessary</h3>
-  <p style="font-size:16px;color:var(--muted)">Cube, h=5, success %. Contrastive (DCL) variants; adding either auxiliary term helps, adding both helps most.</p>
-  <div class="abl" role="table" aria-label="Ablation on Cube">
-    <div class="row"><span>LeWM base</span><span class="bar"><i style="width:64%"></i></span><span class="v">64</span></div>
-    <div class="row"><span>+ inverse</span><span class="bar"><i style="width:72%"></i></span><span class="v">72</span></div>
-    <div class="row"><span>+ backward</span><span class="bar"><i style="width:80%"></i></span><span class="v">80</span></div>
-    <div class="row ours"><span>+ both (Σ-LeWM)</span><span class="bar"><i style="width:84%"></i></span><span class="v">84</span></div>
-  </div>
+  <p style="font-size:16px;color:var(--muted)">Cube success (%) at h=5 and h=10. The base arm includes multi-step forward prediction only; I and B add inverse or backward objectives. Combining both contrastive objectives gives the best result.</p>
+  <figure><img src="fig/arxiv-ablation.svg" alt="Cube objective ablation at horizons 5 and 10, including LeWM, multi-step base, MSE and DCL variants"><figcaption>Fig. 9 — The ablation uses three banks of 100 evaluation episodes per checkpoint, so its values differ from Table 1. At h=5: LeWM 64, multi-step base 71, inverse DCL 72, backward DCL 80, and both DCL 84.</figcaption></figure>
 </section>
 
 <section>
   <span class="eyebrow">Citation</span>
-  <pre>@article{sigma-lewm2027,
+  <pre>@article{sigma-lewm2026,
   title     = {{\Sigma}-LeWM: Learning World Models via S-Information for Robot Control},
   author    = {Zu, Xinrui and Przystupa, Michael and Yang, Zhao and Yu, Shujian and Luck, Kevin Sebastian},
-  year      = {2027}
+  year      = {2026}
 }</pre>
 </section>
 
