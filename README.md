@@ -163,9 +163,13 @@ assets carry their own licenses.
 ## Citation
 
 ```bibtex
-@article{sigma-lewm2027,
-  title  = {{$\Sigma$}-LeWM: Learning World Models via S-Information for Robot Control},
-  author = {Zu, Xinrui and Przystupa, Michael and Yang, Zhao and Yu, Shujian and Luck, Kevin Sebastian},
-  year   = {2027}
+@misc{zu2026sigmalewm,
+  title         = {{$\Sigma$-LeWM}: Learning World Models via S-Information for Robot Control},
+  author        = {Zu, Xinrui and Przystupa, Michael and Yang, Zhao and Yu, Shujian and Luck, Kevin Sebastian},
+  year          = {2026},
+  eprint        = {2611.12732},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2611.12732}
 }
 ```
